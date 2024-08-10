@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:37:30 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/10 16:40:19 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/10 21:20:07 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Plains::Plains() : Land("Plains", 0, 0, "🟩") {}
-
 Plains::Plains(std::string type, long id, int size, std::string symbol)
-    : Land(type, id, size, symbol) {}
+{
+    _type = type;
+    _id = id;
+    _size = size;
+    _symbol = symbol;
+}
 
 Plains::Plains(Plains &plains) : Land(plains)
 {

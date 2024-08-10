@@ -6,18 +6,18 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 10:53:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/10 16:35:58 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/10 22:45:28 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Map/Mainland.cpp"
-#include "Land/Plains.cpp"
-#include "Land/Land.cpp"
-#include "Map/Map.cpp"
+#include "Map/Mainland.hpp"
+#include "Land/Plains.hpp"
+#include "Land/Land.hpp"
+#include "Map/Map.hpp"
 
 int main()
 {
-	Map *map = new Mainland("Mainland", 10, 10);
+	Map *map = new Mainland("Mainland", 50, 50);
 	
 	map->printMap();
 

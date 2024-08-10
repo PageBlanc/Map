@@ -41,7 +41,7 @@ class Land
 		virtual void 		setSymbol(std::string symbol);
 
 		Land operator=(const Land &land);
-		~Land();
+		virtual ~Land();
 };
 std::ostream &operator<<(std::ostream &os, Land land);
 

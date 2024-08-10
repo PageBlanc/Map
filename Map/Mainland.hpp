@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:01 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/10 16:35:38 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/10 23:04:05 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class Mainland : public Map
 		Mainland(std::string type, int x, int y, int smoothness, int density, int seed);
 		Mainland(const Mainland &mainland);
 
+		bool	nearLand(int x, int y, int width, int height, int random_value);
 		void	generateMap(int x, int y);
 		
 		Mainland &operator=(const Mainland &mainland);
