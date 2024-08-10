@@ -6,28 +6,59 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/10 15:56:15 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/10 16:44:52 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Mainland.hpp"
+#include "../Land/Plains.hpp"
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
 Mainland::Mainland() : Map() {}
 
-Mainland::Mainland(std::vector<std::vector<Land>> map, std::string type)
-	: Map(map, type, 0, 0, 0) {}
+Mainland::Mainland(std::string type, int x, int y) : Map(type) 
+{
+	generateMap(x, y);
+}
+
+Mainland::Mainland(std::string type, int x, int y, int smoothness, int density, int seed) : Map(type, smoothness, density, seed)
+{
+	generateMap(x, y);
+}
+
+Mainland::Mainland(const Mainland &mainland) : Map(mainland)
+{
+	*this = mainland;
+}
 
 /*-------------------------------------GENERATE-------------------------------------*/
 
-void		Mainland::generateMap()
+void		Mainland::generateMap(int x, int y)
 {
-	for (size_t i = 0; i < _map.size(); i++)
+	if (!_map.empty())
+		_map.clear();
+	for (int i = 0; i < x; i++)
 	{
-		for (size_t j = 0; j < _map[i].size(); j++)
-			_map[i][j] = *new Plains("Plains", 0, 0, "🟩");
+		std::vector<Land &> line;
+		for (int j = 0; j < y; j++)
+		{
+			Land &land = new Plains();
+			line.push_back(land);
+		}
+		_map.push_back(line);
 	}
+}
+
+/*-------------------------------------OPERATOR-------------------------------------*/
+
+Mainland &Mainland::operator=(const Mainland &mainland)
+{
+	if (this != &mainland)
+	{
+		_map = mainland._map;
+	}
+	return *this;
 }
 
 /*-------------------------------------DESTRUCTOR-------------------------------------*/

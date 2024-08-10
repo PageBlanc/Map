@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:39:21 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/10 15:29:47 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/10 16:37:17 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 class Plains : public Land
 {
     private:
-        Plains();
     public:
+        Plains();
         Plains(std::string type, long id, int size, std::string symbol);
         Plains(Plains &plains);
 

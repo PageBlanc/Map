@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/10 16:02:41 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/10 16:44:52 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,18 @@
 
 Map::Map() : _type("Map"), _smoothness(0), _density(0), _seed(0) {}
 
-Map::Map(std::vector<std::vector<Land>> map, std::string type, int smoothness, int density, int seed)
-	: _map(map), _type(type), _smoothness(smoothness), _density(density), _seed(seed) {}
+Map::Map(std::string type) : _type(type), _smoothness(0), _density(0), _seed(0) {}
 
-Map::Map(const Map &map) : _type(map._type), _smoothness(map._smoothness), _density(map._density), _seed(map._seed)
+Map::Map(std::string type, int smoothness, int density, int seed) : _type(type), _smoothness(smoothness), _density(density), _seed(seed) {}
+
+Map::Map(Map const &map) : _type(map._type), _smoothness(map._smoothness), _density(map._density), _seed(map._seed)
 {
 	*this = map;
 }
 	
 /*-------------------------------------GETTER-------------------------------------*/
 
-std::vector<std::vector<Land>>	Map::getMap() const
+std::vector<std::vector<Land &>>	Map::getMap() const
 {
 	return _map;
 }
@@ -36,7 +37,7 @@ std::string	Map::getType() const
 	return _type;
 }
 
-Land		Map::getLand(int x, int y) const
+Land		*Map::getLand(int x, int y) const
 {
 	return _map[x][y];
 }
@@ -58,7 +59,7 @@ int			Map::getSeed() const
 
 /*-------------------------------------SETTER-------------------------------------*/
 
-void		Map::setLand(int x, int y, Land land)
+void		Map::setLand(int x, int y, Land &land)
 {
 	_map[x][y] = land;
 }

@@ -12,8 +12,9 @@
 
 #include "Land.hpp"
 
-Land::Land(std::string type, long id, int size, std::string symbol)
-	: _type(type), _id(id), _size(size), _symbol(symbol) {}
+/*-------------------------------------CONSTRUCTORS-------------------------------------*/
+
+Land::Land() : _type("Land"), _symbol("🟩"), _id(0), _size(0) {}
 
 Land::Land(Land const &land)
 {
