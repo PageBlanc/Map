@@ -27,6 +27,8 @@
 #	define DESERT 	std::string("🟨")
 #	define PLAINS 	std::string("🟩")
 #	define ICE 		std::string("⬜")
+#   define MOUNTAIN std::string("⬛")
+#   define HILL		std::string("🟫")
 #endif
 	
 #endif

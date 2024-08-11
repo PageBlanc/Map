@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../Include.hpp"
 #include "../Land/Land.hpp"
-#include <vector>
-#include <map>
 
 #ifndef MAP_HPP
 # define MAP_HPP
@@ -32,7 +31,7 @@ class Map
 		Map();
 		Map(std::string type);
 		Map(std::string type, int x, int y);
-		Map(std::string type, int smoothness, int density, int seed, int x, int y);
+		Map(std::string type, int smoothness, int density, int x, int y);
 		Map(const Map &map);
 
 		virtual std::vector<std::vector<Land *> >	getMap() 				const;

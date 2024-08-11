@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Main.cpp                                           :+:      :+:    :+:   */
+/*   Include.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 10:53:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 15:03:27 by edbernar         ###   ########.fr       */
+/*   Created: 2024/08/11 14:54:51 by pageblanche       #+#    #+#             */
+/*   Updated: 2024/08/11 15:14:48 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Map/Mainland.hpp"
-#include "Land/Plains.hpp"
-#include "Land/Land.hpp"
-#include "Map/Map.hpp"
+#ifndef INCLUDE_HPP
+# define INCLUDE_HPP
 
-int main()
-{
-	Map *map = new Mainland("Mainland", 50, 50, 10, 200, 42);
+#include "colorLand.hpp"
 
+# include <iostream>
+# include <fstream>
+# include <vector>
+# include <string>
+# include <map>
+# include <ctime>
+# include <math.h>
+# include <cstdlib>
 
-	map->printMap();
-	delete map;
-	return 0;    
-}
+#endif

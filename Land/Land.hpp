@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <fstream>
-#include "../colorLand.hpp"
+#include "../Include.hpp"
 
 #ifndef Land_HPP
 #define Land_HPP
@@ -24,7 +22,7 @@ class Land
 		std::string _symbol;
 		long 		_id;
 		int 		_size;
-
+		int			_height;
 	public:
 		Land();
 		Land(std::string type, long id, int size);
@@ -34,12 +32,14 @@ class Land
 		virtual std::string getType() 	const;
 		virtual long 		getId() 	const;
 		virtual int 		getSize() 	const;
-		virtual std::string getSymbol() const;;
+		virtual std::string getSymbol() const;
+		virtual int 		getHeight() const;
 
 		virtual void 		setType(std::string type);
 		virtual void 		setSize(int size);
 		virtual void 		setId(long id);
 		virtual void 		setSymbol(std::string symbol);
+		virtual void 		setHeight(int height);
 
 		Land operator=(const Land &land);
 		bool operator==(const Land &land);

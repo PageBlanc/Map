@@ -6,14 +6,11 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 14:28:11 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 15:02:44 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Mainland.hpp"
-#include <ctime>
-#include <cstdlib>
-#include <math.h>
 #include "../Land/Plains.hpp"
 #include "../Land/Water.hpp"
 
@@ -27,7 +24,7 @@ Mainland::Mainland(std::string type, int x, int y) : Map(type, x, y)
 	generateMap();
 }
 
-Mainland::Mainland(std::string type, int x, int y, int smoothness, int density, int seed) : Map(type, smoothness, density, seed, x, y)
+Mainland::Mainland(std::string type, int x, int y, int smoothness, int density) : Map(type, smoothness, density, x, y)
 {
 	emptyMapGeneration(x, y);
 	generateMap();
