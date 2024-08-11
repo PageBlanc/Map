@@ -6,13 +6,14 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 15:40:02 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 17:48:28 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Mainland.hpp"
 #include "../Land/Plains.hpp"
 #include "../Land/Water.hpp"
+#include "../Land/Sand.hpp"
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
@@ -36,6 +37,28 @@ Mainland::Mainland(const Mainland &mainland) : Map(mainland)
 }
 
 /*-------------------------------------GENERATE-------------------------------------*/
+
+int			Mainland::countNearSameLand(int x, int y, int width, std::string type, int random_value)
+{
+	int count = 0;
+	if (x - 1 >= 0 && _map[x - 1][y]->getType() == type && random_value % 100 < 57)
+		count++;
+	if (x + 1 < width && _map[x + 1][y]->getType() == type && random_value % 100 < 57)
+		count++;
+	if (y - 1 >= 0 && _map[x][y - 1]->getType() == type && random_value % 100 < 57)
+		count++;
+	if (y + 1 < _height && _map[x][y + 1]->getType() == type && random_value % 100 < 57)
+		count++;
+	if (x - 1 >= 0 && y - 1 >= 0 && _map[x - 1][y - 1]->getType() == type && random_value % 100 < 57)
+		count++;
+	if (x + 1 < width && y + 1 < _height && _map[x + 1][y + 1]->getType() == type && random_value % 100 < 57)
+		count++;
+	if (x - 1 >= 0 && y + 1 < _height && _map[x - 1][y + 1]->getType() == type && random_value % 100 < 57)
+		count++;
+	if (x + 1 < width && y - 1 >= 0 && _map[x + 1][y - 1]->getType() == type && random_value % 100 < 57)
+		count++;
+	return count;
+}
 
 void		Mainland::emptyMapGeneration(int x, int y)
 {
@@ -74,34 +97,11 @@ int		Mainland::RecursiveNearLand(int x, int y, int width, int height, int random
 	return RecursiveNearLand(x + 1, y, width, height, std::rand());
 }
 
-int		Mainland::countNearLand(int x, int y, int width, int height, int random_value)
-{
-	int count = 0;
-	if (x - 1 >= 0 && _map[x - 1][y]->getType() == "Plains" && random_value % 100 < 57)
-		count++;
-	if (x + 1 < width && _map[x + 1][y]->getType() == "Plains" && random_value % 100 < 57)
-		count++;
-	if (y - 1 >= 0 && _map[x][y - 1]->getType() == "Plains" && random_value % 100 < 57)
-		count++;
-	if (y + 1 < height && _map[x][y + 1]->getType() == "Plains" && random_value % 100 < 57)
-		count++;
-	if (x - 1 >= 0 && y - 1 >= 0 && _map[x - 1][y - 1]->getType() == "Plains" && random_value % 100 < 57)
-		count++;
-	if (x + 1 < width && y + 1 < height && _map[x + 1][y + 1]->getType() == "Plains" && random_value % 100 < 57)
-		count++;
-	if (x - 1 >= 0 && y + 1 < height && _map[x - 1][y + 1]->getType() == "Plains" && random_value % 100 < 57)
-		count++;
-	if (x + 1 < width && y - 1 >= 0 && _map[x + 1][y - 1]->getType() == "Plains" && random_value % 100 < 57)
-		count++;
-	return count;
-}
-
 bool		Mainland::nearLand(int x, int y, int width, int height, int random_value)
 {
 	if (x < 0 || y < 0 || x >= width || y >= height)
 		return false;
-	int nLand = countNearLand(x, y, width, height, random_value);
-	if (nLand > 3)
+	if (countNearSameLand(x, y, width, "Plains", random_value) > 3)
 		return true;
 	return false;
 }
@@ -120,7 +120,7 @@ int		Mainland::fillLand(int x, int y, int width, int height, int random_value)
 {
 	if (x >= width || y >= height || x < 0 || y < 0)
 		return 0;
-	if (countNearLand(x, y, width, height, random_value) > 3)
+	if (countNearSameLand(x, y, width, "Plains", random_value) > 3)
 	{
 		delete _map[x][y];
 		_map[x][y] = new Plains("Plains", y, 10);
@@ -128,6 +128,20 @@ int		Mainland::fillLand(int x, int y, int width, int height, int random_value)
 	if (x == width - 1)
 		return fillLand(0, y + 1, width, height, std::rand());
 	return fillLand(x + 1, y, width, height, std::rand());
+}
+
+int			Mainland::PutSand(int x, int y, int width, int height)
+{
+	if (x >= width || y >= height || x < 0 || y < 0)
+		return 0;
+	if (_map[x][y]->getType() != "Water" && (countNearSameLand(x, y, width, "Water", 100) > 1 || (countNearSameLand(x, y, width, "Sand", 100) > 0 && countNearSameLand(x, y, width, "Water", 100) > 0)))
+	{
+		delete _map[x][y];
+		_map[x][y] = new Sand("Sand", y, 10);
+	}
+	if (x == width - 1)
+		return PutSand(0, y + 1, width, height);
+	return PutSand(x + 1, y, width, height);
 }
 
 void		Mainland::generateMap()
@@ -138,7 +152,7 @@ void		Mainland::generateMap()
 			RecursiveNearLand(0, 0, _map.size(), _map[i].size(), std::rand());
 	for (size_t i = 0; i < 8; i++)
 		fillLand(0, 0, _map.size(), _map[0].size(), std::rand());
-
+	PutSand(0, 0, _map.size(), _map[0].size());
 }
 
 /*-------------------------------------OPERATOR-------------------------------------*/

@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 16:16:11 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 16:37:13 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 #	define VOID    	std::string("⬛")
 #	define WATER   	std::string("🟦")
-#	define DESERT 	std::string("🟨")
+#	define SAND 	std::string("🟨")
 #	define PLAINS 	std::string("🟩")
 #	define ICE 		std::string("⬜")
 #   define MOUNTAIN std::string("⬛")
