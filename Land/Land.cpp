@@ -82,7 +82,7 @@ void Land::setHeight(int height)
 
 std::ofstream &operator<<(std::ofstream &os, Land land)
 {
-	os << land.getSymbol();
+	os << land.getHeight()  << std::endl;
 	return os;
 }
 

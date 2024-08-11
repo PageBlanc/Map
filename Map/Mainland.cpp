@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 15:02:44 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 15:40:02 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ bool		Mainland::nearCenter(int x, int y, int width, int height)
 	int center_x = width / 2;
 	int center_y = height / 2;
 	int distance = sqrt(pow(center_x - x, 2) + pow(center_y - y, 2));
-	if (distance < 10)
+	if (distance < _width / 4)
 		return true;
 	return false;
 }

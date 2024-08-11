@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 10:53:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 15:03:27 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/11 15:44:32 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 int main()
 {
-	Map *map = new Mainland("Mainland", 50, 50, 10, 200, 42);
+	Map *map = new Mainland("Mainland", 50, 50, 10, 200);
 
 
 	map->printMap();
