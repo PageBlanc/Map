@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 14:08:44 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 15:14:07 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 #	define DESERT 	std::string("🟨")
 #	define PLAINS 	std::string("🟩")
 #	define ICE 		std::string("⬜")
+#   define MOUNTAIN std::string("⬛")
+#   define HILL		std::string("🟫")
 #endif
 	
 #endif
