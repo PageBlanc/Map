@@ -80,9 +80,9 @@ void Land::setHeight(int height)
 
 /*-------------------------------------OPERATORS-------------------------------------*/
 
-std::ofstream &operator<<(std::ofstream &os, Land land)
+std::ofstream &operator<<(std::ofstream &os, Land *land)
 {
-	os << land.getHeight()  << std::endl;
+	os << land->getHeight() << "," << std::endl;
 	return os;
 }
 

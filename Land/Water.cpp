@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:53:49 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 15:00:05 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 15:53:02 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ Water::Water(std::string type, long id, int size)
 	_type = type;
 	_id = id;
 	_size = size;
+	_height = rand() % 5;
 	_symbol = WATER;
 }
 
@@ -50,6 +51,8 @@ bool Water::operator==(const Water &water)
 	if (_size != water._size)
 		return false;
 	if (_symbol != water._symbol)
+		return false;
+	if (_height != water._height)
 		return false;
 	return true;
 }

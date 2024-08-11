@@ -44,6 +44,7 @@ class Map
 		virtual void							setLand(int x, int y, Land &land);
 	
 		virtual void	printMap() 				const;
+		virtual void	printTopography()			const;
 		virtual void	generateMap() = 0;
 
 

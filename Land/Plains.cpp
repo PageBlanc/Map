@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:37:30 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 10:05:36 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 15:53:09 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ Plains::Plains(std::string type, long id, int size)
 	_type = type;
 	_id = id;
 	_size = size;
+	_height = rand() % 15 + 5;
 	_symbol = PLAINS;
 }
 
@@ -50,6 +51,8 @@ bool Plains::operator==(const Plains &plains)
 	if (_size != plains._size)
 		return false;
 	if (_symbol != plains._symbol)
+		return false;
+	if (_height != plains._height)
 		return false;
 	return true;
 }

@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 15:18:18 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 15:49:38 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,16 @@ void		Map::printMap() const
 	{
 		for (size_t j = 0; j < _map[i].size(); j++)
 			std::cout << _map[i][j]->getSymbol();
+		std::cout << std::endl;
+	}
+}
+
+void	Map::printTopography() const
+{
+	for (size_t i = 0; i < _map.size(); i++)
+	{
+		for (size_t j = 0; j < _map[i].size(); j++)
+			std::cout << _map[i][j]->getHeight(), std::cout << ",";
 		std::cout << std::endl;
 	}
 }

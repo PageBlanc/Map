@@ -46,6 +46,6 @@ class Land
 		bool operator!=(const Land &land);
 		virtual ~Land();
 };
-std::ostream &operator<<(std::ostream &os, Land land);
+std::ostream &operator<<(std::ostream &os, Land *land);
 
 #endif

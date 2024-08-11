@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 10:53:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 15:44:32 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 15:56:03 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ int main()
 {
 	Map *map = new Mainland("Mainland", 50, 50, 10, 200);
 
-
-	map->printMap();
+	if (EXPORT == 0)
+		map->printMap();
+	else
+		map->printTopography();
 	delete map;
 	return 0;    
 }

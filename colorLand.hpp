@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 15:41:25 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 15:55:59 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,8 @@
 
 #define EXPORT 0
 
-#if EXPORT
-#	define VOID    	std::string(" ")
-#	define WATER  	std::string("W")
-#	define DESERT 	std::string("D")
-#	define PLAINS 	std::string("P")
-#	define ICE 		std::string("I")
-#else
+
+#if EXPORT == 0
 #	define VOID    	std::string("⬛")
 #	define WATER   	std::string("🟦")
 #	define DESERT 	std::string("🟨")
