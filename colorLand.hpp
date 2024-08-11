@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   colorLand.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 15:14:07 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 15:07:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COLORLAND_HPP
 # define COLORLAND_HPP
 
-#define EXPORT  0
+#define EXPORT 1
 
 #if EXPORT
 #	define VOID    	std::string(" ")
