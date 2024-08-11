@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Plains.hpp                                         :+:      :+:    :+:   */
+/*   colorLand.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 12:39:21 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 09:52:32 by pageblanche      ###   ########.fr       */
+/*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
+/*   Updated: 2024/08/11 09:47:23 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef COLORLAND_HPP
+# define COLORLAND_HPP
 
-#ifndef PLAINS_HPP
-# define PLAINS_HPP
-
-#include "Land.hpp"
-
-class Plains : public Land
-{
-    private:
-    public:
-        Plains();
-        Plains(std::string type, long id, int size);
-        Plains(Plains &plains);
-
-        Plains &operator=(const Plains &plains);
-        bool operator==(const Plains &plains);
-        bool operator!=(const Plains &plains);
-        ~Plains();
-};
-
+#define VOID std::string("⬛")
+#define WATER std::string("🟦")
+#define DESERT std::string("🟨")
+#define PLAINS std::string("🟩")
+#define ICE std::string("⬜")
 #endif

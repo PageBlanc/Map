@@ -32,7 +32,7 @@ class Map
 		Map();
 		Map(std::string type);
 		Map(std::string type, int x, int y);
-		Map(std::string type, int smoothness, int density, int seed);
+		Map(std::string type, int smoothness, int density, int seed, int x, int y);
 		Map(const Map &map);
 
 		virtual std::vector<std::vector<Land *> >	getMap() 				const;
@@ -45,7 +45,7 @@ class Map
 		virtual void							setLand(int x, int y, Land &land);
 	
 		virtual void	printMap() 				const;
-		virtual void	generateMap(int x, int y) = 0;
+		virtual void	generateMap() = 0;
 
 
 		Map &operator=(const Map &map);

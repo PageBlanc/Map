@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "../colorLand.hpp"
 
 #ifndef Land_HPP
 #define Land_HPP
@@ -26,7 +27,7 @@ class Land
 
 	public:
 		Land();
-		Land(std::string type, long id, int size, std::string symbol);
+		Land(std::string type, long id, int size);
 		Land(Land const &land);
 
 
@@ -41,6 +42,8 @@ class Land
 		virtual void 		setSymbol(std::string symbol);
 
 		Land operator=(const Land &land);
+		bool operator==(const Land &land);
+		bool operator!=(const Land &land);
 		virtual ~Land();
 };
 std::ostream &operator<<(std::ostream &os, Land land);

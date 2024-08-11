@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/10 23:01:57 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 10:09:44 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ Map::Map(std::string type) : _type(type), _smoothness(0), _density(0), _seed(0),
 
 Map::Map(std::string type, int x, int y) : _type(type), _smoothness(0), _density(0), _seed(0), _width(x), _height(y) {}
 
-Map::Map(std::string type, int smoothness, int density, int seed) : _type(type), _smoothness(smoothness), _density(density), _seed(seed), _width(0), _height(0) {}
+Map::Map(std::string type, int smoothness, int density, int seed, int x, int y) : _type(type), _smoothness(smoothness), _density(density), _seed(seed), _width(x), _height(y) {}
 
 Map::Map(Map const &map) : _type(map._type), _smoothness(map._smoothness), _density(map._density), _seed(map._seed), _width(map._width), _height(map._height)
 {

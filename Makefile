@@ -6,7 +6,7 @@
 #    By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/10 10:51:07 by pageblanche       #+#    #+#              #
-#    Updated: 2024/08/10 23:24:41 by pageblanche      ###   ########.fr        #
+#    Updated: 2024/08/11 09:55:24 by pageblanche      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRC            =     Main.cpp                \
 					 Map/Mainland.cpp           \
 					 Land/Land.cpp              \
 					 Land/Plains.cpp            \
+					 Land/Water.cpp             \
 					 
 
 OBJ            =     $(SRC:.cpp=.o)

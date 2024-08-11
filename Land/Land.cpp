@@ -14,10 +14,14 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Land::Land() : _type("Land"), _symbol("🟩"), _id(0), _size(0) {}
+Land::Land() : _type("Land"), _symbol(VOID), _id(0), _size(0) {}
+
+Land::Land(std::string type, long id, int size) : _type(type), _symbol(VOID), _id(id), _size(size) {}
 
 Land::Land(Land const &land)
 {
+	if (*this != land)
+		delete this;
 	*this = land;
 }
 
@@ -25,47 +29,48 @@ Land::Land(Land const &land)
 
 std::string Land::getType() const
 {
-    return _type;
+	return _type;
 }
 
 long Land::getId() const
 {
-    return _id;
+	return _id;
 }
 
 int Land::getSize() const
 {
-    return _size;
+	return _size;
 }
 
 std::string Land::getSymbol() const
 {
-    return _symbol;
+	return _symbol;
 }
 
 /*-------------------------------------SETTERS-------------------------------------*/
 
 void Land::setType(std::string type)
 {
-    _type = type;
+	_type = type;
 }
 
 void Land::setSize(int size)
 {
-    _size = size;
+	_size = size;
 }
 
 void Land::setId(long id)
 {
-    _id = id;
+	_id = id;
 }
 
 void Land::setSymbol(std::string symbol)
 {
-    _symbol = symbol;
+	_symbol = symbol;
 }
 
 
+/*-------------------------------------OPERATORS-------------------------------------*/
 
 std::ofstream &operator<<(std::ofstream &os, Land land)
 {
@@ -75,11 +80,31 @@ std::ofstream &operator<<(std::ofstream &os, Land land)
 
 Land Land::operator=(const Land &land)
 {
-	_type = land._type;
-	_id = land._id;
-	_size = land._size;
-	_symbol = land._symbol;
+	_type = land.getType();
+	_id = land.getId();
+	_size = land.getSize();
+	_symbol = land.getSymbol();
 	return *this;
 }
+
+bool Land::operator==(const Land &land)
+{
+	if (_type != land._type)
+		return false;
+	if (_id != land._id)
+		return false;
+	if (_size != land._size)
+		return false;
+	if (_symbol != land._symbol)
+		return false;
+	return true;
+}
+
+bool Land::operator!=(const Land &land)
+{
+	return !(*this == land);
+}
+
+/*-------------------------------------DESTRUCTOR-------------------------------------*/
 
 Land::~Land() {}

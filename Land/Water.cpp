@@ -1,64 +1,64 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Plains.cpp                                         :+:      :+:    :+:   */
+/*   Water.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 12:37:30 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 10:05:36 by pageblanche      ###   ########.fr       */
+/*   Created: 2024/08/11 09:53:49 by pageblanche       #+#    #+#             */
+/*   Updated: 2024/08/11 10:06:20 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Plains.hpp"
+#include "Water.hpp"
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Plains::Plains(std::string type, long id, int size)
+Water::Water(std::string type, long id, int size)
 {
 	_type = type;
 	_id = id;
 	_size = size;
-	_symbol = PLAINS;
+	_symbol = WATER;
 }
 
-Plains::Plains(Plains &plains) : Land(plains)
+Water::Water(Water &water) : Land(water)
 {
-	if (*this != plains)
+	if (*this != water)
 		delete this;
-	*this = plains;
+	*this = water;
 }
 
 /*-------------------------------------OPERATORS-------------------------------------*/
 
-Plains &Plains::operator=(const Plains &plains)
+Water &Water::operator=(const Water &water)
 {
 
-	_type = plains.getType();
-	_id = plains.getId();
-	_size = plains.getSize();
-	_symbol = plains.getSymbol();
+	_type = water.getType();
+	_id = water.getId();
+	_size = water.getSize();
+	_symbol = water.getSymbol();
 	return *this;
 }
 
-bool Plains::operator==(const Plains &plains)
+bool Water::operator==(const Water &water)
 {
-	if (_type != plains._type)
+	if (_type != water._type)
 		return false;
-	if (_id != plains._id)
+	if (_id != water._id)
 		return false;
-	if (_size != plains._size)
+	if (_size != water._size)
 		return false;
-	if (_symbol != plains._symbol)
+	if (_symbol != water._symbol)
 		return false;
 	return true;
 }
 
-bool Plains::operator!=(const Plains &plains)
+bool Water::operator!=(const Water &water)
 {
-	return !(*this == plains);
+	return !(*this == water);
 }
 
 /*-------------------------------------DESTRUCTOR-------------------------------------*/
 
-Plains::~Plains() {}
+Water::~Water() {}
