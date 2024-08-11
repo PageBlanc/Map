@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:01 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 10:57:57 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/11 14:25:38 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ class Mainland : public Map
 		Mainland(const Mainland &mainland);
 
 		bool	nearCenter(int x, int y, int width, int height);
+		int		countNearLand(int x, int y, int width, int height, int random_value);
 		bool	nearLand(int x, int y, int width, int height, int random_value);
 		void	emptyMapGeneration(int x, int y);
 		int		RecursiveNearLand(int x, int y, int width, int height, int random_value);
+		int		fillLand(int x, int y, int width, int height, int random_value);
 		void	generateMap();
 		
 		Mainland &operator=(const Mainland &mainland);
