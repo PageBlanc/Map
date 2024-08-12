@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 17:48:28 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/12 17:13:42 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,21 @@ int			Mainland::countNearSameLand(int x, int y, int width, std::string type, int
 
 void		Mainland::emptyMapGeneration(int x, int y)
 {
-	if (!_map.empty())
-		_map.clear();
+
+	
+	
 	for (int i = 0; i < x; i++)
 	{
 		std::vector<Land *> line;
 		for (int j = 0; j < y; j++)
-			line.push_back(new Land());
+		{
+			Land *land;
+			if (nearCenter(i, j, x, y))
+				land = new Plains("Plains", j, 10);
+			else
+				land = new Water("Water", j, 10);
+			line.push_back(land);
+		}
 		_map.push_back(line);
 	}
 }
@@ -77,20 +85,18 @@ int		Mainland::RecursiveNearLand(int x, int y, int width, int height, int random
 {
 	if (x >= width || y >= height  || x < 0 || y < 0)
 		return 0;
-	if (nearCenter(x, y, width, height))
+	if (!nearCenter(x, y, width, height))
 	{
-		delete _map[x][y];
-		_map[x][y] = new Plains("Plains", y, 10);
-	}
-	else if (nearLand(x - 1, y, width, height, random_value) || nearLand(x + 1, y, width, height, random_value) || nearLand(x, y - 1, width, height, random_value) || nearLand(x, y + 1, width, height, random_value))
-	{
-		delete _map[x][y];
-		_map[x][y] = new Plains("Plains", y, 10);
-	}
-	else
-	{
-		delete _map[x][y];
-		_map[x][y] = new Water("Water", y, 10);
+		if (nearLand(x - 1, y, width, height, random_value) || nearLand(x + 1, y, width, height, random_value) || nearLand(x, y - 1, width, height, random_value) || nearLand(x, y + 1, width, height, random_value))
+		{
+			delete _map[x][y];
+			_map[x][y] = new Plains("Plains", y, 10);
+		}
+		else
+		{
+			delete _map[x][y];
+			_map[x][y] = new Water("Water", y, 10);
+		}
 	}
 	if (x == width - 1)
 		return RecursiveNearLand(0, y + 1, width, height, std::rand());
@@ -108,10 +114,11 @@ bool		Mainland::nearLand(int x, int y, int width, int height, int random_value)
 
 bool		Mainland::nearCenter(int x, int y, int width, int height)
 {
+	// check if the point is near the center with math
 	int center_x = width / 2;
 	int center_y = height / 2;
-	int distance = sqrt(pow(center_x - x, 2) + pow(center_y - y, 2));
-	if (distance < _width / 4)
+	int distance = std::sqrt(std::pow(center_x - x, 2) + std::pow(center_y - y, 2));
+	if (distance < width / 4)
 		return true;
 	return false;
 }
@@ -130,11 +137,12 @@ int		Mainland::fillLand(int x, int y, int width, int height, int random_value)
 	return fillLand(x + 1, y, width, height, std::rand());
 }
 
+
 int			Mainland::PutSand(int x, int y, int width, int height)
 {
 	if (x >= width || y >= height || x < 0 || y < 0)
 		return 0;
-	if (_map[x][y]->getType() != "Water" && (countNearSameLand(x, y, width, "Water", 100) > 1 || (countNearSameLand(x, y, width, "Sand", 100) > 0 && countNearSameLand(x, y, width, "Water", 100) > 0)))
+	if (_map[x][y]->getType() != "Water" && (countNearSameLand(x, y, width, "Water", 100) > 0))
 	{
 		delete _map[x][y];
 		_map[x][y] = new Sand("Sand", y, 10);
@@ -144,14 +152,30 @@ int			Mainland::PutSand(int x, int y, int width, int height)
 	return PutSand(x + 1, y, width, height);
 }
 
+void		Mainland::fillPound()
+{
+	for (size_t i = 0; i < _map.size(); i++)
+	{
+		for (size_t j = 0; j < _map[i].size(); j++)
+		{
+			if (_map[i][j]->getType() == "Water" && countNearSameLand(i, j, _width, "Water", 100) < 1)
+			{
+				delete _map[i][j];
+				_map[i][j] = new Plains("Plains", j, 10);
+			}
+		}
+	}
+}
+
 void		Mainland::generateMap()
 {
     std::srand(std::time(0));
 	std::cout << "Generating Mainland..." << std::endl;
-	for (size_t i = 0; i < _map.size(); i++)
+	for (size_t i = 0; i < _map.size() - (rand() % _width * 0.7); i++)
 			RecursiveNearLand(0, 0, _map.size(), _map[i].size(), std::rand());
-	for (size_t i = 0; i < 8; i++)
+	for (size_t i = 0; i < 5; i++)
 		fillLand(0, 0, _map.size(), _map[0].size(), std::rand());
+	fillPound();
 	PutSand(0, 0, _map.size(), _map[0].size());
 }
 

@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:01 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 17:11:24 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/12 17:13:29 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,19 @@ class Mainland : public Map
 		Mainland(const Mainland &mainland);
 
 		void	emptyMapGeneration(int x, int y);
+		void	generateMap();
+		
 		bool	nearCenter(int x, int y, int width, int height);
 		bool	nearLand(int x, int y, int width, int height, int random_value);
+		
 		int		RecursiveNearLand(int x, int y, int width, int height, int random_value);
+		
 		int		fillLand(int x, int y, int width, int height, int random_value);
+		void	fillPound();
+		
 		int		PutSand(int x, int y, int width, int height);
+		
 		int     countNearSameLand(int x, int y, int width, std::string type, int random_value);
-		void	generateMap();
 		
 		Mainland &operator=(const Mainland &mainland);
 		~Mainland();
