@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:37:30 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/13 15:22:25 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/13 17:31:36 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Plains::Plains(std::string type, long id, int size)
 	_type = type;
 	_id = id;
 	_size = size;
-	_height = 0;
+	_height = 2;
 	_symbol = PLAINS;
 }
 

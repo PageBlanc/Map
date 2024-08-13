@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:19:21 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/13 15:22:32 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/13 17:31:49 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 
 Sand::Sand() : Land("Sand", 0, 0)
 {
-	_height = 0;
+	_height = 1;
 	_symbol = SAND;
 }
 
 Sand::Sand(std::string type, long id, int size) : Land(type, id, size)
 {
-	_height = rand() % 5;
+	_height =  1;
 	_symbol = SAND;
 }
 

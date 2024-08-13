@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 10:53:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/12 17:16:51 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/13 17:51:13 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int main()
 {
-	Map *map = new Mainland("Mainland", 50, 50, 10, 57);
+	Map *map = new Mainland("Mainland", 100, 100, 1, 57);
 
 	// for (size_t i = 0; i < 3; i++)
 	// {

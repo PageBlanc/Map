@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/13 15:39:31 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/13 17:51:49 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,9 +154,9 @@ int			Mainland::PutSand(int x, int y, int width, int height)
 
 void		Mainland::fillPound()
 {
-	for (size_t i = 0; i < _map.size(); i++)
+	for (int i = 0; i < _width; i++)
 	{
-		for (size_t j = 0; j < _map[i].size(); j++)
+		for (int j = 0; j < _height; j++)
 		{
 			if (_map[i][j]->getType() == "Water" && countNearSameLand(i, j, _width, "Water", 100) < 1)
 			{
@@ -169,41 +169,86 @@ void		Mainland::fillPound()
 
 void		Mainland::setHeight()
 {
-	int x = _width / 2;
-	int y = _height / 2;
-	int height = 0;
-
-	_map[x][y]->setHeight(rand() % 10);
-	while (--x >= 0)
+	
+	for (int i = 0; i < _width; i++)
 	{
-		y = _height / 2;
-		while(--y >= 0)
+		for (int j = 0; j < _height; j++)
 		{
-			if (_map[x][y]->getType() == "Water")
-				continue;
-			height = _map[x + 1][y]->getHeight() + rand() % 3 - 1;
-			height = _map[x + 1][y]->getHeight() + rand() % 3 - 1;
-			if (height < 0)
-				height = 1;
-			_map[x][y]->setHeight(height);
+			if (_map[i][j]->getType() == "Water")
+				_map[i][j]->setHeight(0);
+			else if (_map[i][j]->getType() == "Sand")
+				_map[i][j]->setHeight(1);
+			else if (_map[i][j]->getType() == "Plains")
+			{
+				if (i == 0)
+					continue;
+				_map[i][j]->setHeight(rand() % 10);
+				if (_map[i][j]->getHeight() < 2)
+					_map[i][j]->setHeight(2);
+			}
 		}
 	}
-	x = _width / 2;
-	y = _height / 2;
-	height = 0;
-	
-		while (++x < _width)
+
+}
+
+int			Mainland::averageHeight(int x, int y)
+{
+	int average = 0;
+	int count = 0;
+	if (x - 1 >= 0)
 	{
-		y = _height / 2;
-		while(++y < _height)
+		average += _map[x - 1][y]->getHeight();
+		count++;
+	}
+	if (x + 1 < _width)
+	{
+		average += _map[x + 1][y]->getHeight();
+		count++;
+	}
+	if (y - 1 >= 0)
+	{
+		average += _map[x][y - 1]->getHeight();
+		count++;
+	}
+	if (y + 1 < _height)
+	{
+		average += _map[x][y + 1]->getHeight();
+		count++;
+	}
+	if (x - 1 >= 0 && y - 1 >= 0)
+	{
+		average += _map[x - 1][y - 1]->getHeight();
+		count++;
+	}
+	if (x + 1 < _width && y + 1 < _height)
+	{
+		average += _map[x + 1][y + 1]->getHeight();
+		count++;
+	}
+	if (x - 1 >= 0 && y + 1 < _height)
+	{
+		average += _map[x - 1][y + 1]->getHeight();
+		count++;
+	}
+	if (x + 1 < _width && y - 1 >= 0)
+	{
+		average += _map[x + 1][y - 1]->getHeight();
+		count++;
+	}
+	return average / count;
+}
+
+void		Mainland::smoothingHeight()
+{
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
 		{
-			if (_map[x][y]->getType() == "Water")
-				continue;
-			height = _map[x + 1][y]->getHeight() + rand() % 3 - 1;
-			height = _map[x + 1][y]->getHeight() + rand() % 3 - 1;
-			if (height < 0)
-				height = 1;
-			_map[x][y]->setHeight(height);
+			if (_map[i][j]->getType() == "Plains")
+			{
+				int average = averageHeight(i, j);
+				_map[i][j]->setHeight(average);
+			}
 		}
 	}
 }
@@ -211,7 +256,8 @@ void		Mainland::setHeight()
 void		Mainland::generateMap()
 {
     std::srand(std::time(0));
-	std::cout << "Generating Mainland..." << std::endl;
+	if (EXPORT == 0)
+		std::cout << "Generating Mainland..." << std::endl;
 	for (size_t i = 0; i < _map.size() - (rand() % _width * 0.7); i++)
 			RecursiveNearLand(0, 0, _map.size(), _map[i].size(), std::rand());
 	for (size_t i = 0; i < 5; i++)
@@ -219,6 +265,9 @@ void		Mainland::generateMap()
 	fillPound();
 	PutSand(0, 0, _map.size(), _map[0].size());
 	setHeight();
+	for (int i = 0; i < _smoothness; i++)
+		smoothingHeight();
+	Normalize
 }
 
 /*-------------------------------------OPERATOR-------------------------------------*/

@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:01 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/13 15:24:04 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/13 17:42:37 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Mainland : public Map
 		
 		bool	nearCenter(int x, int y, int width, int height);
 		bool	nearLand(int x, int y, int width, int height, int random_value);
+		int		averageHeight(int x, int y);
 		
 		int		RecursiveNearLand(int x, int y, int width, int height, int random_value);
 		
@@ -40,6 +41,8 @@ class Mainland : public Map
 		int     countNearSameLand(int x, int y, int width, std::string type, int random_value);
 
 		void	setHeight();
+		void	smoothingHeight();
+
 		
 		Mainland &operator=(const Mainland &mainland);
 		~Mainland();
