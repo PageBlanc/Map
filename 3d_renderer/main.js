@@ -16,150 +16,101 @@ import Background from 'three/src/renderers/common/Background.js';
 
 //const	dataMap = fs.readFileSync('map.txt', 'utf8').split('\n').map((line) => line.split(' ').map((x) => parseInt(x)));
 
-const	dataMap = [
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,5,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,7,4,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,3,1,0,0,0,0,0,5,7,4,2,4,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,1,3,1,0,0,0,0,0,4,8,3,3,3,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,1,1,4,1,1,2,0,0,6,3,7,4,2,2,0,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,2,1,4,0,0,1,4,1,6,2,6,4,2,1,0,4,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,3,1,3,0,1,0,3,2,6,1,7,3,1,0,1,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,2,1,3,1,1,0,3,1,5,0,6,2,1,0,2,3,3,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,1,1,2,1,0,0,4,2,5,0,5,1,1,0,1,2,4,0,2,1,0,4,3,2,1,1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,1,1,2,2,0,0,4,3,6,1,4,1,2,1,1,2,3,0,0,0,0,0,0,0,0,0,4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,1,2,1,1,1,3,2,6,2,3,0,1,2,1,1,2,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,1,0,0,1,3,3,5,2,2,0,2,2,2,1,1,0,0,0,0,0,0,0,0,0,0,0,4,4,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,1,1,0,2,3,4,1,3,1,1,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,2,1,2,2,3,1,2,0,2,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,1,2,1,1,2,2,2,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,3,1,1,3,2,0,3,2,3,0,2,1,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,1,3,1,2,2,3,0,2,1,2,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,1,2,0,2,1,3,1,3,0,1,2,0,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,1,0,1,2,1,1,1,2,2,0,2,1,1,2,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,2,2,1,0,3,1,1,0,2,1,0,1,2,1,2,0,1,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,1,2,0,0,2,0,0,0,3,0,1,2,1,1,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,1,1,1,1,1,1,0,4,1,1,1,0,1,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,3,4,2,0,0,0,0,0,],
-	[0,0,0,1,0,0,0,0,0,2,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,2,0,0,0,],
-	[0,0,0,0,2,1,1,0,0,3,2,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,0,0,],
-	[0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,1,1,1,0,1,1,1,1,0,1,0,1,1,1,0,3,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,1,1,0,0,1,0,0,1,0,0,1,1,0,0,1,],
-	[0,0,0,0,0,0,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1,0,1,1,1,1,0,0,1,0,1,1,1,0,1,0,0,1,1,],
-	[0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,1,1,1,],
-	[0,0,0,0,0,0,0,0,0,0,4,3,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1,1,0,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,1,1,0,0,1,1,0,0,1,1,1,2,0,1,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,1,0,1,0,1,1,1,0,1,0,1,0,1,4,5,1,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,1,0,0,0,0,0,1,1,0,1,1,4,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,4,3,1,0,1,0,0,0,0,0,1,1,0,0,1,5,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,2,4,1,4,1,1,1,0,0,1,1,1,1,1,1,4,1,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,1,0,1,1,0,0,1,0,0,1,1,0,0,4,0,1,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,4,3,4,3,0,0,0,0,5,1,0,1,1,1,1,0,0,1,5,1,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,3,0,1,0,1,1,1,0,0,0,3,1,1,0,1,0,1,1,5,1,1,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,1,2,3,1,2,1,1,2,1,1,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,3,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,2,0,2,1,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,4,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-]
+let i = 0;
 
-// const	dataMap = [
-// 	[0,0,0,0],
-// 	[0,1,1,0],
-// 	[0,1,1,0],
-// 	[0,0,0,0],
-// ]
-
-let	listMesh = [];
-// const	dataMap = [
-// 	[0,0,0],
-// 	[0,1,0],
-// 	[0,0,0],
-// ]
-
-function	parseMapFunc(dataMap)
-{
-	let Mesh = [];
-
-	for (let i = 0; i < dataMap.length; i++)
+let dataMap = fetch('out.txt').then(response => response.text()).then(text => {
+	let newDataMap = text.split('\n')
+	dataMap = [];
+	while (i < newDataMap.length)
 	{
-		for (let j = 0; j < dataMap[i].length; j++)
+		dataMap.push(newDataMap[i].split(','));
+		i++;
+	}
+	console.log(dataMap);
+	let	listMesh = [];
+
+	function	parseMapFunc(dataMap)
+	{
+		let Mesh = [];
+
+		for (let i = 0; i < dataMap.length; i++)
 		{
-			let geometry = new THREE.BoxGeometry(1, dataMap[i][j], 1); // (1, dataMap[i][j], 1);
-			let material = new THREE.MeshPhysicalMaterial();
-			Mesh = new THREE.Mesh(geometry, material);
-			Mesh.castShadow = true;
-			Mesh.receiveShadow = true;
-			listMesh.push(Mesh);
+			for (let j = 0; j < dataMap[i].length; j++)
+			{
+				let geometry = new THREE.BoxGeometry(1, dataMap[i][j], 1); // (1, dataMap[i][j], 1);
+				let material = new THREE.MeshPhysicalMaterial();
+				Mesh = new THREE.Mesh(geometry, material);
+				Mesh.castShadow = true;
+				Mesh.receiveShadow = true;
+				listMesh.push(Mesh);
+			}
 		}
 	}
-}
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({
-	antialias: true,
-});
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+	const scene = new THREE.Scene();
+	const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+	const renderer = new THREE.WebGLRenderer({
+		antialias: true,
+	});
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-scene.add(ambientLight);
+	const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+	scene.add(ambientLight);
 
-const spotLight = new THREE.SpotLight(0xffffff);
-const helper = new THREE.CameraHelper(spotLight.shadow.camera);
-scene.add(helper);
-spotLight.position.set(100, 100, 100);
-spotLight.castShadow = true;
-spotLight.intensity = 25000;
-spotLight.shadow.mapSize.width = 1024;
-spotLight.shadow.mapSize.height = 1024;
-spotLight.shadow.camera.near = 0.5;
-spotLight.shadow.camera.far = 10000;
-spotLight.shadow.camera.fov = 80;
-scene.add(spotLight);
+	const spotLight = new THREE.SpotLight(0xffffff);
+	const helper = new THREE.CameraHelper(spotLight.shadow.camera);
+	scene.add(helper);
+	spotLight.position.set(100, 100, 100);
+	spotLight.castShadow = true;
+	spotLight.intensity = 25000;
+	spotLight.shadow.mapSize.width = 1024;
+	spotLight.shadow.mapSize.height = 1024;
+	spotLight.shadow.camera.near = 0.5;
+	spotLight.shadow.camera.far = 10000;
+	spotLight.shadow.camera.fov = 80;
+	scene.add(spotLight);
 
-scene.background = new THREE.Color(0xAAAAAA);
-const controls = new OrbitControls(camera, renderer.domElement);
+	scene.background = new THREE.Color(0xAAAAAA);
+	const controls = new OrbitControls(camera, renderer.domElement);
 
-camera.position.set(0, 4, 5);
-controls.update();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-renderer.setAnimationLoop(animate);
+	camera.position.set(0, 4, 5);
+	controls.update();
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	document.body.appendChild(renderer.domElement);
+	renderer.setAnimationLoop(animate);
 
-const geometry = new THREE.BufferGeometry();
-parseMapFunc(dataMap);
-for (let i = 0; i < listMesh.length; i++)
-{
-	listMesh[i].position.x = (i % dataMap[0].length) - dataMap[0].length / 2;
-	listMesh[i].position.z = (Math.floor(i / dataMap[0].length)) - dataMap.length / 2;
-	listMesh[i].position.y = listMesh[i].geometry.parameters.height / 2;
-	if (listMesh[i].geometry.parameters.height != 0)
-		listMesh[i].material.color.set(0xffDD00);
-	/*
-	if (i == 308)
+	const geometry = new THREE.BufferGeometry();
+	parseMapFunc(dataMap);
+	for (let i = 0; i < listMesh.length; i++)
 	{
-		listMesh[i] = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), new THREE.MeshPhysicalMaterial());
 		listMesh[i].position.x = (i % dataMap[0].length) - dataMap[0].length / 2;
 		listMesh[i].position.z = (Math.floor(i / dataMap[0].length)) - dataMap.length / 2;
-		listMesh[i].position.y = 1;
-		listMesh[i].material.color.set(0xff0000);
-		listMesh[i].castShadow = true;
-		listMesh[i].receiveShadow = true;
+		listMesh[i].position.y = listMesh[i].geometry.parameters.height / 2;
+		if (listMesh[i].geometry.parameters.height != 0)
+			listMesh[i].material.color.set(0xffDD00);
+		/*
+		if (i == 308)
+		{
+			listMesh[i] = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), new THREE.MeshPhysicalMaterial());
+			listMesh[i].position.x = (i % dataMap[0].length) - dataMap[0].length / 2;
+			listMesh[i].position.z = (Math.floor(i / dataMap[0].length)) - dataMap.length / 2;
+			listMesh[i].position.y = 1;
+			listMesh[i].material.color.set(0xff0000);
+			listMesh[i].castShadow = true;
+			listMesh[i].receiveShadow = true;
 
-	}*/
-	scene.add(listMesh[i]);
-}
+		}*/
+		scene.add(listMesh[i]);
+	}
 
-function	animate()
-{
-	controls.update();
-	renderer.render(scene, camera);
-}
+	function	animate()
+	{
+		controls.update();
+		renderer.render(scene, camera);
+	}
+
+});
+
+
+
