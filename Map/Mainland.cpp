@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/12 17:13:42 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/13 15:39:31 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,47 @@ void		Mainland::fillPound()
 	}
 }
 
+void		Mainland::setHeight()
+{
+	int x = _width / 2;
+	int y = _height / 2;
+	int height = 0;
+
+	_map[x][y]->setHeight(rand() % 10);
+	while (--x >= 0)
+	{
+		y = _height / 2;
+		while(--y >= 0)
+		{
+			if (_map[x][y]->getType() == "Water")
+				continue;
+			height = _map[x + 1][y]->getHeight() + rand() % 3 - 1;
+			height = _map[x + 1][y]->getHeight() + rand() % 3 - 1;
+			if (height < 0)
+				height = 1;
+			_map[x][y]->setHeight(height);
+		}
+	}
+	x = _width / 2;
+	y = _height / 2;
+	height = 0;
+	
+		while (++x < _width)
+	{
+		y = _height / 2;
+		while(++y < _height)
+		{
+			if (_map[x][y]->getType() == "Water")
+				continue;
+			height = _map[x + 1][y]->getHeight() + rand() % 3 - 1;
+			height = _map[x + 1][y]->getHeight() + rand() % 3 - 1;
+			if (height < 0)
+				height = 1;
+			_map[x][y]->setHeight(height);
+		}
+	}
+}
+
 void		Mainland::generateMap()
 {
     std::srand(std::time(0));
@@ -177,6 +218,7 @@ void		Mainland::generateMap()
 		fillLand(0, 0, _map.size(), _map[0].size(), std::rand());
 	fillPound();
 	PutSand(0, 0, _map.size(), _map[0].size());
+	setHeight();
 }
 
 /*-------------------------------------OPERATOR-------------------------------------*/

@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:01 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/12 17:13:29 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/13 15:24:04 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ class Mainland : public Map
 		int		PutSand(int x, int y, int width, int height);
 		
 		int     countNearSameLand(int x, int y, int width, std::string type, int random_value);
+
+		void	setHeight();
 		
 		Mainland &operator=(const Mainland &mainland);
 		~Mainland();
