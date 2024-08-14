@@ -19,13 +19,14 @@
 class Map
 {
 	protected:
-		std::vector<std::vector<Land *> >	_map;
-		const std::string					_type;
-		const int							_smoothness;
-		const int							_density;
-		const int							_seed;
-		const int							_width;
-		const int							_height;
+		std::vector<std::vector<Land *> >		_map;
+		// std::map<Land *, std::vector<Land *> >	_nearLands;
+		const std::string						_type;
+		const int								_smoothness;
+		const int								_density;
+		const int								_seed;
+		const int								_width;
+		const int								_height;
 
 	public:
 		Map();
@@ -34,16 +35,21 @@ class Map
 		Map(std::string type, int smoothness, int density, int x, int y);
 		Map(const Map &map);
 
-		virtual std::vector<std::vector<Land *> >	getMap() 				const;
-		virtual std::string 						getType() 				const;
-		virtual Land								*getLand(int x, int y)	const;
-		virtual int 								getSmoothness() 		const;
-		virtual int 								getDensity() 			const;
-		virtual int 								getSeed() 				const;
+		virtual std::vector<std::vector<Land *> >		getMap() 				const;
+		// virtual std::map<Land *, std::vector<Land *> >	getNearLands()			const;
+		virtual std::string 							getType() 				const;
+		virtual Land									*getLand(int x, int y)	const;
+		virtual int 									getSmoothness() 		const;
+		virtual int 									getDensity() 			const;
+		virtual int 									getSeed() 				const;
 
-		virtual void							setLand(int x, int y, Land &land);
+		virtual void									setLand(int x, int y, Land &land);
+		// virtual void									setNearLands(Land &land, std::vector<Land *> nearLands);
+
+		// virtual void									initMap(int x, int y);
+		// virtual	void								initNearLand();
 	
-		virtual void	printMap() 				const;
+		virtual void	printMap() 					const;
 		virtual void	printTopography()			const;
 		virtual void	generateMap() = 0;
 

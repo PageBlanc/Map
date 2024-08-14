@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 14:50:28 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/13 15:51:01 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/14 15:56:04 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,16 @@ let dataMap = fetch('out.txt').then(response => response.text()).then(text => {
 		listMesh[i].position.x = (i % dataMap[0].length) - dataMap[0].length / 2;
 		listMesh[i].position.z = (Math.floor(i / dataMap[0].length)) - dataMap.length / 2;
 		listMesh[i].position.y = listMesh[i].geometry.parameters.height / 2;
-		if (listMesh[i].geometry.parameters.height != 0)
-			listMesh[i].material.color.set(0xffDD00);
+		if (listMesh[i].geometry.parameters.height > 10)
+			listMesh[i].material.color.set(0x808080);
+		else if (listMesh[i].geometry.parameters.height > 5)
+			listMesh[i].material.color.set(0x8b4513);
+		else if (listMesh[i].geometry.parameters.height > 1)
+			listMesh[i].material.color.set(0x008000);
+		else if (listMesh[i].geometry.parameters.height == 1)
+			listMesh[i].material.color.set(0xfff700);
+		else if (listMesh[i].geometry.parameters.height == 0)
+			listMesh[i].material.color.set(0x0000ff);
 		/*
 		if (i == 308)
 		{

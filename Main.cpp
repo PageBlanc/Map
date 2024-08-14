@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 10:53:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/13 17:51:13 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/14 16:54:15 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,37 @@
 
 int main()
 {
-	Map *map = new Mainland("Mainland", 100, 100, 1, 57);
+	// Map *map = new Mainland("Mainland", 50, 50, 1, 57);
 
-	// for (size_t i = 0; i < 3; i++)
+	// for (size_t i = 0; i < 6; i++)
 	// {
 	// 	map->generateMap();
 	// }
-	if (EXPORT == 0)
-		map->printMap();
-	else
-		map->printTopography();
+	// if (EXPORT == 0)
+	// 	map->printMap();
+	// else
+	// 	map->printTopography();
 	
-	delete map;
+	// delete map;
+	// return 0;
+
+	std::vector<Mainland> maps;
+
+	for (size_t i = 0; i < 5; i++)
+	{
+		maps.push_back(Mainland("Mainland", 100, 100, 1, 57));
+		maps[i].generateMap();
+		usleep(30000);
+	}
+	if (EXPORT == 0)
+	{
+		for (size_t i = 0; i < maps.size(); i++)
+			maps[i].printMap();
+	}
+	else
+	{
+		for (size_t i = 0; i < maps.size(); i++)
+			maps[i].printTopography();
+	}
 	return 0;
 }

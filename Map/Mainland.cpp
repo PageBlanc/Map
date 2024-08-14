@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/13 17:51:49 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/14 16:53:04 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@ int			Mainland::countNearSameLand(int x, int y, int width, std::string type, int
 
 void		Mainland::emptyMapGeneration(int x, int y)
 {
-
-	
-	
 	for (int i = 0; i < x; i++)
 	{
 		std::vector<Land *> line;
@@ -79,6 +76,7 @@ void		Mainland::emptyMapGeneration(int x, int y)
 		}
 		_map.push_back(line);
 	}
+	// setAllNearLands();
 }
 
 int		Mainland::RecursiveNearLand(int x, int y, int width, int height, int random_value)
@@ -182,7 +180,11 @@ void		Mainland::setHeight()
 			{
 				if (i == 0)
 					continue;
-				_map[i][j]->setHeight(rand() % 10);
+				int random_value = std::rand() % 5 + 1;
+				if (random_value == 3)
+					_map[i][j]->setHeight(rand() % random_value * 10);
+				else
+					_map[i][j]->setHeight(rand() % 10);
 				if (_map[i][j]->getHeight() < 2)
 					_map[i][j]->setHeight(2);
 			}
@@ -253,6 +255,111 @@ void		Mainland::smoothingHeight()
 	}
 }
 
+// void		Mainland::setAllNearLands()
+// {
+// 	for (int i = 0; i < _width; i++)
+// 	{
+// 		for (int j = 0; j < _height; j++)
+// 		{
+// 			std::vector<Land *> nearLands;
+// 			if (i - 1 >= 0)
+// 				nearLands.push_back(_map[i - 1][j]);
+// 			if (i + 1 < _width)
+// 				nearLands.push_back(_map[i + 1][j]);
+// 			if (j - 1 >= 0)
+// 				nearLands.push_back(_map[i][j - 1]);
+// 			if (j + 1 < _height)
+// 				nearLands.push_back(_map[i][j + 1]);
+// 			if (i - 1 >= 0 && j - 1 >= 0)
+// 				nearLands.push_back(_map[i - 1][j - 1]);
+// 			if (i + 1 < _width && j + 1 < _height)
+// 				nearLands.push_back(_map[i + 1][j + 1]);
+// 			if (i - 1 >= 0 && j + 1 < _height)
+// 				nearLands.push_back(_map[i - 1][j + 1]);
+// 			if (i + 1 < _width && j - 1 >= 0)
+// 				nearLands.push_back(_map[i + 1][j - 1]);
+// 			setNearLands(*_map[i][j], nearLands);
+// 		}
+// 	}
+// }
+
+void		Mainland::smoothPartofMap(int x, int y)
+{
+	if (x >= _width || y >= _height || x < 0 || y < 0)
+		return;
+	if (_map[x][y]->getType() == "Plains")
+	{
+		int average = averageHeight(x, y);
+		_map[x][y]->setHeight(average);
+	}
+	if (x == _width - 1)
+		smoothPartofMap(0, y + 1);
+	else
+		smoothPartofMap(x + 1, y);
+}
+
+
+int			Mainland::maxHeight(int x, int y)
+{
+	int max = 0;
+	if (x - 1 >= 0 && _map[x - 1][y]->getHeight() > max)
+		max = _map[x - 1][y]->getHeight();
+	if (x + 1 < _width && _map[x + 1][y]->getHeight() > max)
+		max = _map[x + 1][y]->getHeight();
+	if (y - 1 >= 0 && _map[x][y - 1]->getHeight() > max)
+		max = _map[x][y - 1]->getHeight();
+	if (y + 1 < _height && _map[x][y + 1]->getHeight() > max)
+		max = _map[x][y + 1]->getHeight();
+	if (x - 1 >= 0 && y - 1 >= 0 && _map[x - 1][y - 1]->getHeight() > max)
+		max = _map[x - 1][y - 1]->getHeight();
+	if (x + 1 < _width && y + 1 < _height && _map[x + 1][y + 1]->getHeight() > max)
+		max = _map[x + 1][y + 1]->getHeight();
+	if (x - 1 >= 0 && y + 1 < _height && _map[x - 1][y + 1]->getHeight() > max)
+		max = _map[x - 1][y + 1]->getHeight();
+	if (x + 1 < _width && y - 1 >= 0 && _map[x + 1][y - 1]->getHeight() > max)
+		max = _map[x + 1][y - 1]->getHeight();
+	return max;
+}
+
+int			Mainland::countMaxHeight(int x, int y, int random_value)
+{
+	int count = 0;
+	int max = maxHeight(x, y);
+	if (x - 1 >= 0 && _map[x - 1][y]->getHeight() == max && random_value % 100 < 57)
+		count++;
+	if (x + 1 < _width && _map[x + 1][y]->getHeight() == max && random_value % 100 < 57)
+		count++;
+	if (y - 1 >= 0 && _map[x][y - 1]->getHeight() == max && random_value % 100 < 57)
+		count++;
+	if (y + 1 < _height && _map[x][y + 1]->getHeight() == max && random_value % 100 < 57)
+		count++;
+	if (x - 1 >= 0 && y - 1 >= 0 && _map[x - 1][y - 1]->getHeight() == max && random_value % 100 < 57)
+		count++;
+	if (x + 1 < _width && y + 1 < _height && _map[x + 1][y + 1]->getHeight() == max && random_value % 100 < 57)
+		count++;
+	if (x - 1 >= 0 && y + 1 < _height && _map[x - 1][y + 1]->getHeight() == max && random_value % 100 < 57)
+		count++;
+	if (x + 1 < _width && y - 1 >= 0 && _map[x + 1][y - 1]->getHeight() == max && random_value % 100 < 57)
+		count++;
+	return count;
+}
+
+
+void		Mainland::fillHeight(int random_value)
+{
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			if (_map[i][j]->getType() == "Plains")
+			{
+				if (countMaxHeight(i, j, random_value) > 2)
+					_map[i][j]->setHeight(maxHeight(i, j));
+			}
+		}
+	}
+}
+
 void		Mainland::generateMap()
 {
     std::srand(std::time(0));
@@ -267,7 +374,9 @@ void		Mainland::generateMap()
 	setHeight();
 	for (int i = 0; i < _smoothness; i++)
 		smoothingHeight();
-	Normalize
+	for (int i = 0; i < _smoothness * 2; i++)
+		smoothPartofMap(rand() % _width, rand() % _height);
+	fillHeight(rand());
 }
 
 /*-------------------------------------OPERATOR-------------------------------------*/
@@ -285,10 +394,10 @@ Mainland &Mainland::operator=(const Mainland &mainland)
 
 Mainland::~Mainland()
 {
-	for (size_t i = 0; i < _map.size(); i++)
-	{
-		for (size_t j = 0; j < _map[i].size(); j++)
-			delete _map[i][j];
-	}
+	// for (size_t i = 0; i < _map.size(); i++)
+	// {
+	// 	for (size_t j = 0; j < _map[i].size(); j++)
+	// 		delete _map[i][j];
+	// }
 	
 }
