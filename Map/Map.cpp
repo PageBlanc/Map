@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/14 15:37:55 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/15 15:23:41 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,10 @@ int			Map::getSeed() const
 	return _seed;
 }
 
-// std::map<Land *, std::vector<Land *> >	Map::getNearLands() const
-// {
-// 	return _nearLands;
-// }
+std::map<Land *, std::vector<Land *> >	Map::getNearLands() const
+{
+	return _nearLands;
+}
 
 /*-------------------------------------SETTER-------------------------------------*/
 
@@ -116,10 +116,11 @@ void		Map::setLand(int x, int y, Land &land)
 	_map[x][y] = &land;
 }
 
-// void		Map::setNearLands(Land &land, std::vector<Land *> nearLands)
-// {
-// 	_nearLands[&land] = nearLands;
-// }
+void		Map::setNearLands(Land &land, std::vector<Land *> nearLands)
+{
+	_nearLands[&land] = nearLands;
+	
+}
 
 /*-------------------------------------PRINT-------------------------------------*/
 

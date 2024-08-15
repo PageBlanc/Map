@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/14 16:53:04 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/15 17:06:14 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,59 @@ Mainland::Mainland(const Mainland &mainland) : Map(mainland)
 int			Mainland::countNearSameLand(int x, int y, int width, std::string type, int random_value)
 {
 	int count = 0;
-	if (x - 1 >= 0 && _map[x - 1][y]->getType() == type && random_value % 100 < 57)
-		count++;
-	if (x + 1 < width && _map[x + 1][y]->getType() == type && random_value % 100 < 57)
-		count++;
-	if (y - 1 >= 0 && _map[x][y - 1]->getType() == type && random_value % 100 < 57)
-		count++;
-	if (y + 1 < _height && _map[x][y + 1]->getType() == type && random_value % 100 < 57)
-		count++;
-	if (x - 1 >= 0 && y - 1 >= 0 && _map[x - 1][y - 1]->getType() == type && random_value % 100 < 57)
-		count++;
-	if (x + 1 < width && y + 1 < _height && _map[x + 1][y + 1]->getType() == type && random_value % 100 < 57)
-		count++;
-	if (x - 1 >= 0 && y + 1 < _height && _map[x - 1][y + 1]->getType() == type && random_value % 100 < 57)
-		count++;
-	if (x + 1 < width && y - 1 >= 0 && _map[x + 1][y - 1]->getType() == type && random_value % 100 < 57)
-		count++;
+	for (int i = x - 1; i <= x + 1; i++)
+	{
+		for (int j = y - 1; j <= y + 1; j++)
+		{
+			if (i < 0 || j < 0 || i >= width || j >= _height)
+				continue;
+			if (_map[i][j]->getType() == type && random_value % 100 < 57)
+				count++;
+		}
+	}
 	return count;
+}
+
+void		PrintNearland(std::map<Land *, std::vector<Land *> > nearLands)
+{
+	for (std::map<Land *, std::vector<Land *> >::iterator it = nearLands.begin(); it != nearLands.end(); it++)
+	{
+		std::cout << "Land : " << it->first->getType() << std::endl;
+		std::cout << "Near Lands : " << std::endl;
+		std::cout << it->second[0]->getType() << std::endl;
+		for (size_t i = 0; i < it->second.size(); i++)
+		{
+			std::cout << it->second[i]->getType() << std::endl;
+		}
+	}
+}
+
+void		Mainland::setAllNearLands()
+{
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			std::vector<Land *> nearLands;
+			if (i - 1 >= 0)
+				nearLands.push_back(_map[i - 1][j]);
+			if (i + 1 < _width)
+				nearLands.push_back(_map[i + 1][j]);
+			if (j - 1 >= 0)
+				nearLands.push_back(_map[i][j - 1]);
+			if (j + 1 < _height)
+				nearLands.push_back(_map[i][j + 1]);
+			if (i - 1 >= 0 && j - 1 >= 0)
+				nearLands.push_back(_map[i - 1][j - 1]);
+			if (i + 1 < _width && j + 1 < _height)
+				nearLands.push_back(_map[i + 1][j + 1]);
+			if (i - 1 >= 0 && j + 1 < _height)
+				nearLands.push_back(_map[i - 1][j + 1]);
+			if (i + 1 < _width && j - 1 >= 0)
+				nearLands.push_back(_map[i + 1][j - 1]);
+			setNearLands(*_map[i][j], nearLands);
+		}
+	}
 }
 
 void		Mainland::emptyMapGeneration(int x, int y)
@@ -76,7 +112,6 @@ void		Mainland::emptyMapGeneration(int x, int y)
 		}
 		_map.push_back(line);
 	}
-	// setAllNearLands();
 }
 
 int		Mainland::RecursiveNearLand(int x, int y, int width, int height, int random_value)
@@ -112,7 +147,6 @@ bool		Mainland::nearLand(int x, int y, int width, int height, int random_value)
 
 bool		Mainland::nearCenter(int x, int y, int width, int height)
 {
-	// check if the point is near the center with math
 	int center_x = width / 2;
 	int center_y = height / 2;
 	int distance = std::sqrt(std::pow(center_x - x, 2) + std::pow(center_y - y, 2));
@@ -134,6 +168,7 @@ int		Mainland::fillLand(int x, int y, int width, int height, int random_value)
 		return fillLand(0, y + 1, width, height, std::rand());
 	return fillLand(x + 1, y, width, height, std::rand());
 }
+
 
 
 int			Mainland::PutSand(int x, int y, int width, int height)
@@ -184,7 +219,7 @@ void		Mainland::setHeight()
 				if (random_value == 3)
 					_map[i][j]->setHeight(rand() % random_value * 10);
 				else
-					_map[i][j]->setHeight(rand() % 10);
+					_map[i][j]->setHeight(rand() % 15);
 				if (_map[i][j]->getHeight() < 2)
 					_map[i][j]->setHeight(2);
 			}
@@ -197,46 +232,15 @@ int			Mainland::averageHeight(int x, int y)
 {
 	int average = 0;
 	int count = 0;
-	if (x - 1 >= 0)
+
+	// PrintNearland(_nearLands);
+	for (size_t i = 0; i < _nearLands[_map[x][y]].size(); i++)
 	{
-		average += _map[x - 1][y]->getHeight();
+		average += _nearLands[_map[x][y]][i]->getHeight();
 		count++;
 	}
-	if (x + 1 < _width)
-	{
-		average += _map[x + 1][y]->getHeight();
-		count++;
-	}
-	if (y - 1 >= 0)
-	{
-		average += _map[x][y - 1]->getHeight();
-		count++;
-	}
-	if (y + 1 < _height)
-	{
-		average += _map[x][y + 1]->getHeight();
-		count++;
-	}
-	if (x - 1 >= 0 && y - 1 >= 0)
-	{
-		average += _map[x - 1][y - 1]->getHeight();
-		count++;
-	}
-	if (x + 1 < _width && y + 1 < _height)
-	{
-		average += _map[x + 1][y + 1]->getHeight();
-		count++;
-	}
-	if (x - 1 >= 0 && y + 1 < _height)
-	{
-		average += _map[x - 1][y + 1]->getHeight();
-		count++;
-	}
-	if (x + 1 < _width && y - 1 >= 0)
-	{
-		average += _map[x + 1][y - 1]->getHeight();
-		count++;
-	}
+	if (count == 0)
+		return 0;
 	return average / count;
 }
 
@@ -255,33 +259,8 @@ void		Mainland::smoothingHeight()
 	}
 }
 
-// void		Mainland::setAllNearLands()
-// {
-// 	for (int i = 0; i < _width; i++)
-// 	{
-// 		for (int j = 0; j < _height; j++)
-// 		{
-// 			std::vector<Land *> nearLands;
-// 			if (i - 1 >= 0)
-// 				nearLands.push_back(_map[i - 1][j]);
-// 			if (i + 1 < _width)
-// 				nearLands.push_back(_map[i + 1][j]);
-// 			if (j - 1 >= 0)
-// 				nearLands.push_back(_map[i][j - 1]);
-// 			if (j + 1 < _height)
-// 				nearLands.push_back(_map[i][j + 1]);
-// 			if (i - 1 >= 0 && j - 1 >= 0)
-// 				nearLands.push_back(_map[i - 1][j - 1]);
-// 			if (i + 1 < _width && j + 1 < _height)
-// 				nearLands.push_back(_map[i + 1][j + 1]);
-// 			if (i - 1 >= 0 && j + 1 < _height)
-// 				nearLands.push_back(_map[i - 1][j + 1]);
-// 			if (i + 1 < _width && j - 1 >= 0)
-// 				nearLands.push_back(_map[i + 1][j - 1]);
-// 			setNearLands(*_map[i][j], nearLands);
-// 		}
-// 	}
-// }
+
+
 
 void		Mainland::smoothPartofMap(int x, int y)
 {
@@ -302,22 +281,11 @@ void		Mainland::smoothPartofMap(int x, int y)
 int			Mainland::maxHeight(int x, int y)
 {
 	int max = 0;
-	if (x - 1 >= 0 && _map[x - 1][y]->getHeight() > max)
-		max = _map[x - 1][y]->getHeight();
-	if (x + 1 < _width && _map[x + 1][y]->getHeight() > max)
-		max = _map[x + 1][y]->getHeight();
-	if (y - 1 >= 0 && _map[x][y - 1]->getHeight() > max)
-		max = _map[x][y - 1]->getHeight();
-	if (y + 1 < _height && _map[x][y + 1]->getHeight() > max)
-		max = _map[x][y + 1]->getHeight();
-	if (x - 1 >= 0 && y - 1 >= 0 && _map[x - 1][y - 1]->getHeight() > max)
-		max = _map[x - 1][y - 1]->getHeight();
-	if (x + 1 < _width && y + 1 < _height && _map[x + 1][y + 1]->getHeight() > max)
-		max = _map[x + 1][y + 1]->getHeight();
-	if (x - 1 >= 0 && y + 1 < _height && _map[x - 1][y + 1]->getHeight() > max)
-		max = _map[x - 1][y + 1]->getHeight();
-	if (x + 1 < _width && y - 1 >= 0 && _map[x + 1][y - 1]->getHeight() > max)
-		max = _map[x + 1][y - 1]->getHeight();
+	for (size_t i = 0; i < _nearLands[_map[x][y]].size(); i++)
+	{
+		if (_nearLands[_map[x][y]][i]->getHeight() > max)
+			max = _nearLands[_map[x][y]][i]->getHeight();
+	}
 	return max;
 }
 
@@ -325,22 +293,11 @@ int			Mainland::countMaxHeight(int x, int y, int random_value)
 {
 	int count = 0;
 	int max = maxHeight(x, y);
-	if (x - 1 >= 0 && _map[x - 1][y]->getHeight() == max && random_value % 100 < 57)
-		count++;
-	if (x + 1 < _width && _map[x + 1][y]->getHeight() == max && random_value % 100 < 57)
-		count++;
-	if (y - 1 >= 0 && _map[x][y - 1]->getHeight() == max && random_value % 100 < 57)
-		count++;
-	if (y + 1 < _height && _map[x][y + 1]->getHeight() == max && random_value % 100 < 57)
-		count++;
-	if (x - 1 >= 0 && y - 1 >= 0 && _map[x - 1][y - 1]->getHeight() == max && random_value % 100 < 57)
-		count++;
-	if (x + 1 < _width && y + 1 < _height && _map[x + 1][y + 1]->getHeight() == max && random_value % 100 < 57)
-		count++;
-	if (x - 1 >= 0 && y + 1 < _height && _map[x - 1][y + 1]->getHeight() == max && random_value % 100 < 57)
-		count++;
-	if (x + 1 < _width && y - 1 >= 0 && _map[x + 1][y - 1]->getHeight() == max && random_value % 100 < 57)
-		count++;
+	for (size_t i = 0; i < _nearLands[_map[x][y]].size(); i++)
+	{
+		if (_nearLands[_map[x][y]][i]->getHeight() == max && random_value % 100 < 57)
+			count++;
+	}
 	return count;
 }
 
@@ -365,13 +322,14 @@ void		Mainland::generateMap()
     std::srand(std::time(0));
 	if (EXPORT == 0)
 		std::cout << "Generating Mainland..." << std::endl;
-	for (size_t i = 0; i < _map.size() - (rand() % _width * 0.7); i++)
-			RecursiveNearLand(0, 0, _map.size(), _map[i].size(), std::rand());
-	for (size_t i = 0; i < 5; i++)
-		fillLand(0, 0, _map.size(), _map[0].size(), std::rand());
+	for (int i = 0; i < _width - (rand() % _width * 0.7); i++)
+			RecursiveNearLand(0, 0, _width, _height, std::rand());
+	for (int i = 0; i < 5; i++)
+		fillLand(0, 0, _width, _map[0].size(), std::rand());
 	fillPound();
-	PutSand(0, 0, _map.size(), _map[0].size());
+	PutSand(0, 0, _width, _map[0].size());
 	setHeight();
+	setAllNearLands();
 	for (int i = 0; i < _smoothness; i++)
 		smoothingHeight();
 	for (int i = 0; i < _smoothness * 2; i++)
@@ -394,10 +352,9 @@ Mainland &Mainland::operator=(const Mainland &mainland)
 
 Mainland::~Mainland()
 {
-	// for (size_t i = 0; i < _map.size(); i++)
-	// {
-	// 	for (size_t j = 0; j < _map[i].size(); j++)
-	// 		delete _map[i][j];
-	// }
-	
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+			delete _map[i][j];
+	}
 }
