@@ -3,18 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 14:50:28 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/14 15:56:04 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/15 17:52:23 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
 import Background from 'three/src/renderers/common/Background.js';
+import Stats from 'stats.js';
 
-//const	dataMap = fs.readFileSync('map.txt', 'utf8').split('\n').map((line) => line.split(' ').map((x) => parseInt(x)));
+
+const stats = new Stats();
+stats.showPanel(0); // 0: fps, 1: ms, 2: mémoire
+document.body.appendChild(stats.dom);
 
 let i = 0;
 
@@ -29,12 +33,14 @@ let dataMap = fetch('out.txt').then(response => response.text()).then(text => {
 	console.log(dataMap);
 	let	listMesh = [];
 
+	// Fonction à changer/optimiser
 	function	parseMapFunc(dataMap)
 	{
 		let Mesh = [];
-
 		for (let i = 0; i < dataMap.length; i++)
 		{
+			if (dataMap[i].length == 1)
+				continue;
 			for (let j = 0; j < dataMap[i].length; j++)
 			{
 				let geometry = new THREE.BoxGeometry(1, dataMap[i][j], 1); // (1, dataMap[i][j], 1);
@@ -55,10 +61,10 @@ let dataMap = fetch('out.txt').then(response => response.text()).then(text => {
 	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-	const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+	const ambientLight = new THREE.AmbientLight(0xffa53d, 0.1);
 	scene.add(ambientLight);
 
-	const spotLight = new THREE.SpotLight(0xffffff);
+	const spotLight = new THREE.SpotLight(0xffa53d);
 	const helper = new THREE.CameraHelper(spotLight.shadow.camera);
 	scene.add(helper);
 	spotLight.position.set(100, 100, 100);
@@ -74,13 +80,12 @@ let dataMap = fetch('out.txt').then(response => response.text()).then(text => {
 	scene.background = new THREE.Color(0xAAAAAA);
 	const controls = new OrbitControls(camera, renderer.domElement);
 
-	camera.position.set(0, 4, 5);
+	camera.position.set(0, 50, 50);
 	controls.update();
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 	renderer.setAnimationLoop(animate);
 
-	const geometry = new THREE.BufferGeometry();
 	parseMapFunc(dataMap);
 	for (let i = 0; i < listMesh.length; i++)
 	{
@@ -97,25 +102,15 @@ let dataMap = fetch('out.txt').then(response => response.text()).then(text => {
 			listMesh[i].material.color.set(0xfff700);
 		else if (listMesh[i].geometry.parameters.height == 0)
 			listMesh[i].material.color.set(0x0000ff);
-		/*
-		if (i == 308)
-		{
-			listMesh[i] = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), new THREE.MeshPhysicalMaterial());
-			listMesh[i].position.x = (i % dataMap[0].length) - dataMap[0].length / 2;
-			listMesh[i].position.z = (Math.floor(i / dataMap[0].length)) - dataMap.length / 2;
-			listMesh[i].position.y = 1;
-			listMesh[i].material.color.set(0xff0000);
-			listMesh[i].castShadow = true;
-			listMesh[i].receiveShadow = true;
-
-		}*/
 		scene.add(listMesh[i]);
 	}
 
 	function	animate()
 	{
+		stats.begin();
 		controls.update();
 		renderer.render(scene, camera);
+		stats.end();
 	}
 
 });
