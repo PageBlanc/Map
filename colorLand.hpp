@@ -6,14 +6,14 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/17 14:40:11 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/17 15:05:05 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COLORLAND_HPP
 # define COLORLAND_HPP
 
-#define EXPORT 1
+#define EXPORT 2
 
 #	define VOID    	std::string("⬛")
 #	define WATER   	std::string("🟦")

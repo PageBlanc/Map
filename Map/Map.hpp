@@ -48,6 +48,10 @@ class Map
 
 		// virtual void									initMap(int x, int y);
 		// virtual	void								initNearLand();
+
+		virtual void    visualDisplay()				const;
+		virtual void	initDisplay()				const;
+		virtual void	renderMap()					const;
 	
 		virtual void	printMap() 					const;
 		virtual void	printTopography()			const;

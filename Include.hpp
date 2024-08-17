@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 14:54:51 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/16 12:00:10 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/17 15:00:14 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,8 @@
 #include <queue>
 #include <utility>
 #include <glm/gtc/noise.hpp>
+#include <SDL/SDL.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 #endif

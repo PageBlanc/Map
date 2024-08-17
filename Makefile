@@ -6,7 +6,7 @@
 #    By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/10 10:51:07 by pageblanche       #+#    #+#              #
-#    Updated: 2024/08/16 11:58:50 by pageblanche      ###   ########.fr        #
+#    Updated: 2024/08/17 15:04:49 by pageblanche      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CXX            =    c++
 
 NAME        =    a.out
 
-
+LDFLAGS = -lSDL -lGL -lGLU
 
 SRC            =     Main.cpp                	\
 					 Map/Map.cpp                \
@@ -32,10 +32,10 @@ CFLAGS        =     -Wall -Wextra -Werror -std=c++98 -g
 all: $(NAME)
 
 .cpp.o:
-	$(CXX) $(CFLAGS) -c $< -o $(<:.cpp=.o)
+	$(CXX) $(CFLAGS) -c $< -o $(<:.cpp=.o) 
 
 $(NAME): $(OBJ)
-	$(CXX) $(CFLAGS) -o $(NAME) $(OBJ)
+	$(CXX) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
 	
 clean:
 	rm -f $(OBJ)
