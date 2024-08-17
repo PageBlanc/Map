@@ -51,8 +51,7 @@ class Map
 	
 		virtual void	printMap() 					const;
 		virtual void	printTopography()			const;
-		virtual void	generateMap() = 0;
-
+		virtual void    gameMap() = 0;
 
 		Map &operator=(const Map &map);
 		virtual ~Map();

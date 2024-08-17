@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 14:54:51 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 15:14:48 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/16 12:00:10 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,9 @@
 # include <ctime>
 # include <math.h>
 # include <cstdlib>
+#include <glm/glm.hpp>
+#include <queue>
+#include <utility>
+#include <glm/gtc/noise.hpp>
 
 #endif

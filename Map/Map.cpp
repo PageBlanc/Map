@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/15 15:23:41 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/16 10:56:37 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,11 @@ void		Map::setNearLands(Land &land, std::vector<Land *> nearLands)
 
 void		Map::printMap() const
 {
+	if (_map.size() == 0)
+	{
+		std::cout << "Map is empty" << std::endl;
+		return;
+	}
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)

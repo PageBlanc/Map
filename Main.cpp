@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 10:53:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/15 17:49:00 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/16 15:01:09 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,14 @@ int main(int ac, char **av)
 			std::cout << "Usage: ./a.out [witdh] [height]" << std::endl;
 			return (1);
 		}
-		Map *map = new Mainland("Mainland", std::atoi(av[1]), std::atoi(av[2]), 1, 57);
+		int width = std::atoi(av[1]);
+		int height = std::atoi(av[2]);
+		Mainland map("Mainland", width, height);
 
-		for (size_t i = 0; i < 4; i++)
-		{
-			map->generateMap();
-		}
-		if (EXPORT == 0)
-			map->printMap();
+		if (EXPORT)
+			map.printTopography();
 		else
-			map->printTopography();
-		
-		delete map;
-		return 0;
-
-		// for (size_t i = 0; i < 5; i++)
-		// {
-		// 	Map *map = new Mainland("Mainland", 50, 50, 1, 57);
-		// 	for (size_t i = 0; i < 6; i++)
-		// 	{
-		// 		map->generateMap();
-		// 	}
-		// 	if (EXPORT == 0)
-		// 		map->printMap();
-		// 	else
-		// 		map->printTopography();
-		// 	delete map;
-		// 	usleep(1000000);
-		// }
+			map.printMap();
 	}
 	catch(const std::exception& e)
 	{

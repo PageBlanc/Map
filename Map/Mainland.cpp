@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/15 17:06:14 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/17 14:38:00 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,12 @@ Mainland::Mainland() : Map() {}
 
 Mainland::Mainland(std::string type, int x, int y) : Map(type, x, y)
 {
-	emptyMapGeneration(x, y);
-	generateMap();
+	gameMap();
 }
 
 Mainland::Mainland(std::string type, int x, int y, int smoothness, int density) : Map(type, smoothness, density, x, y)
 {
-	emptyMapGeneration(x, y);
-	generateMap();
+	gameMap();
 }
 
 Mainland::Mainland(const Mainland &mainland) : Map(mainland)
@@ -36,37 +34,8 @@ Mainland::Mainland(const Mainland &mainland) : Map(mainland)
 	*this = mainland;
 }
 
-/*-------------------------------------GENERATE-------------------------------------*/
+/*-------------------------------------SETTERS-------------------------------------*/
 
-int			Mainland::countNearSameLand(int x, int y, int width, std::string type, int random_value)
-{
-	int count = 0;
-	for (int i = x - 1; i <= x + 1; i++)
-	{
-		for (int j = y - 1; j <= y + 1; j++)
-		{
-			if (i < 0 || j < 0 || i >= width || j >= _height)
-				continue;
-			if (_map[i][j]->getType() == type && random_value % 100 < 57)
-				count++;
-		}
-	}
-	return count;
-}
-
-void		PrintNearland(std::map<Land *, std::vector<Land *> > nearLands)
-{
-	for (std::map<Land *, std::vector<Land *> >::iterator it = nearLands.begin(); it != nearLands.end(); it++)
-	{
-		std::cout << "Land : " << it->first->getType() << std::endl;
-		std::cout << "Near Lands : " << std::endl;
-		std::cout << it->second[0]->getType() << std::endl;
-		for (size_t i = 0; i < it->second.size(); i++)
-		{
-			std::cout << it->second[i]->getType() << std::endl;
-		}
-	}
-}
 
 void		Mainland::setAllNearLands()
 {
@@ -96,245 +65,166 @@ void		Mainland::setAllNearLands()
 	}
 }
 
-void		Mainland::emptyMapGeneration(int x, int y)
+/*-------------------------------------GENERATE-------------------------------------*/
+
+
+void		Mainland::gameMap()
 {
-	for (int i = 0; i < x; i++)
-	{
-		std::vector<Land *> line;
-		for (int j = 0; j < y; j++)
-		{
-			Land *land;
-			if (nearCenter(i, j, x, y))
-				land = new Plains("Plains", j, 10);
-			else
-				land = new Water("Water", j, 10);
-			line.push_back(land);
-		}
-		_map.push_back(line);
-	}
+	srand(static_cast<unsigned int>(time(0)));
+	initMap();
+	generatePerlinMap();
+	setAllNearLands();
+	for (int i = 0; i < _width / 6; i++)
+		connectLand();
+	PutSand();
 }
 
-int		Mainland::RecursiveNearLand(int x, int y, int width, int height, int random_value)
+int			Mainland::countNearSameLand(int x, int y, int width, std::string type, int random_value)
 {
-	if (x >= width || y >= height  || x < 0 || y < 0)
-		return 0;
-	if (!nearCenter(x, y, width, height))
+	int count = 0;
+	for (int i = x - 1; i <= x + 1; i++)
 	{
-		if (nearLand(x - 1, y, width, height, random_value) || nearLand(x + 1, y, width, height, random_value) || nearLand(x, y - 1, width, height, random_value) || nearLand(x, y + 1, width, height, random_value))
+		for (int j = y - 1; j <= y + 1; j++)
 		{
-			delete _map[x][y];
-			_map[x][y] = new Plains("Plains", y, 10);
-		}
-		else
-		{
-			delete _map[x][y];
-			_map[x][y] = new Water("Water", y, 10);
+			if (i < 0 || j < 0 || i >= width || j >= _height)
+				continue;
+			if (_map[i][j]->getType() == type && random_value % 100 < 57)
+				count++;
 		}
 	}
-	if (x == width - 1)
-		return RecursiveNearLand(0, y + 1, width, height, std::rand());
-	return RecursiveNearLand(x + 1, y, width, height, std::rand());
+	return count;
 }
 
-bool		Mainland::nearLand(int x, int y, int width, int height, int random_value)
+void		Mainland::initMap()
 {
-	if (x < 0 || y < 0 || x >= width || y >= height)
-		return false;
-	if (countNearSameLand(x, y, width, "Plains", random_value) > 3)
-		return true;
-	return false;
-}
-
-bool		Mainland::nearCenter(int x, int y, int width, int height)
-{
-	int center_x = width / 2;
-	int center_y = height / 2;
-	int distance = std::sqrt(std::pow(center_x - x, 2) + std::pow(center_y - y, 2));
-	if (distance < width / 4)
-		return true;
-	return false;
-}
-
-int		Mainland::fillLand(int x, int y, int width, int height, int random_value)
-{
-	if (x >= width || y >= height || x < 0 || y < 0)
-		return 0;
-	if (countNearSameLand(x, y, width, "Plains", random_value) > 3)
-	{
-		delete _map[x][y];
-		_map[x][y] = new Plains("Plains", y, 10);
-	}
-	if (x == width - 1)
-		return fillLand(0, y + 1, width, height, std::rand());
-	return fillLand(x + 1, y, width, height, std::rand());
-}
-
-
-
-int			Mainland::PutSand(int x, int y, int width, int height)
-{
-	if (x >= width || y >= height || x < 0 || y < 0)
-		return 0;
-	if (_map[x][y]->getType() != "Water" && (countNearSameLand(x, y, width, "Water", 100) > 0))
-	{
-		delete _map[x][y];
-		_map[x][y] = new Sand("Sand", y, 10);
-	}
-	if (x == width - 1)
-		return PutSand(0, y + 1, width, height);
-	return PutSand(x + 1, y, width, height);
-}
-
-void		Mainland::fillPound()
-{
+	_map.resize(_width);
 	for (int i = 0; i < _width; i++)
 	{
+		_map[i].resize(_height);
 		for (int j = 0; j < _height; j++)
-		{
-			if (_map[i][j]->getType() == "Water" && countNearSameLand(i, j, _width, "Water", 100) < 1)
-			{
-				delete _map[i][j];
-				_map[i][j] = new Plains("Plains", j, 10);
-			}
-		}
+			_map[i][j] = new Land();
 	}
 }
 
-void		Mainland::setHeight()
+void	Mainland::connectLand()
 {
-	
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
 		{
 			if (_map[i][j]->getType() == "Water")
-				_map[i][j]->setHeight(0);
-			else if (_map[i][j]->getType() == "Sand")
-				_map[i][j]->setHeight(1);
+			{
+				if (countNearSameLand(i, j, _width, "Plains", rand()) > 2)
+				{
+					delete _map[i][j];
+					_map[i][j] = new Plains("Plains", i, j);
+				}
+			}
 			else if (_map[i][j]->getType() == "Plains")
 			{
-				if (i == 0)
-					continue;
-				int random_value = std::rand() % 5 + 1;
-				if (random_value == 3)
-					_map[i][j]->setHeight(rand() % random_value * 10);
-				else
-					_map[i][j]->setHeight(rand() % 15);
-				if (_map[i][j]->getHeight() < 2)
-					_map[i][j]->setHeight(2);
+				if (countNearSameLand(i, j, _width, "Water", rand()) > 3)
+				{
+					delete _map[i][j];
+					_map[i][j] = new Water("Water", i, j);
+				}
 			}
 		}
 	}
-
 }
 
-int			Mainland::averageHeight(int x, int y)
-{
-	int average = 0;
-	int count = 0;
+float Mainland::radialGradient(int x, int y) {
+    // Calcul de la distance depuis le centre
+    float dx = (2.0f * x / _width) - 1.0f;
+    float dy = (2.0f * y / _height) - 1.0f;
+    float distance = sqrt(dx * dx + dy * dy);
 
-	// PrintNearland(_nearLands);
-	for (size_t i = 0; i < _nearLands[_map[x][y]].size(); i++)
-	{
-		average += _nearLands[_map[x][y]][i]->getHeight();
-		count++;
-	}
-	if (count == 0)
-		return 0;
-	return average / count;
+    // Créer un dégradé qui diminue vers les bords
+    return 1.0f - pow(distance, 4.0f);  // Carré pour un dégradé plus doux
 }
 
-void		Mainland::smoothingHeight()
+float Mainland::perlinNoise(float x, float y) {
+    float p = 0.3f + static_cast<float>(rand()) / RAND_MAX * 0.2f;
+    int n = 5;
+    float freq = 1.0f;
+    float amp = 1.0f;
+    float total = 0.0f;
+    float max = 0.0f;
+
+    for (int i = 0; i < n; i++) {
+        total += glm::perlin(glm::vec2(x, y) * freq) * amp;
+        max += amp;
+        amp *= p;
+        freq *= 2.0f;
+    }
+    if (max == 0.0f)
+        return 0.0f;
+    return total / max;
+}
+
+void Mainland::generatePerlinMap() {
+    float frequency = 0.05f + static_cast<float>(rand()) / RAND_MAX * 0.05f;
+    float amplitude = 1.0f + static_cast<float>(rand()) / RAND_MAX * 0.5f;
+    float distortionStrength = 0.02f + static_cast<float>(rand()) / RAND_MAX * 0.03f;
+    glm::vec2 center(_width / 2.0f + rand() % 11 - 5, _height / 2.0f + rand() % 11 - 5);
+
+    for (int x = 0; x < _width; ++x) {
+        for (int y = 0; y < _height; ++y) {
+            glm::vec2 pos(y, x);
+            float distance = glm::length(center - pos);
+            float noiseX = y + glm::perlin(glm::vec2(y * distortionStrength, x * distortionStrength));
+            float noiseY = x + glm::perlin(glm::vec2(y * distortionStrength, x * distortionStrength));
+            float perlinValue = glm::perlin(glm::vec2(noiseX, noiseY) * frequency) * amplitude;
+
+            // Application du dégradé radial
+            float gradient = radialGradient(x, y);
+            float heightValue = perlinValue * gradient;
+
+            // Utilisation d'une valeur de contrôle pour influencer les zones hautes/basses
+            float controlValue = 1.0f - (distance / glm::length(glm::vec2(_width, _height) / 2.0f));
+            heightValue *= controlValue;
+
+            if (heightValue > 0.1f) {
+                delete _map[x][y];
+                _map[x][y] = new Plains("Plains", y, 10);
+            } else {
+                delete _map[x][y];
+                _map[x][y] = new Water("Water", y, 10);
+            }
+        }
+    }
+}
+
+void	Mainland::PutSand()
 {
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
 		{
-			if (_map[i][j]->getType() == "Plains")
+			if (_map[i][j]->getType() == "Water")
 			{
-				int average = averageHeight(i, j);
-				_map[i][j]->setHeight(average);
+				if (i > 0 && _map[i - 1][j]->getType() == "Plains")
+				{
+					delete _map[i][j];
+					_map[i][j] = new Sand("Sand", i, j);
+				}
+				if (i < _width - 1 && _map[i + 1][j]->getType() == "Plains")
+				{
+					delete _map[i][j];
+					_map[i][j] = new Sand("Sand", i, j);
+				}
+				if (j > 0 && _map[i][j - 1]->getType() == "Plains")
+				{
+					delete _map[i][j];
+					_map[i][j] = new Sand("Sand", i, j);
+				}
+				if (j < _height - 1 && _map[i][j + 1]->getType() == "Plains")
+				{
+					delete _map[i][j];
+					_map[i][j] = new Sand("Sand", i, j);
+				}
 			}
 		}
 	}
-}
-
-
-
-
-void		Mainland::smoothPartofMap(int x, int y)
-{
-	if (x >= _width || y >= _height || x < 0 || y < 0)
-		return;
-	if (_map[x][y]->getType() == "Plains")
-	{
-		int average = averageHeight(x, y);
-		_map[x][y]->setHeight(average);
-	}
-	if (x == _width - 1)
-		smoothPartofMap(0, y + 1);
-	else
-		smoothPartofMap(x + 1, y);
-}
-
-
-int			Mainland::maxHeight(int x, int y)
-{
-	int max = 0;
-	for (size_t i = 0; i < _nearLands[_map[x][y]].size(); i++)
-	{
-		if (_nearLands[_map[x][y]][i]->getHeight() > max)
-			max = _nearLands[_map[x][y]][i]->getHeight();
-	}
-	return max;
-}
-
-int			Mainland::countMaxHeight(int x, int y, int random_value)
-{
-	int count = 0;
-	int max = maxHeight(x, y);
-	for (size_t i = 0; i < _nearLands[_map[x][y]].size(); i++)
-	{
-		if (_nearLands[_map[x][y]][i]->getHeight() == max && random_value % 100 < 57)
-			count++;
-	}
-	return count;
-}
-
-
-void		Mainland::fillHeight(int random_value)
-{
-	for (int i = 0; i < _width; i++)
-	{
-		for (int j = 0; j < _height; j++)
-		{
-			if (_map[i][j]->getType() == "Plains")
-			{
-				if (countMaxHeight(i, j, random_value) > 2)
-					_map[i][j]->setHeight(maxHeight(i, j));
-			}
-		}
-	}
-}
-
-void		Mainland::generateMap()
-{
-    std::srand(std::time(0));
-	if (EXPORT == 0)
-		std::cout << "Generating Mainland..." << std::endl;
-	for (int i = 0; i < _width - (rand() % _width * 0.7); i++)
-			RecursiveNearLand(0, 0, _width, _height, std::rand());
-	for (int i = 0; i < 5; i++)
-		fillLand(0, 0, _width, _map[0].size(), std::rand());
-	fillPound();
-	PutSand(0, 0, _width, _map[0].size());
-	setHeight();
-	setAllNearLands();
-	for (int i = 0; i < _smoothness; i++)
-		smoothingHeight();
-	for (int i = 0; i < _smoothness * 2; i++)
-		smoothPartofMap(rand() % _width, rand() % _height);
-	fillHeight(rand());
 }
 
 /*-------------------------------------OPERATOR-------------------------------------*/
@@ -352,6 +242,8 @@ Mainland &Mainland::operator=(const Mainland &mainland)
 
 Mainland::~Mainland()
 {
+	if (_map.size() == 0)
+		return;
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
