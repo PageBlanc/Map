@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/17 20:40:02 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/17 20:45:30 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,9 +153,8 @@ void Map::renderMap() const
                 }
 
                 // Dessiner un cube (cellule de la carte)
-				glBegin(GL_QUADS);
-												
-                
+                glBegin(GL_QUADS);
+
                 // Faces du cube
                 // Face avant
                 glVertex3f(-0.5f, -0.5f, -0.5f);
@@ -192,7 +191,7 @@ void Map::renderMap() const
                 glVertex3f(0.5f, -0.5f, -0.5f);
                 glVertex3f(0.5f, -0.5f, 0.5f);
                 glVertex3f(-0.5f, -0.5f, 0.5f);
-                
+
                 glEnd();
 
                 glPopMatrix();
@@ -201,11 +200,8 @@ void Map::renderMap() const
     }
 }
 
-
-
-void	Map::visualDisplay() const
+void Map::visualDisplay() const
 {
-	printMap();
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Surface* screen = SDL_SetVideoMode(800, 600, 32, SDL_OPENGL);
     if (!screen)
@@ -213,25 +209,32 @@ void	Map::visualDisplay() const
         std::cerr << "Impossible d'initialiser la SDL" << std::endl;
         exit(EXIT_FAILURE);
     }
-    
-    // Configurer la matrice de projection pour une projection orthographique
+
+    // Configuration de la matrice de projection pour une projection orthographique
     glViewport(0, 0, 800, 600);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(_map.size() * -1.0f, _map.size() * 1.0f, _map[0].size() * -1.0f, _map[0].size() * 1.0f, -100.0f, 100.0f);
+
+    float mapWidth = _map.size();
+    float mapHeight = _map[0].size();
+    float aspectRatio = 800.0f / 600.0f;
+    float halfWidth = (mapWidth * 1.5f) / 2.0f;
+    float halfHeight = (mapHeight * 1.5f) / 2.0f;
+
+    glOrtho(-halfWidth, halfWidth, -halfHeight / aspectRatio, halfHeight / aspectRatio, -100.0f, 100.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    
+
     // Appliquer la transformation isométrique (rotation)
-    glRotatef(35.264, 1, 0, 0); // Rotation de 35.264° autour de l'axe X
-    glRotatef(45.0, 0, 1, 0);   // Rotation de 45° autour de l'axe Y
-    
+    glRotatef(35.264f, 1, 0, 0); // Rotation de 35.264° autour de l'axe X
+    glRotatef(45.0f, 0, 1, 0);   // Rotation de 45° autour de l'axe Y
+
     bool running = true;
 
     // Variables pour gérer le zoom et le déplacement
     float zoom = 1.0f;
     int x_offset = 0, y_offset = 0;
-    int move_speed = 10; // Vitesse de déplacement
+    int move_speed = 10;     // Vitesse de déplacement
     float zoom_speed = 0.1f; // Vitesse de zoom
     SDL_Event event;
 
@@ -241,49 +244,51 @@ void	Map::visualDisplay() const
         {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
                 running = false;
+
             switch (event.type)
             {
-                case SDL_QUIT:
+            case SDL_QUIT:
+                running = false;
+                break;
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_z: // Z - Déplacement vers le haut
+                    y_offset -= move_speed;
+                    break;
+                case SDLK_s: // S - Déplacement vers le bas
+                    y_offset += move_speed;
+                    break;
+                case SDLK_d: // Q - Déplacement vers la gauche
+                    x_offset -= move_speed;
+                    break;
+                case SDLK_q: // D - Déplacement vers la droite
+                    x_offset += move_speed;
+                    break;
+                case SDLK_p: // + - Zoomer
+                    zoom += zoom_speed;
+                    break;
+                case SDLK_m: // - - Dézoomer
+                    zoom -= zoom_speed;
+                    if (zoom < 0.1f)
+                        zoom = 0.1f; // Empêcher le zoom négatif
+                    break;
+                case SDLK_ESCAPE: // Quitter avec Echap
                     running = false;
                     break;
-                case SDL_KEYDOWN:
-                    switch (event.key.keysym.sym)
-                    {
-                        case SDLK_z: // Z - Déplacement vers le haut
-                            y_offset -= move_speed;
-                            break;
-                        case SDLK_s: // S - Déplacement vers le bas
-                            y_offset += move_speed;
-                            break;
-                        case SDLK_d: // Q - Déplacement vers la gauche
-                            x_offset -= move_speed;
-                            break;
-                        case SDLK_q: // D - Déplacement vers la droite
-                            x_offset += move_speed;
-                            break;
-                        case SDLK_p: // + - Zoomer
-                            zoom += zoom_speed;
-                            break;
-                        case SDLK_m: // - - Dézoomer
-                            zoom -= zoom_speed;
-                            if (zoom < 0.1f) zoom = 0.1f; // Empêcher le zoom négatif
-                            break;
-                        case SDLK_ESCAPE: // Quitter avec Echap
-                            running = false;
-                            break;
-                        default:
-                            break;
-                    }
+                default:
                     break;
+                }
+                break;
             }
         }
-        
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
-        
+
         // Appliquer le zoom
         glScalef(zoom, zoom, zoom);
-        
+
         // Appliquer les translations pour déplacer la vue
         glTranslatef(x_offset * 0.1f, y_offset * 0.1f, 0);
 
@@ -294,6 +299,7 @@ void	Map::visualDisplay() const
     }
     SDL_Quit();
 }
+
 
 
 void	Map::initDisplay() const
