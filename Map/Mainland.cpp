@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/17 14:38:00 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/18 12:33:54 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		Mainland::gameMap()
 	initMap();
 	generatePerlinMap();
 	setAllNearLands();
-	for (int i = 0; i < _width / 6; i++)
+	for (int i = 0; i < _width / (rand() % 10 + 1); i++)
 		connectLand();
 	PutSand();
 }
@@ -117,7 +117,7 @@ void	Mainland::connectLand()
 				if (countNearSameLand(i, j, _width, "Plains", rand()) > 2)
 				{
 					delete _map[i][j];
-					_map[i][j] = new Plains("Plains", i, j);
+					_map[i][j] = new Plains("Plains", i, 10);
 				}
 			}
 			else if (_map[i][j]->getType() == "Plains")
@@ -125,7 +125,7 @@ void	Mainland::connectLand()
 				if (countNearSameLand(i, j, _width, "Water", rand()) > 3)
 				{
 					delete _map[i][j];
-					_map[i][j] = new Water("Water", i, j);
+					_map[i][j] = new Water("Water", i, 10);
 				}
 			}
 		}
@@ -205,22 +205,22 @@ void	Mainland::PutSand()
 				if (i > 0 && _map[i - 1][j]->getType() == "Plains")
 				{
 					delete _map[i][j];
-					_map[i][j] = new Sand("Sand", i, j);
+					_map[i][j] = new Sand("Sand", i, 10);
 				}
 				if (i < _width - 1 && _map[i + 1][j]->getType() == "Plains")
 				{
 					delete _map[i][j];
-					_map[i][j] = new Sand("Sand", i, j);
+					_map[i][j] = new Sand("Sand", i, 10);
 				}
 				if (j > 0 && _map[i][j - 1]->getType() == "Plains")
 				{
 					delete _map[i][j];
-					_map[i][j] = new Sand("Sand", i, j);
+					_map[i][j] = new Sand("Sand", i, 10);
 				}
 				if (j < _height - 1 && _map[i][j + 1]->getType() == "Plains")
 				{
 					delete _map[i][j];
-					_map[i][j] = new Sand("Sand", i, j);
+					_map[i][j] = new Sand("Sand", i, 10);
 				}
 			}
 		}

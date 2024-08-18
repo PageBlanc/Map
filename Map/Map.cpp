@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/17 20:45:30 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/18 12:32:52 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,85 +119,78 @@ void	Map::printTopography() const
 
 /*-------------------------------------DISPLAY-------------------------------------*/
 
+Point Map::convertIsoTo2D(float x, float y) const
+{
+    Point point;
+    point.x = (x - y) * 0.5f;
+    point.y = (x + y) * 0.5f;
+    return point;
+}
+
 void Map::renderMap() const
 {
-    float tileWidth = 1.0f;  // Largeur de chaque cellule
-    float tileHeight = 0.5f; // Hauteur de chaque cellule
-
-    // Centre la carte dans la vue
-    float mapOffsetX = _map.size() * tileWidth / 2.0f;
-    float mapOffsetY = _map[0].size() * tileHeight / 2.0f;
+    float tileWidth, tileHeight;
 
     for (size_t i = 0; i < _map.size(); ++i) {
         for (size_t j = 0; j < _map[i].size(); ++j) {
             Land* land = _map[i][j];
             if (land)
             {
-                // Conversion des coordonnées de la grille en coordonnées isométriques
-                float x = (i - j) * tileWidth / 2.0f - mapOffsetX;
-                float y = (i + j) * tileHeight / 2.0f - mapOffsetY;
-                float z = land->getHeight() * 1.0f;
+                tileWidth = land->getSize() * 0.5f;
+                tileHeight = land->getSize() * 0.5f;
 
-                glPushMatrix();
-                glTranslatef(x, y, z);
+                // Définir la couleur en fonction du type de terrain
+                if (land->getType() == "Water")
+                    glColor3f(0.0f, 0.0f, 1.0f);
+                else if (land->getType() == "Plains")
+                    glColor3f(0.0f, 1.0f, 0.0f);
+                else if (land->getType() == "Sand")
+                    glColor3f(1.0f, 1.0f, 0.0f);
+                else if (land->getType() == "Mountain")
+                    glColor3f(0.5f, 0.5f, 0.5f);
+                else if (land->getType() == "Forest")
+                    glColor3f(0.0f, 0.5f, 0.0f);
+                else if (land->getType() == "Desert")
+                    glColor3f(1.0f, 0.5f, 0.0f);
+                else if (land->getType() == "Snow")
+                    glColor3f(1.0f, 1.0f, 1.0f);
+                else
+                    glColor3f(1.0f, 1.0f, 1.0f);
 
-                // Choisir la couleur en fonction du type de terrain
-                if (land->getType() == "Water") {
-                    glColor3f(0.0f, 0.0f, 1.0f); // Bleu pour l'eau
-                } else if (land->getType() == "Sand") {
-                    glColor3f(1.0f, 1.0f, 0.0f); // Jaune pour le sable
-                } else if (land->getType() == "Plains") {
-                    glColor3f(0.0f, 1.0f, 0.0f); // Vert pour les plaines
-                } else {
-                    glColor3f(1.0f, 1.0f, 1.0f); // Blanc pour les autres types
-                }
+                // Convertir les coordonnées en isométrique
+                Point screen = convertIsoTo2D(i * tileWidth, j * tileHeight);
+                screen.x *= 1.5f;
+                screen.y *= 1.5f;
 
-                // Dessiner un cube (cellule de la carte)
-                glBegin(GL_QUADS);
+                // Dessiner le polygone représentant la tuile
+                glBegin(GL_POLYGON);
 
-                // Faces du cube
-                // Face avant
-                glVertex3f(-0.5f, -0.5f, -0.5f);
-                glVertex3f(0.5f, -0.5f, -0.5f);
-                glVertex3f(0.5f, 0.5f, -0.5f);
-                glVertex3f(-0.5f, 0.5f, -0.5f);
-
-                // Face arrière
-                glVertex3f(-0.5f, -0.5f, 0.5f);
-                glVertex3f(0.5f, -0.5f, 0.5f);
-                glVertex3f(0.5f, 0.5f, 0.5f);
-                glVertex3f(-0.5f, 0.5f, 0.5f);
-
-                // Face gauche
-                glVertex3f(-0.5f, -0.5f, -0.5f);
-                glVertex3f(-0.5f, -0.5f, 0.5f);
-                glVertex3f(-0.5f, 0.5f, 0.5f);
-                glVertex3f(-0.5f, 0.5f, -0.5f);
-
-                // Face droite
-                glVertex3f(0.5f, -0.5f, -0.5f);
-                glVertex3f(0.5f, -0.5f, 0.5f);
-                glVertex3f(0.5f, 0.5f, 0.5f);
-                glVertex3f(0.5f, 0.5f, -0.5f);
-
-                // Face supérieure
-                glVertex3f(-0.5f, 0.5f, -0.5f);
-                glVertex3f(0.5f, 0.5f, -0.5f);
-                glVertex3f(0.5f, 0.5f, 0.5f);
-                glVertex3f(-0.5f, 0.5f, 0.5f);
-
-                // Face inférieure
-                glVertex3f(-0.5f, -0.5f, -0.5f);
-                glVertex3f(0.5f, -0.5f, -0.5f);
-                glVertex3f(0.5f, -0.5f, 0.5f);
-                glVertex3f(-0.5f, -0.5f, 0.5f);
-
-                glEnd();
-
-                glPopMatrix();
+				glVertex2f(screen.x, screen.y + tileHeight);
+				glVertex2f(screen.x + tileWidth, screen.y);
+				glVertex2f(screen.x, screen.y - tileHeight);
+				glVertex2f(screen.x - tileWidth, screen.y);
+				
+				glEnd();
             }
         }
     }
+}
+
+void handleInput(int &x_offset, int &y_offset, float &zoom, int move_speed, float zoom_speed)
+{
+    const Uint8* keys = SDL_GetKeyState(NULL);
+    if (keys[SDLK_s])
+        y_offset += move_speed;
+    if (keys[SDLK_z])
+        y_offset -= move_speed;
+    if (keys[SDLK_q])
+        x_offset += move_speed;
+    if (keys[SDLK_d])
+        x_offset -= move_speed;
+    if (keys[SDLK_KP_PLUS] && zoom < 5.0f)
+        zoom += zoom_speed;
+    if (keys[SDLK_KP_MINUS] && zoom > 0.2f)
+        zoom -= zoom_speed;
 }
 
 void Map::visualDisplay() const
@@ -225,18 +218,14 @@ void Map::visualDisplay() const
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // Appliquer la transformation isométrique (rotation)
-    glRotatef(35.264f, 1, 0, 0); // Rotation de 35.264° autour de l'axe X
-    glRotatef(45.0f, 0, 1, 0);   // Rotation de 45° autour de l'axe Y
-
-    bool running = true;
-
     // Variables pour gérer le zoom et le déplacement
-    float zoom = 1.0f;
+    float zoom = 0.2f;
     int x_offset = 0, y_offset = 0;
-    int move_speed = 10;     // Vitesse de déplacement
+    int move_speed = _width / 10; // Vitesse de déplacement
     float zoom_speed = 0.1f; // Vitesse de zoom
     SDL_Event event;
+
+    bool running = true;
 
     while (running)
     {
@@ -244,53 +233,17 @@ void Map::visualDisplay() const
         {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
                 running = false;
-
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                running = false;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_z: // Z - Déplacement vers le haut
-                    y_offset -= move_speed;
-                    break;
-                case SDLK_s: // S - Déplacement vers le bas
-                    y_offset += move_speed;
-                    break;
-                case SDLK_d: // Q - Déplacement vers la gauche
-                    x_offset -= move_speed;
-                    break;
-                case SDLK_q: // D - Déplacement vers la droite
-                    x_offset += move_speed;
-                    break;
-                case SDLK_p: // + - Zoomer
-                    zoom += zoom_speed;
-                    break;
-                case SDLK_m: // - - Dézoomer
-                    zoom -= zoom_speed;
-                    if (zoom < 0.1f)
-                        zoom = 0.1f; // Empêcher le zoom négatif
-                    break;
-                case SDLK_ESCAPE: // Quitter avec Echap
-                    running = false;
-                    break;
-                default:
-                    break;
-                }
-                break;
-            }
+            handleInput(x_offset, y_offset, zoom, move_speed, zoom_speed);
         }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
 
+        // Appliquer les translations pour déplacer la vue
+        glTranslatef(x_offset, y_offset, 0);
+
         // Appliquer le zoom
         glScalef(zoom, zoom, zoom);
-
-        // Appliquer les translations pour déplacer la vue
-        glTranslatef(x_offset * 0.1f, y_offset * 0.1f, 0);
 
         // Rendu de la carte
         renderMap();
@@ -304,7 +257,6 @@ void Map::visualDisplay() const
 
 void	Map::initDisplay() const
 {
-	SDL_Init(SDL_INIT_VIDEO);
 	
 }
 
