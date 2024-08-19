@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:53:49 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 16:15:05 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/18 17:07:10 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Water::Water(std::string type, long id, int size)
 	_type = type;
 	_id = id;
 	_size = size;
-	_height = 0;
+	_height = 1;
 	_symbol = WATER;
 }
 

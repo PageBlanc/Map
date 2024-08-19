@@ -16,10 +16,11 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
-struct Point
+struct Cube
 {
-	int x;
-	int y;
+	float x;
+	float y;
+	float z;
 };
 
 class Map
@@ -58,7 +59,7 @@ class Map
 		virtual void    visualDisplay()				const;
 		virtual void	initDisplay()				const;
 		virtual void	renderMap()					const;
-		virtual Point   convertIsoTo2D(float x, float y) const;
+		virtual Cube   convertIsoTo3D(float x, float y, float z) const;
 	
 		virtual void	printMap() 					const;
 		virtual void	printTopography()			const;

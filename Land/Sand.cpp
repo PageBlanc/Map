@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:19:21 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/13 17:31:49 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/18 17:07:20 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 Sand::Sand() : Land("Sand", 0, 0)
 {
-	_height = 1;
+	_height = 2;
 	_symbol = SAND;
 }
 
