@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 14:54:51 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/17 15:00:14 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/20 16:18:53 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@
 #include <SDL/SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <GL/glut.h>
 
 #endif

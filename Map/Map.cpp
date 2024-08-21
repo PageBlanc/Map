@@ -6,7 +6,7 @@
 /*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/18 17:42:32 by pageblanche      ###   ########.fr       */
+/*   Updated: 2024/08/21 15:55:36 by pageblanche      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,13 @@ void	Map::printTopography() const
 
 /*-------------------------------------DISPLAY-------------------------------------*/
 
-Cube Map::convertIsoTo3D(float x, float y, float z) const
+Vec3 Map::convertIsoTo3D(float x, float y, float z) const
 {
-	Cube cube;
-	cube.x = (2 * y + x) / 2;
-	cube.y = (2 * y - x) / 2;
-	cube.z = z;
-	return cube;
+	Vec3 newPoint;
+	newPoint.x = (2 * y + x) / 2;
+	newPoint.y = (2 * y - x) / 2;
+	newPoint.z = z;
+	return newPoint;
 }
 
 void	choiseColor(Land *land)
@@ -148,157 +148,274 @@ void	choiseColor(Land *land)
 		glColor3f(1.0f, 1.0f, 1.0f);
 }
 
-void	DrawCube3D(Cube cube)
-{
+
+
+// Fonction pour appliquer une rotation autour de l'axe Z
+Vec3 rotateZ(Vec3 point, float angle) {
+	
+	Vec3 newPoint;
+    float s = sin(angle);
+    float c = cos(angle);
+	
+	newPoint.x = point.x * c - point.y * s;
+	newPoint.y = point.x * s + point.y * c;
+	newPoint.z = point.z;
+	return newPoint;
+}
+
+// Fonction pour appliquer une translation
+Vec3 translate(Vec3 point, Vec3 translation) {
+	Vec3 newPoint;
+	newPoint.x = point.x + translation.x;
+	newPoint.y = point.y + translation.y;
+	newPoint.z = point.z + translation.z;
+	return newPoint;
+}
+
+// Fonction pour dessiner les arêtes d'un cube en isométrie en fonction des voisins
+void hilightEdgeNearLand(Vec3 vertices[8], std::vector<Land *> nearLands) {
+	(void) nearLands;
+	//dispay all edge
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glBegin(GL_LINES);
+	// Face avant
+	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+	
+	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+
+	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+
+	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+
+	// Face arrière
+	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
+	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
+	
+	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
+	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
+
+	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
+	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
+
+	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
+	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
+
+	// Face supérieure
+	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+
+	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
+
+	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
+	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
+
+	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
+	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+
+	// Face inférieure
+	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+
+	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
+
+	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
+	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
+
+	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
+	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+
+	// Face droite
+	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+	
+	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
+
+	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
+	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
+
+	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
+	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+
+	// Face gauche
+	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+
+	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
+
+	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
+	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
+
+	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
+	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+
+	glEnd();
+}
+
+void drawCube(Vec3 position, float size, float rotationAngle, std::vector<Land *> nearLands) {
+    // Définir les sommets du cube en iso
+    Vec3 vertices[8] = {
+		{ -size, -size, -size },
+		{  size, -size, -size },
+		{  size,  size, -size },
+		{ -size,  size, -size },
+		{ -size, -size,  size },
+		{  size, -size,  size },
+		{  size,  size,  size },
+		{ -size,  size,  size }
+	};
+
+	// Appliquer une rotation autour de l'axe Z
+	for (int i = 0; i < 8; i++) {
+		vertices[i] = rotateZ(vertices[i], rotationAngle);
+	}
+
+	// Appliquer une translation
+	for (int i = 0; i < 8; i++) {
+		vertices[i] = translate(vertices[i], position);
+	}
+	
+	//dessiner les cubes
 	glBegin(GL_QUADS);
 	
 	// Face avant
-	glVertex3f(-cube.x, -cube.y,  cube.z);
-	glVertex3f( cube.x, -cube.y,  cube.z);
-	glVertex3f( cube.x,  cube.y,  cube.z);
-	glVertex3f(-cube.x,  cube.y,  cube.z);
-	
+	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+
 	// Face arrière
-	glVertex3f(-cube.x, -cube.y, -cube.z);
-	glVertex3f(-cube.x,  cube.y, -cube.z);
-	glVertex3f( cube.x,  cube.y, -cube.z);
-	glVertex3f( cube.x, -cube.y, -cube.z);
+	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
+	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
+	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
+	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
 
 	// Face supérieure
-	glVertex3f(-cube.x,  cube.y, -cube.z);
-	glVertex3f(-cube.x,  cube.y,  cube.z);
-	glVertex3f( cube.x,  cube.y,  cube.z);
-	glVertex3f( cube.x,  cube.y, -cube.z);
+	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
+	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
 
 	// Face inférieure
-	glVertex3f(-cube.x, -cube.y, -cube.z);
-	glVertex3f( cube.x, -cube.y, -cube.z);
-	glVertex3f( cube.x, -cube.y,  cube.z);
-	glVertex3f(-cube.x, -cube.y,  cube.z);
+	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
+	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
 
 	// Face droite
-	glVertex3f( cube.x, -cube.y, -cube.z);
-	glVertex3f( cube.x,  cube.y, -cube.z);
-	glVertex3f( cube.x,  cube.y,  cube.z);
-	glVertex3f( cube.x, -cube.y,  cube.z);
+	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
+	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
+	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
+	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
 
 	// Face gauche
-	glVertex3f(-cube.x, -cube.y, -cube.z);
-	glVertex3f(-cube.x, -cube.y,  cube.z);
-	glVertex3f(-cube.x,  cube.y,  cube.z);
-	glVertex3f(-cube.x,  cube.y, -cube.z);
+	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
+	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
+	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
+	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
 
 	glEnd();
 	
+	// Dessiner les arêtes des cubes
+	(void) nearLands;
+	// hilightEdgeNearLand(vertices, nearLands);
 }
 
 void Map::renderMap() const
 {
-    // float tileWidth, tileHeight, titleDeep;
-
+	// for (size_t i = _map.size(); i-- > 0;)
+	// {
+	// 	for (size_t j = _map[i].size(); j-- > 0;)
+	// 	{
+	// 		Land *land = _map[i][j];
+	// 		for (size_t k = land->getHeight(); k-- > 0;)
+	// 		{
+	// 			Vec3 position = { (float) i, (float) j, (float) k };
+	// 			choiseColor(land);
+	// 			drawCube(position, 0.5f, 0.0f, _nearLands.at(land));
+	// 		}
+	// 	}
+	// }
 	for (size_t i = 0; i < _map.size(); i++)
 	{
 		for (size_t j = 0; j < _map[i].size(); j++)
 		{
-			glPushMatrix();
-			glTranslatef(i * 1.5f, 0.0f, j * 1.5f);
-			choiseColor(_map[i][j]);
-			for (int k = 0; k < _map[i][j]->getHeight(); k++)
+			Land *land = _map[i][j];
+			Vec3 position = { (float) i, (float) j, 0.0f };
+			choiseColor(land);
+			drawCube(position, 0.5f, 0.0f, _nearLands.at(land));
+			for (int k = 0; k < land->getHeight(); k++)
 			{
-				glTranslatef(0.0f, 1.5f, 0.0f);
-				Cube cube = convertIsoTo3D(1.5f, 1.5f, 1.5f);
-				DrawCube3D(cube);
+				Vec3 position = { (float) i, (float) j, (float) k };
+				choiseColor(land);
+				drawCube(position, 0.5f, 0.0f, _nearLands.at(land));
 			}
-			glPopMatrix();
 		}
 	}
 }
 
-void handleInput(int &x_offset, int &y_offset, float &zoom, int move_speed, float zoom_speed)
+void handleInput(Vec3& translation, float move_speed)
 {
-    const Uint8* keys = SDL_GetKeyState(NULL);
-    if (keys[SDLK_s])
-        y_offset += move_speed;
-    if (keys[SDLK_z])
-        y_offset -= move_speed;
-    if (keys[SDLK_q])
-        x_offset += move_speed;
-    if (keys[SDLK_d])
-        x_offset -= move_speed;
-    if (keys[SDLK_KP_PLUS] && zoom < 5.0f)
-        zoom += zoom_speed;
-    if (keys[SDLK_KP_MINUS] && zoom > 0.19f)
-        zoom -= zoom_speed;
-}
+    const Uint8* state = SDL_GetKeyState(NULL);
 
-void	handelMouse(int &x_offset, int &y_offset, float &zoom, int move_speed, float zoom_speed)
-{
-	(void)move_speed;
-	(void)x_offset;
-	(void)y_offset;
-
-	
-	int x, y;
-	SDL_GetMouseState(&x, &y);
-	//gestion du zoom avec la molette
-	
-	if (SDL_BUTTON(SDL_BUTTON_WHEELUP) && zoom < 5.0f)
-	{
-		zoom += zoom_speed;
-		std::cout << "zoom : " << zoom << std::endl;
+    // Déplacement continu avec les touches fléchées / en fonction de la vue isometrique
+	if (state[SDLK_z]) {
+		translation.y -= move_speed;
+		// translation.z += move_speed * cos(45.0f * M_PI / 180.0f);
 	}
-	if (SDL_BUTTON(SDL_BUTTON_WHEELDOWN) && zoom > 0.19f)
-		zoom -= zoom_speed;
+	if (state[SDLK_s]) {
+		translation.y += move_speed;
+		// translation.z -= move_speed * cos(45.0f * M_PI / 180.0f);
+	}
+	if (state[SDLK_q]) {
+		translation.x += move_speed;
+	}
+	if (state[SDLK_d]) {
+		translation.x -= move_speed;
+	}
 }
 
-void	Drawmulticube()
+
+void handelMouse(Vec3& translation, float& zoom, float zoom_speed, SDL_Event& event)
 {
-	glBegin(GL_QUADS);
-    
-    // Face avant
-    glColor3f(1.0f, 0.0f, 0.0f); // Rouge
-    glVertex3f(-1.0f, -1.0f,  1.0f);
-    glVertex3f( 1.0f, -1.0f,  1.0f);
-    glVertex3f( 1.0f,  1.0f,  1.0f);
-    glVertex3f(-1.0f,  1.0f,  1.0f);
+    if (event.type == SDL_MOUSEBUTTONDOWN)
+    {
+		int x, y;
+		SDL_GetMouseState(&x, &y);
 
-    // Face arrière
-    glColor3f(0.0f, 1.0f, 0.0f); // Vert
-    glVertex3f(-1.0f, -1.0f, -1.0f);
-    glVertex3f(-1.0f,  1.0f, -1.0f);
-    glVertex3f( 1.0f,  1.0f, -1.0f);
-    glVertex3f( 1.0f, -1.0f, -1.0f);
+		float x_world = (2.0f * x / 800.0f - 1.0f) / zoom - translation.x;
+		float y_world = (2.0f * y / 600.0f - 1.0f) / zoom - translation.y;
 
-    // Face supérieure
-    glColor3f(0.0f, 0.0f, 1.0f); // Bleu
-    glVertex3f(-1.0f,  1.0f, -1.0f);
-    glVertex3f(-1.0f,  1.0f,  1.0f);
-    glVertex3f( 1.0f,  1.0f,  1.0f);
-    glVertex3f( 1.0f,  1.0f, -1.0f);
+        // Convertir la position de la souris en coordonnées du monde
 
-    // Face inférieure
-    glColor3f(1.0f, 1.0f, 0.0f); // Jaune
-    glVertex3f(-1.0f, -1.0f, -1.0f);
-    glVertex3f( 1.0f, -1.0f, -1.0f);
-    glVertex3f( 1.0f, -1.0f,  1.0f);
-    glVertex3f(-1.0f, -1.0f,  1.0f);
+        if (event.button.button == SDL_BUTTON_WHEELUP) {
+            // Zoom avant
+            zoom += zoom_speed;
 
-    // Face droite
-    glColor3f(1.0f, 0.0f, 1.0f); // Magenta
-    glVertex3f( 1.0f, -1.0f, -1.0f);
-    glVertex3f( 1.0f,  1.0f, -1.0f);
-    glVertex3f( 1.0f,  1.0f,  1.0f);
-    glVertex3f( 1.0f, -1.0f,  1.0f);
+            // Ajuster la translation pour centrer le zoom sur la position de la souris
+			translation.x += x_world * zoom_speed;
+			translation.y += y_world * zoom_speed;
+			
+        }
+        if (event.button.button == SDL_BUTTON_WHEELDOWN) {
+            // Zoom arrière
+            zoom -= zoom_speed;
+            if (zoom < 0.1f) zoom = 0.1f;  // Empêcher le zoom négatif ou trop petit
 
-    // Face gauche
-    glColor3f(0.0f, 1.0f, 1.0f); // Cyan
-    glVertex3f(-1.0f, -1.0f, -1.0f);
-    glVertex3f(-1.0f, -1.0f,  1.0f);
-    glVertex3f(-1.0f,  1.0f,  1.0f);
-    glVertex3f(-1.0f,  1.0f, -1.0f);
-    
-    glEnd();
+            // Ajuster la translation pour centrer le zoom sur la position de la souris
+			translation.x -= x_world * zoom_speed;
+			translation.y -= y_world * zoom_speed;
+        }
+    }
 }
+
 
 void Map::visualDisplay() const
 {
@@ -310,103 +427,82 @@ void Map::visualDisplay() const
         exit(EXIT_FAILURE);
     }
 
-    // Configuration de la matrice de projection pour une projection orthographique
-    glViewport(0, 0, 800, 600);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    float mapWidth = _map.size();
-    float mapHeight = _map[0].size();
-    float aspectRatio  = 800.0f / 600.0f;
-    float halfWidth = (mapWidth * 1.5f) / 2.0f;
-    float halfHeight = (mapHeight * 1.5f) / 2.0f;
-
-    glOrtho(-halfWidth, halfWidth, -halfHeight / aspectRatio, halfHeight / aspectRatio, -100.0f, 100.0f);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-	
-	
-
     // Variables pour gérer le zoom et le déplacement
-    float zoom = 0.2f;
-    int x_offset = 0, y_offset = 0;
-    int move_speed = _width / 10; // Vitesse de déplacement
-    float zoom_speed = 0.1f; // Vitesse de zoom
+    float zoom = 0.5f;  // Moins zoomé initialement
+    float move_speed = _map.size() / 500.0f;  // Vitesse de déplacement ajustée
+    float zoom_speed = 0.05f; // Vitesse de zoom réduite
     SDL_Event event;
+    Vec3 translation;
+    translation.x = 0.0f;
+    translation.y = 0.0f;
+    translation.z = -10.0f;  // Position initiale en Z pour éloigner la caméra
 
     bool running = true;
 
     while (running)
     {
-		
-		//gestion des evenements && souris
-		while (SDL_PollEvent(&event))
-		{
-			// escape handel
-			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
-				running = false;
-			switch (event.type)
-			{
-				case SDL_QUIT:
-					running = false;
-					break;
-				case SDL_KEYDOWN:
-					handleInput(x_offset, y_offset, zoom, move_speed, zoom_speed);
-					break;
-				case SDL_MOUSEBUTTONDOWN:
-					handelMouse(x_offset, y_offset, zoom, move_speed, zoom_speed);
-					break;
-				default:
-					break;
-			}
-		}
+        // Gestion des événements
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+                running = false;
+            switch (event.type)
+            {
+                case SDL_QUIT:
+                    running = false;
+                    break;
+                case SDL_KEYDOWN:
+                case SDL_KEYUP:
+                    handleInput(translation, move_speed);
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                case SDL_MOUSEBUTTONUP:
+                    handelMouse(translation, zoom, zoom_speed, event);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Déplacement continu
+        handleInput(translation, move_speed);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
 
-		gluLookAt(2.0, 2.0, 2.0,  0.0, 0.0, 0.0,  0.0, 1.0, 0.0);
-        // Appliquer les translations pour déplacer la vue isometrique
-		glTranslatef(x_offset, y_offset, 1.5f);
+        // Configuration de la projection en perspective
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(90, 800.0f / 600.0f, 0.1f, 100.0f);
 
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        // Appliquer les translations pour déplacer la caméra
+        glTranslatef(translation.x, translation.y , translation.z);
+
+        // Appliquer la vue isométrique avec des rotatef
+        glRotatef(45.0f, 0.0f, 0.0f, 1.0f);  // Tourner de 45° sur l'axe Z
+        glRotatef(-30.0f, 1.0f, 0.0f, 0.0f);  // Incliner de 35.264° sur l'axe X
+		glRotatef(30.0f, 0.0f, 1.0f, 0.0f);  // Incliner de 35.264° sur l'axe X
+		
+		
         // Appliquer le zoom
         glScalef(zoom, zoom, zoom);
-		
-
-		// faire un plan 3D de 10 par 10 par 10 constituer de cube
-
-		// for (int r = 0; r < 10; r++)
-		// {
-		// 	for (int i = 0; i < 10; i++)
-		// 	{
-		// 		for (int j = 0; j < 10; j++)
-		// 		{
-		// 			glMatrixMode(GL_MODELVIEW);
-					
-		// 			glPushMatrix();
-		// 			glTranslatef(i * 1.5f, 0.0f, j * 1.5f);
-		// 			for (int k = 0; k < 10; k++)
-		// 			{
-		// 				glTranslatef(0.0f, 1.5f, 0.0f);
-		// 				Drawmulticube();
-		// 			}
-		// 			glPopMatrix();
-					
-		// 		}
-		// 	}
-		// }
-				
 
         // Rendu de la carte
         renderMap();
 
-		//afficher les arete un cube en 3D en isometrique
-		
-
-		
-		SDL_GL_SwapBuffers();
+        SDL_GL_SwapBuffers();
     }
     SDL_Quit();
 }
+
+
+
+
+
+
 
 void	Map::initDisplay() const
 {
