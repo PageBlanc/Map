@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:03:06 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/16 19:38:29 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/17 22:20:07 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ Vec3 translate(Vec3 point, Vec3 translation)
 	newPoint.y = point.y + translation.y;
 	newPoint.z = point.z + translation.z;
 	return newPoint;
+}
+
+void drawSquareEdge(Vec3 p1, Vec3 p2, Vec3 p3, Vec3 p4)
+{
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(p1.x, p1.y, p1.z);
+	glVertex3f(p2.x, p2.y, p2.z);
+	glVertex3f(p3.x, p3.y, p3.z);
+	glVertex3f(p4.x, p4.y, p4.z);
+	glEnd();
 }
 
 void drawCube(Vec3 position, float size, float rotationAngle)
@@ -100,6 +110,18 @@ void drawCube(Vec3 position, float size, float rotationAngle)
 	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
 
 	glEnd();
+
+	if (DRAW_EDGE)
+	{
+		// Dessiner les arêtes du cube
+		glColor3f(1.0f, 1.0f, 1.0f); // Couleur des arêtes
+		drawSquareEdge(vertices[0], vertices[1], vertices[2], vertices[3]);
+		drawSquareEdge(vertices[4], vertices[5], vertices[6], vertices[7]);
+		drawSquareEdge(vertices[0], vertices[4], vertices[5], vertices[1]);
+		drawSquareEdge(vertices[2], vertices[6], vertices[7], vertices[3]);
+		drawSquareEdge(vertices[0], vertices[3], vertices[7], vertices[4]);
+		drawSquareEdge(vertices[1], vertices[2], vertices[6], vertices[5]);
+	}
 }
 
 void drawplane(Vec3 position, float width, float height)

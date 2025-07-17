@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:34:18 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/16 19:36:32 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/17 22:12:12 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ class SDL
 		SDL_Event _event;
 
 		Vec3 	_mv_translation;
-		Vec3 	_camera_translation;
 		Map 	*_map;
 
 		float _zoom;
 		float _move_speed;
 		float _zoom_speed;
 		
-		float _rotation_angle;
+		float _rotation_angle_x;
+		float _rotation_angle_y;
 
 		bool _running;
 };

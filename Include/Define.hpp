@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/16 19:38:38 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/17 22:20:54 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ struct Vec3 {
 #define EXPORT 2
 #define WIDTH 800
 #define HEIGHT 600
+#define PI 3.1415
+#define DRAW_EDGE 0
 
 #	define VOID    	std::string("⬛")
 #	define WATER   	std::string("🟦")
