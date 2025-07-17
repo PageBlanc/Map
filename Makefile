@@ -3,42 +3,48 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+         #
+#    By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/10 10:51:07 by pageblanche       #+#    #+#              #
-#    Updated: 2024/08/20 16:22:10 by pageblanche      ###   ########.fr        #
+#    Updated: 2025/07/16 18:23:26 by axdubois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CXX            =    c++
+CXX		= c++
 
-NAME        =    a.out
+NAME	= Map
 
 LDFLAGS = -lSDL -lGL -lGLU
 
-SRC            =     Main.cpp                	\
-					 Map/Map.cpp                \
-					 Map/Mainland.cpp           \
-					 Land/Land.cpp              \
-					 Land/Plains.cpp            \
-					 Land/Water.cpp             \
-					 Land/Sand.cpp              \
-					 
+OBJ		= $(SRC:.cpp=.o)
 
-OBJ            =     $(SRC:.cpp=.o)
+CFLAGS	= -Wall -Wextra -Werror -std=c++98 -g
 
-CFLAGS        =     -Wall -Wextra -Werror -std=c++98 -g
+SRC	= 	srcs/main.cpp					\
+		srcs/SDL.cpp					\
+		srcs/utils.cpp					\
+		srcs/Map/Map.cpp				\
+		srcs/Map/Mainland.cpp			\
+		srcs/Land/Land.cpp				\
+		srcs/Land/Plains.cpp			\
+		srcs/Land/Water.cpp				\
+		srcs/Land/Sand.cpp				\
+
+OBJ = $(patsubst srcs/%.cpp,objs/%.o,$(SRC))
+
+objs/%.o: srcs/%.cpp
+	$(CXX) $(CFLAGS) -I Include -c $< -o $@
 
 all: $(NAME)
 
 .cpp.o:
-	$(CXX) $(CFLAGS) -c $< -o $(<:.cpp=.o) 
+	$(CXX) $(CFLAGS) -I Include -c $< -o objs/$(notdir $(<:.cpp=.o))
 
 $(NAME): $(OBJ)
 	$(CXX) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
 	
 clean:
-	rm -f $(OBJ)
+	rm -f objs/*.o
 
 fclean: clean
 	rm -f $(NAME)
