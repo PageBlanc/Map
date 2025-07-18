@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:34:18 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/17 22:12:12 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/18 12:50:10 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,21 @@ class SDL
 		void cleanup();
 
 		void handleEvents();
-		void handleInput(Vec3& translation, float move_speed);
-		void handleMouse(Vec3& translation, float& zoom, float& zoom_speed, SDL_Event& event);
+		void handleInput();
+		void handleMouse();
 		
 	private:
 		SDL_Surface *_screen;
 		SDL_Event _event;
 
-		Vec3 	_mv_translation;
+		Vec3 	_cam;
 		Map 	*_map;
 
 		float _zoom;
-		float _move_speed;
 		float _zoom_speed;
-		
-		float _rotation_angle_x;
-		float _rotation_angle_y;
+		float _move_speed;
+		float _cam_pitch;
+		float _cam_yaw;
 
 		bool _running;
 };

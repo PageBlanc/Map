@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/16 18:40:34 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:35:44 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ void Map::renderMap() const
 			{
 				Vec3 position = { (float) i, (float) j, (float) k };
 				choiseColor(land);
-				drawCube(position, 0.5f, 0.0f);
+				drawCube(position, 1.0f, 0.0f);
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:03:06 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/17 22:20:07 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:45:12 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,6 @@ void drawplane(Vec3 position, float width, float height)
 		{ -width / 2,  height / 2, 0 }
 	};
 
-	// Appliquer une translation
 	for (int i = 0; i < 4; i++) {
 		vertices[i] = translate(vertices[i], position);
 	}
@@ -151,11 +150,28 @@ void drawFPS(Uint32 &lastTime, int &frames, float &fps)
 	char title[128];
 	frames++;
 	Uint32 currentTime = SDL_GetTicks();
-	if (currentTime - lastTime >= 1000) {
+	if (currentTime - lastTime >= 1000)
+	{
 		fps = frames * 1000.0f / (currentTime - lastTime);
 		snprintf(title, sizeof(title), "Map - FPS: %.1f", fps);
 		SDL_WM_SetCaption(title, NULL);
 		frames = 0;
 		lastTime = currentTime;
+	}
+}
+
+void drawCoordinates(Vec3 cam_pos, float cam_pitch, float cam_yaw)
+{
+	char coordinates[256];
+	snprintf(coordinates, sizeof(coordinates), 
+		"Pos: (%.1f, %.1f, %.1f) Pitch: %.1f° Yaw: %.1f°", 
+		cam_pos.x, cam_pos.y, cam_pos.z, cam_pitch, cam_yaw);
+	
+	static Uint32 lastUpdate = 0;
+	Uint32 currentTime = SDL_GetTicks();
+	if (currentTime - lastUpdate >= 100)
+	{
+		SDL_WM_SetCaption(coordinates, NULL);
+		lastUpdate = currentTime;
 	}
 }

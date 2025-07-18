@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:36:02 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/17 22:14:14 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:42:57 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ void SDL::init(int mapwidth, int mapheight)
 	_zoom = 0.2f;
 	_move_speed = 0.2f;
 	_zoom_speed = 0.05f;
-	_mv_translation.x = 0.0f;
-	_mv_translation.y = 0.0f;
-	_mv_translation.z = -10.0f;
-
-	_rotation_angle_x = 0.0f;
-	_rotation_angle_y = 0.0f;
+	_cam.x = 2.0f;
+	_cam.y = 2.0f;
+	_cam.z = -5.0f; 
+	_cam_pitch = -60.0f;
+	_cam_yaw = 45.0f;
+	
 	memset(&_event, 0, sizeof(SDL_Event)); // Initialize the SDL_Event structure
 	
 	_running = true;
@@ -75,61 +75,81 @@ void SDL::cleanup()
 	std::cout << "SDL cleaned up successfully" << std::endl;
 }
 
-void SDL::handleInput(Vec3 &translation, float move_speed)
+void SDL::handleInput()
 {
 	const Uint8 *state = SDL_GetKeyState(NULL);
+	
 	if (state[SDLK_z])
-		translation.z += move_speed;
+	{
+		_cam.x -= sinf(_cam_yaw * M_PI / 180.0f) * _move_speed;
+		_cam.y -= cosf(_cam_yaw * M_PI / 180.0f) * _move_speed;
+	}
 	if (state[SDLK_s])
-		translation.z -= move_speed;
+	{
+		_cam.x += sinf(_cam_yaw * M_PI / 180.0f) * _move_speed;
+		_cam.y += cosf(_cam_yaw * M_PI / 180.0f) * _move_speed;
+	}
 	if (state[SDLK_q])
-		translation.x += move_speed;
+	{
+		_cam.x += cosf(_cam_yaw * M_PI / 180.0f) * _move_speed;
+		_cam.y -= sinf(_cam_yaw * M_PI / 180.0f) * _move_speed;
+	}
 	if (state[SDLK_d])
-		translation.x -= move_speed;
+	{
+		_cam.x -= cosf(_cam_yaw * M_PI / 180.0f) * _move_speed;
+		_cam.y += sinf(_cam_yaw * M_PI / 180.0f) * _move_speed;
+	}
 	if (state[SDLK_SPACE])
-		_mv_translation.y -= move_speed;
+	{
+		_cam.z -= _move_speed;
+	}
 	if (state[SDLK_LSHIFT])
-		_mv_translation.y += move_speed;
+	{
+		_cam.z += _move_speed;
+	}
 	if (state[SDLK_LEFT])
-		_rotation_angle_x -= 1.0f;
+		_cam_yaw -= 1.0f;
 	if (state[SDLK_RIGHT])
-		_rotation_angle_x += 1.0f;
+		_cam_yaw += 1.0f;
 	if (state[SDLK_UP])
-		_rotation_angle_y -= 1.0f;
+		_cam_pitch -= 1.0f;
 	if (state[SDLK_DOWN])
-		_rotation_angle_y += 1.0f;
+		_cam_pitch += 1.0f;
 }
 
-void SDL::handleMouse(Vec3 &translation, float &zoom, float &zoom_speed, SDL_Event &event)
+void SDL::handleMouse()
 {
-	if (event.type == SDL_MOUSEBUTTONDOWN)
+	if (_event.type == SDL_MOUSEBUTTONDOWN || _event.type == SDL_MOUSEBUTTONUP)
 	{
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 
-		float x_world = (2.0f * x / 800.0f - 1.0f) / zoom - translation.x;
-		float y_world = (2.0f * y / 600.0f - 1.0f) / zoom - translation.y;
+		float x_world = (2.0f * x / 800.0f - 1.0f) / _zoom - _cam.x;
+		float y_world = (2.0f * y / 600.0f - 1.0f) / _zoom - _cam.y;
 
-		if (event.button.button == SDL_BUTTON_WHEELUP) {
-			zoom += zoom_speed;
-
-			translation.x += x_world * zoom_speed;
-			translation.y += y_world * zoom_speed;
-			
+		if (_event.button.button == SDL_BUTTON_WHEELUP)
+		{
+			_zoom += _zoom_speed;
+			if (_zoom > 5.0f) _zoom = 5.0f;
+			{
+				_cam.x += x_world * _zoom_speed;
+				_cam.y += y_world * _zoom_speed;
+			}
 		}
-		if (event.button.button == SDL_BUTTON_WHEELDOWN) {
-			zoom -= zoom_speed;
-			if (zoom < 0.1f) zoom = 0.1f;
-
-			translation.x -= x_world * zoom_speed;
-			translation.y -= y_world * zoom_speed;
+		if (_event.button.button == SDL_BUTTON_WHEELDOWN)
+		{
+			_zoom -= _zoom_speed;
+			if (_zoom < 0.1f) _zoom = 0.1f;
+			{
+				_cam.x -= x_world * _zoom_speed;
+				_cam.y -= y_world * _zoom_speed;
+			}
 		}
 	}
 }
 
 void SDL::handleEvents()
 {
-	memset(&_event, 0, sizeof(SDL_Event)); // Reset the SDL_Event structure
 	while (SDL_PollEvent(&_event))
 	{
 		if (_event.type == SDL_KEYDOWN && _event.key.keysym.sym == SDLK_ESCAPE)
@@ -141,11 +161,11 @@ void SDL::handleEvents()
 				break;
 			case SDL_KEYDOWN:
 			case SDL_KEYUP:
-				handleInput(_mv_translation, _move_speed);
+				handleInput();
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
-				handleMouse(_mv_translation, _zoom, _zoom_speed, _event);
+				handleMouse();
 				break;
 			default:
 				break;
@@ -162,18 +182,23 @@ void SDL::render()
 	while (_running)
 	{
 		handleEvents();
-		handleInput(_mv_translation, _move_speed);
+		handleInput();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
-		
-		glRotatef(_rotation_angle_x, 0.0f, 1.0f, 0.0f);
-		glRotatef(_rotation_angle_y, 1.0f, 0.0f, 0.0f);
 
-		glTranslatef(_mv_translation.x, _mv_translation.y, _mv_translation.z);
+		glRotatef(_cam_pitch, 1.0f, 0.0f, 0.0f);
+		glRotatef(_cam_yaw, 0.0f, 0.0f, 1.0f);
+		
+		glTranslatef(_cam.x, _cam.y, _cam.z);
+
     	glScalef(_zoom, _zoom, _zoom);
 		
 		glEnable(GL_DEPTH_TEST);
 		drawFPS(lastTime, frames, fps);
+		drawCoordinates(_cam, _cam_pitch, _cam_yaw);
+		// Vec3 cubepos = {0.0f, 0.0f, 0.0f};
+		// glColor3f(1.0f, 0.0f, 1.0f); // Set color to purple
+		// drawCube(cubepos, 10.0f, 0.0f);
 		_map->renderMap();
 		SDL_GL_SwapBuffers();
 	}
