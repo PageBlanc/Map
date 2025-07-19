@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:36:02 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/19 10:17:11 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 11:01:10 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void SDL::init(int mapwidth, int mapheight)
 	_cam_pitch = -60.0f;
 	_cam_yaw = 45.0f;	
 	_event = SDL_Event();
+
 	
 	_running = true;
 	std::cout << "SDL initialized successfully" << std::endl;

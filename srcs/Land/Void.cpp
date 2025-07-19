@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:15:00 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/19 00:38:37 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:42:45 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ Void::Void() : Land()
 {
 }
 
-Void::Void(long id, int height) : Land("Void", id, height)
+Void::Void(long id, int height) : Land("Void", id, height, Vec3(0.0f, 0.0f, 0.0f))
 {
     _symbol = VOID;
 }

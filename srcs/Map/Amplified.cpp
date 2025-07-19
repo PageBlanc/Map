@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:50:24 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/19 10:50:43 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:06:59 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,22 +137,21 @@ bool Amplified::hasVisibleFace(bool *drawface, Land* currentVoxel) const
 
 void Amplified::renderMap() const
 {
-    for (size_t x = 0; x < _voxelMap.size(); ++x)
+	for (size_t x = 0; x < _voxelMap.size(); ++x)
 	{
-        for (size_t y = 0; y < _voxelMap[x].size(); ++y)
+		for (size_t y = 0; y < _voxelMap[x].size(); ++y)
 		{
-            for (size_t z = 0; z < _voxelMap[x][y].size(); ++z)
+			for (size_t z = 0; z < _voxelMap[x][y].size(); ++z)
 			{
 				Land* currentVoxel = _voxelMap[x][y][z];
 				SetAllLandNeighbors(x, y, z, currentVoxel);
 				if (!currentVoxel)
-					continue;
-                bool drawface[6] = { true, true, true, true, true, true };
+				continue;
+				bool drawface[6] = { true, true, true, true, true, true };
                 if (hasVisibleFace(drawface, currentVoxel))
                 {
-                    Vec3 position = { (float)x, (float)y, (float)z };
-                    choiseColor(currentVoxel);
-                    drawCube(position, 0.5f, 0.0f, drawface, currentVoxel);
+                    Vec3 position = Vec3((float)x, (float)y, (float)z);
+                    drawCube(position, 0.5f, 0.0f, drawface, currentVoxel, _light);
                 }
             }
         }

@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/18 23:57:33 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:11:24 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,18 @@
 
 Map::Map() :  _type("Map"), _smoothness(0), _density(0), _seed(0), _width(0), _height(0), _depth(0)
 {
-	// _map = std::vector<std::vector<Land *> >();
+	_light = new Light();
 	_nearLands = std::map<Land *, std::vector<Land *> >();
 }
 
 Map::Map(std::string type, int x, int y) : _type(type), _smoothness(0), _density(0), _seed(0), _width(x), _height(y), _depth(0)
 {
-	// _map.resize(_width, std::vector<Land *>(_height, nullptr));
+	_light = new Light();
 	_nearLands = std::map<Land *, std::vector<Land *> >();
 }
 
-Map::Map(const Map &map) : _type(map._type), _smoothness(map._smoothness), _density(map._density), _seed(map._seed), _width(map._width), _height(map._height), _depth(map._depth)
+Map::Map(const Map &map) : _type(map._type), _smoothness(map._smoothness), _density(map._density), _seed(map._seed), _width(map._width), _height(map._height), _depth(map._depth), _light(map._light)
 {
-	if (*this != map)
-		delete this;
 	*this = map;
 }
 	
@@ -219,9 +217,10 @@ void Map::renderMap() const
 			Land *land = _map[i][j];
 			for (size_t k = land->getHeight(); k-- > 0;)
 			{
-				Vec3 position = { (float) i, (float) j, (float) k };
-				choiseColor(land);
-				drawCube(position, 1.0f, 0.0f, NULL, land);
+				Vec3 position = Vec3((float)i, (float)j, (float)k);
+				Vec3 basecolor = land->getColor();
+				glColor3f(basecolor.x, basecolor.y, basecolor.z);
+				drawCube(position, 1.0f, 0.0f, NULL, land, _light);
 			}
 		}
 	}
@@ -246,5 +245,7 @@ bool  Map::operator!=(const Map &map) const
 }
 
 /*-------------------------------------DESTRUCTOR-------------------------------------*/
-	
-Map::~Map() {}
+Map::~Map()
+{
+	delete _light;
+}

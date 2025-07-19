@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:53:49 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/19 01:03:29 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:42:56 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Water::Water() : Land("Water", 0, 0)
+Water::Water() : Land("Water", 0, 0, Vec3(0.0f, 0.0f, 1.0f))
 {
 	_height = 1;
 	_symbol = WATER;
 }
 
-Water::Water(long id, int size): Land("Water", id, size)
+Water::Water(long id, int size): Land("Water", id, size , Vec3(0.0f, 0.0f, 1.0f))
 {
 	_height = 1;
 	_symbol = WATER;

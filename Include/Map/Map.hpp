@@ -14,6 +14,7 @@
 #include "../Land/Land.hpp"
 #include "../SDL.hpp"
 #include "../Noise/PerlinNoise.hpp"
+#include "../Object/Light.hpp"
 
 #ifndef MAP_HPP
 # define MAP_HPP
@@ -30,7 +31,7 @@ class Map
 		const int								_width;
 		const int								_height;
 		const int								_depth;
-
+		Light									*_light;
 
 	public:
 		Map();

@@ -6,12 +6,13 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:03:06 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/18 19:25:39 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:16:02 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/SDL.hpp"
 #include "../Include/Define.hpp"
+#include "../Include/Object/Light.hpp"
 
 // Fonction pour appliquer une rotation autour de l'axe Z
 Vec3 rotateZ(Vec3 point, float angle)
@@ -57,60 +58,87 @@ void drawFace(Vec3 p1, Vec3 p2, Vec3 p3, Vec3 p4)
 	glEnd();
 }
 
-void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, Land *land)
-
+float calculateLighting(Vec3 normal, Light *light)
 {
-	// Définir les sommets du cube en iso
-	Vec3 vertices[8] =
-	{
-		{ -size, -size, -size },
-		{  size, -size, -size },
-		{  size,  size, -size },
-		{ -size,  size, -size },
-		{ -size, -size,  size },
-		{  size, -size,  size },
-		{  size,  size,  size },
-		{ -size,  size,  size }
-	};
+    Vec3 lightDir = light->getDirection().normalize();
+    float intensity = normal.dot(lightDir * -1.0f);
 
+    if (intensity < 0.2f)
+        intensity = 0.2f;
+    if (intensity > 1.0f)
+        intensity = 1.0f;
+    
+    return intensity;
+}
+
+void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, Land *land, Light *light)
+{
+	if (!land)
+		return;
 	const int faces[6][4] =
 	{
-	    {0, 1, 2, 3},
-	    {4, 5, 6, 7},
-	    {0, 4, 7, 3},
-	    {1, 5, 6, 2},
-	    {3, 2, 6, 7},
-	    {0, 1, 5, 4} 
+		{0, 1, 2, 3},
+		{4, 5, 6, 7},
+		{0, 4, 7, 3},
+		{1, 5, 6, 2},
+		{3, 2, 6, 7},
+		{0, 1, 5, 4} 
 	};
 
-	for (int i = 0; i < 8; i++)
+	Vec3 vertices[8] =
 	{
-		vertices[i] = rotateZ(vertices[i], rotationAngle);
-		vertices[i] = translate(vertices[i], position);
-	}
+		Vec3(-size, -size, -size),
+		Vec3(size, -size, -size),
+		Vec3(size, size, -size),
+		Vec3(-size, size, -size),
+		Vec3(-size, -size, size),
+		Vec3(size, -size, size),
+		Vec3(size, size, size),
+		Vec3(-size, size, size)
+	};
 
+
+	const Vec3 faceNormals[6] = {
+		Vec3(0, 0, 1),
+		Vec3(0, 0, -1), 
+		Vec3(1, 0, 0),
+		Vec3(-1, 0, 0), 
+		Vec3(0, -1, 0),
+		Vec3(0, 1, 0)  
+	};	
+
+	glPushMatrix();
+	glTranslatef(position.x, position.y, position.z);
+	glRotatef(rotationAngle, 0.0f, 0.0f, 1.0f);
+	glDisable(GL_LIGHTING);
+	
 	for (int i = 0; i < 6; i++)
 	{
-	    if (drawface[i])
+	    if (drawface && !drawface[i]) continue;
+
+        float lighting = calculateLighting(faceNormals[i], light);
+
+		Vec3 BaseColor = land->getColor();
+		glColor3f(lighting * BaseColor.x, lighting * BaseColor.y, lighting * BaseColor.z);
+		glBegin(GL_QUADS);
+		for (int j = 0; j < 4; j++)
 		{
-        	drawFace(vertices[faces[i][0]], vertices[faces[i][1]], vertices[faces[i][2]], vertices[faces[i][3]]);
-			if (DRAW_EDGE == 1)
-			{
-				glColor3f(1.0f, 1.0f, 1.0f);
-				drawSquareEdge(vertices[faces[i][0]], vertices[faces[i][1]], vertices[faces[i][2]], vertices[faces[i][3]]);
-				choiseColor(land);
-			}
-	    }
+			Vec3 vertex = vertices[faces[i][j]];
+			glVertex3f(vertex.x, vertex.y, vertex.z);
+		}
+		glEnd();
 	}
+
+	glPopMatrix();
 }
 
 void drawplane(Vec3 position, float width, float height)
 {
 	Vec3 vertices[4] = {
-		{ -width / 2, -height / 2, 0 },
-		{  width / 2, -height / 2, 0 },
-		{  width / 2,  height / 2, 0 },
-		{ -width / 2,  height / 2, 0 }
+		Vec3(-width / 2, -height / 2, 0), // Bas gauche
+		Vec3(width / 2, -height / 2, 0),  // Bas droit
+		Vec3(width / 2, height / 2, 0),   // Haut droit
+		Vec3(-width / 2, height / 2, 0)   // Haut gauche
 	};
 
 	for (int i = 0; i < 4; i++) {
@@ -154,26 +182,4 @@ void drawCoordinates(Vec3 cam_pos, float cam_pitch, float cam_yaw)
 		SDL_WM_SetCaption(coordinates, NULL);
 		lastUpdate = currentTime;
 	}
-}
-
-void	choiseColor(Land *land)
-{
-	if (land->getType() == "Water")
-		glColor3f(0.0f, 0.0f, 1.0f);
-	else if (land->getType() == "Plains")
-		glColor3f(0.0f, 1.0f, 0.0f);
-	else if (land->getType() == "Sand")
-		glColor3f(1.0f, 1.0f, 0.0f);
-	else if (land->getType() == "Mountain")
-		glColor3f(0.5f, 0.5f, 0.5f);
-	else if (land->getType() == "Forest")
-		glColor3f(0.0f, 0.5f, 0.0f);
-	else if (land->getType() == "Desert")
-		glColor3f(1.0f, 0.5f, 0.0f);
-	else if (land->getType() == "Snow")
-		glColor3f(1.0f, 1.0f, 1.0f);
-	else if (land->getType() == "Void")
-		glColor3f(1.0f, 0.0f, 1.0f);
-	else
-		glColor3f(1.0f, 1.0f, 1.0f);
 }

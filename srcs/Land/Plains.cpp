@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:37:30 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/19 01:03:29 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:42:19 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Plains::Plains() : Land("Plains", 0, 0)
+Plains::Plains() : Land("Plains", 0, 0, Vec3(0.0f, 1.0f, 0.0f))
 {
 	_height = 3;
 	_symbol = PLAINS;
 }
 
-Plains::Plains(long id, int size) : Land("Plains", id, size)
+Plains::Plains(long id, int size) : Land("Plains", id, size, Vec3(0.0f, 1.0f, 0.0f))
 {
 	_height = 3;
 	_symbol = PLAINS;

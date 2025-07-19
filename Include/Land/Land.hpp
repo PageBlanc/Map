@@ -24,9 +24,11 @@ class Land
 		long 		_id;
 		int 		_size;
 		int			_height;
+		Vec3		_color;
+
 	public:
 		Land();
-		Land(std::string type, long id, int size);
+		Land(std::string type, long id, int size, Vec3 color);
 		Land(Land const &land);
 
 
@@ -36,6 +38,7 @@ class Land
 		virtual std::string getSymbol() const;
 		virtual int 		getHeight() const;
 		virtual Land*		getNeighbor(int index) const;
+		virtual Vec3		getColor() const;
 
 		virtual void 		setType(std::string type);
 		virtual void 		setSize(int size);
@@ -43,7 +46,8 @@ class Land
 		virtual void 		setSymbol(std::string symbol);
 		virtual void 		setHeight(int height);
 		virtual void 		setNeighbor(int index, Land *neighbor);
-		
+		virtual void 		setColor(Vec3 color);
+
 		virtual bool 		isVoid() const;
 
 

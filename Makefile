@@ -6,7 +6,7 @@
 #    By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/10 10:51:07 by pageblanche       #+#    #+#              #
-#    Updated: 2025/07/18 19:25:18 by axdubois         ###   ########.fr        #
+#    Updated: 2025/07/19 11:31:12 by axdubois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRC	= 	srcs/main.cpp					\
 		srcs/Land/Sand.cpp				\
 		srcs/Land/Void.cpp				\
 		srcs/Noise/PerlinNoise.cpp		\
+		srcs/Object/Light.cpp			\
 
 OBJ = $(patsubst srcs/%.cpp,objs/%.o,$(SRC))
 

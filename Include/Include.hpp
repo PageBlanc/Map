@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 14:54:51 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/18 14:36:54 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:01:53 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <string>
 # include <map>
 # include <ctime>
-# include <math.h>
 # include <cstdlib>
 #include <glm/glm.hpp>
 #include <queue>

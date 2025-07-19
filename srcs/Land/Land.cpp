@@ -14,13 +14,13 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Land::Land() : _type("Land"), _symbol(VOID), _id(0), _size(0), _height(0)
+Land::Land() : _type("Land"), _symbol(VOID), _id(0), _size(0), _height(0), _color(0.0f, 0.0f, 0.0f)
 {
 	for (int i = 0; i < 6; i++)
 		_neighbors[i] = NULL;
 }
 
-Land::Land(std::string type, long id, int size) : _type(type), _symbol(VOID), _id(id), _size(size), _height(0)
+Land::Land(std::string type, long id, int size, Vec3 color) : _type(type), _symbol(VOID), _id(id), _size(size), _height(0), _color(color)
 {
 	for (int i = 0; i < 6; i++)
 		_neighbors[i] = NULL;
@@ -64,6 +64,11 @@ Land* Land::getNeighbor(int index) const
 		return NULL;
 	return _neighbors[index];
 }
+
+Vec3 Land::getColor() const
+{
+	return _color;
+}
 /*-------------------------------------SETTERS-------------------------------------*/
 
 void Land::setType(std::string type)
@@ -103,6 +108,11 @@ bool Land::isVoid() const
 	if (_type == "Void")
 		return true;
 	return false;
+}
+
+void Land::setColor(Vec3 color)
+{
+	_color = color;
 }
 
 /*-------------------------------------OPERATORS-------------------------------------*/

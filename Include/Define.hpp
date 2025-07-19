@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/18 21:30:08 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:07:31 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,45 @@
 # define DEFINE_HPP
 
 # include <vector>
+# include <math.h>
 # include <SDL/SDL.h>
-# include "Land/Land.hpp"
 
 struct Vec3 {
 	float x, y, z;
+	
+	Vec3 operator+(const Vec3 &v) const
+	{
+		return Vec3(x + v.x, y + v.y, z + v.z);
+	}
+	Vec3 operator-(const Vec3 &v) const
+	{
+		return Vec3(x - v.x, y - v.y, z - v.z);
+	}
+	Vec3 operator*(float scalar) const {
+		return Vec3(x * scalar, y * scalar, z * scalar);
+	}
+
+    float dot(const Vec3& v) const
+	{
+		return x * v.x + y * v.y + z * v.z;
+	}
+	Vec3 normalize() const
+	{
+	    float len = sqrt(x*x + y*y + z*z);
+	    return len > 0 ? Vec3(x / len, y / len, z / len) : Vec3(0, 0, 0);
+	}
+	
+	Vec3() : x(0), y(0), z(0) {}
+	Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
 };
+
+# include "Land/Land.hpp"
+# include "Object/Light.hpp"
 
 #define EXPORT 2
 #define WIDTH 800
 #define HEIGHT 600
-#define DRAW_EDGE 1
+#define DRAW_EDGE 0
 
 #	define VOID    	std::string("⬛")
 #	define WATER   	std::string("🟦")
@@ -35,7 +63,7 @@ struct Vec3 {
 #   define HILL		std::string("🟫")
 
 
-void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, Land *land);
+void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, Land *land, Light *light);
 Vec3 rotateZ(Vec3 point, float angle);
 Vec3 translate(Vec3 point, Vec3 translation);
 void drawFPS(Uint32 &lastTime, int &frames, float &fps);
