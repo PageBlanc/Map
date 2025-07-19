@@ -6,14 +6,13 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 14:54:51 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/16 18:38:56 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:36:54 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INCLUDE_HPP
 # define INCLUDE_HPP
 
-#include "Define.hpp"
 
 # include <iostream>
 # include <fstream>
@@ -30,4 +29,5 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 
+#include "Define.hpp"
 #endif

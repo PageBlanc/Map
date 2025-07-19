@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Plains.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
+/*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:39:21 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 14:56:46 by pageblanche      ###   ########.fr       */
+/*   Updated: 2025/07/19 00:39:01 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ class Plains : public Land
     private:
     public:
         Plains();
-        Plains(std::string type, long id, int size);
+        Plains(long id, int size);
         Plains(Plains &plains);
 
         Plains &operator=(const Plains &plains);

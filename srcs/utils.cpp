@@ -6,11 +6,12 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:03:06 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/18 13:45:12 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/18 19:25:39 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/SDL.hpp"
+#include "../Include/Define.hpp"
 
 // Fonction pour appliquer une rotation autour de l'axe Z
 Vec3 rotateZ(Vec3 point, float angle)
@@ -46,10 +47,22 @@ void drawSquareEdge(Vec3 p1, Vec3 p2, Vec3 p3, Vec3 p4)
 	glEnd();
 }
 
-void drawCube(Vec3 position, float size, float rotationAngle)
+void drawFace(Vec3 p1, Vec3 p2, Vec3 p3, Vec3 p4)
+{
+	glBegin(GL_QUADS);
+	glVertex3f(p1.x, p1.y, p1.z);
+	glVertex3f(p2.x, p2.y, p2.z);
+	glVertex3f(p3.x, p3.y, p3.z);
+	glVertex3f(p4.x, p4.y, p4.z);
+	glEnd();
+}
+
+void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, Land *land)
+
 {
 	// Définir les sommets du cube en iso
-	Vec3 vertices[8] = {
+	Vec3 vertices[8] =
+	{
 		{ -size, -size, -size },
 		{  size, -size, -size },
 		{  size,  size, -size },
@@ -60,67 +73,34 @@ void drawCube(Vec3 position, float size, float rotationAngle)
 		{ -size,  size,  size }
 	};
 
-	// Appliquer une rotation autour de l'axe Z
-	for (int i = 0; i < 8; i++) {
-		vertices[i] = rotateZ(vertices[i], rotationAngle);
-	}
+	const int faces[6][4] =
+	{
+	    {0, 1, 2, 3},
+	    {4, 5, 6, 7},
+	    {0, 4, 7, 3},
+	    {1, 5, 6, 2},
+	    {3, 2, 6, 7},
+	    {0, 1, 5, 4} 
+	};
 
-	// Appliquer une translation
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 8; i++)
+	{
+		vertices[i] = rotateZ(vertices[i], rotationAngle);
 		vertices[i] = translate(vertices[i], position);
 	}
-	
-	//dessiner les cubes
-	glBegin(GL_QUADS);
-	
-	// Face avant
-	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
-	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
-	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
-	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
 
-	// Face arrière
-	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
-	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
-	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
-	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
-
-	// Face supérieure
-	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
-	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
-	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
-	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
-
-	// Face inférieure
-	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
-	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
-	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
-	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
-
-	// Face droite
-	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
-	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
-	glVertex3f(vertices[6].x, vertices[6].y, vertices[6].z);
-	glVertex3f(vertices[5].x, vertices[5].y, vertices[5].z);
-
-	// Face gauche
-	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
-	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
-	glVertex3f(vertices[7].x, vertices[7].y, vertices[7].z);
-	glVertex3f(vertices[4].x, vertices[4].y, vertices[4].z);
-
-	glEnd();
-
-	if (DRAW_EDGE)
+	for (int i = 0; i < 6; i++)
 	{
-		// Dessiner les arêtes du cube
-		glColor3f(1.0f, 1.0f, 1.0f); // Couleur des arêtes
-		drawSquareEdge(vertices[0], vertices[1], vertices[2], vertices[3]);
-		drawSquareEdge(vertices[4], vertices[5], vertices[6], vertices[7]);
-		drawSquareEdge(vertices[0], vertices[4], vertices[5], vertices[1]);
-		drawSquareEdge(vertices[2], vertices[6], vertices[7], vertices[3]);
-		drawSquareEdge(vertices[0], vertices[3], vertices[7], vertices[4]);
-		drawSquareEdge(vertices[1], vertices[2], vertices[6], vertices[5]);
+	    if (drawface[i])
+		{
+        	drawFace(vertices[faces[i][0]], vertices[faces[i][1]], vertices[faces[i][2]], vertices[faces[i][3]]);
+			if (DRAW_EDGE == 1)
+			{
+				glColor3f(1.0f, 1.0f, 1.0f);
+				drawSquareEdge(vertices[faces[i][0]], vertices[faces[i][1]], vertices[faces[i][2]], vertices[faces[i][3]]);
+				choiseColor(land);
+			}
+	    }
 	}
 }
 
@@ -174,4 +154,26 @@ void drawCoordinates(Vec3 cam_pos, float cam_pitch, float cam_yaw)
 		SDL_WM_SetCaption(coordinates, NULL);
 		lastUpdate = currentTime;
 	}
+}
+
+void	choiseColor(Land *land)
+{
+	if (land->getType() == "Water")
+		glColor3f(0.0f, 0.0f, 1.0f);
+	else if (land->getType() == "Plains")
+		glColor3f(0.0f, 1.0f, 0.0f);
+	else if (land->getType() == "Sand")
+		glColor3f(1.0f, 1.0f, 0.0f);
+	else if (land->getType() == "Mountain")
+		glColor3f(0.5f, 0.5f, 0.5f);
+	else if (land->getType() == "Forest")
+		glColor3f(0.0f, 0.5f, 0.0f);
+	else if (land->getType() == "Desert")
+		glColor3f(1.0f, 0.5f, 0.0f);
+	else if (land->getType() == "Snow")
+		glColor3f(1.0f, 1.0f, 1.0f);
+	else if (land->getType() == "Void")
+		glColor3f(1.0f, 0.0f, 1.0f);
+	else
+		glColor3f(1.0f, 1.0f, 1.0f);
 }

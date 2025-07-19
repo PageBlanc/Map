@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/18 13:42:57 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/18 21:30:08 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define DEFINE_HPP
 
 # include <vector>
-#include <SDL/SDL.h>
+# include <SDL/SDL.h>
+# include "Land/Land.hpp"
 
 struct Vec3 {
 	float x, y, z;
@@ -34,11 +35,13 @@ struct Vec3 {
 #   define HILL		std::string("🟫")
 
 
-void drawCube(Vec3 position, float size, float rotationAngle);
+void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, Land *land);
 Vec3 rotateZ(Vec3 point, float angle);
 Vec3 translate(Vec3 point, Vec3 translation);
 void drawFPS(Uint32 &lastTime, int &frames, float &fps);
 void drawCoordinates(Vec3 cam_pos, float cam_pitch, float cam_yaw);
 void drawplane(Vec3 position, float size, float rotationAngle);
+void choiseColor(Land *land);
+
 
 #endif

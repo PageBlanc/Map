@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:19:21 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/16 14:23:13 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 00:39:50 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,14 @@ Sand::Sand() : Land("Sand", 0, 0)
 	_symbol = SAND;
 }
 
-Sand::Sand(std::string type, long id, int size) : Land(type, id, size)
+Sand::Sand(long id, int size) : Land("Sand", id, size)
 {
-	_height =  2;
+	_height = 2;
 	_symbol = SAND;
 }
 
 Sand::Sand(const Sand &sand) : Land(sand)
 {
-	if (*this != sand)
-		delete this;
 	*this = sand;
 }
 

@@ -6,12 +6,13 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:36:02 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/18 13:42:57 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:17:11 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/SDL.hpp"
 #include "../Include/Map/Mainland.hpp"
+#include "../Include/Map/Amplified.hpp"
 
 SDL::SDL() {}
 
@@ -46,9 +47,9 @@ void SDL::init(int mapwidth, int mapheight)
 	glLoadIdentity();
 	gluPerspective(70.0, (double)WIDTH / HEIGHT, 1.0, 100.0);
 	glMatrixMode(GL_MODELVIEW);
-	_map = new Mainland("Mainland", mapwidth, mapheight);
-
+	
 	std::cout << "Initializing variables..." << std::endl;
+	_map = new Amplified(mapwidth, mapheight);
 	_zoom = 0.2f;
 	_move_speed = 0.2f;
 	_zoom_speed = 0.05f;
@@ -56,9 +57,8 @@ void SDL::init(int mapwidth, int mapheight)
 	_cam.y = 2.0f;
 	_cam.z = -5.0f; 
 	_cam_pitch = -60.0f;
-	_cam_yaw = 45.0f;
-	
-	memset(&_event, 0, sizeof(SDL_Event)); // Initialize the SDL_Event structure
+	_cam_yaw = 45.0f;	
+	_event = SDL_Event();
 	
 	_running = true;
 	std::cout << "SDL initialized successfully" << std::endl;
@@ -108,13 +108,13 @@ void SDL::handleInput()
 		_cam.z += _move_speed;
 	}
 	if (state[SDLK_LEFT])
-		_cam_yaw -= 1.0f;
+		_cam_yaw -= 3.0f;
 	if (state[SDLK_RIGHT])
-		_cam_yaw += 1.0f;
+		_cam_yaw += 3.0f;
 	if (state[SDLK_UP])
-		_cam_pitch -= 1.0f;
+		_cam_pitch -= 3.0f;
 	if (state[SDLK_DOWN])
-		_cam_pitch += 1.0f;
+		_cam_pitch += 3.0f;
 }
 
 void SDL::handleMouse()
@@ -195,7 +195,7 @@ void SDL::render()
 		
 		glEnable(GL_DEPTH_TEST);
 		drawFPS(lastTime, frames, fps);
-		drawCoordinates(_cam, _cam_pitch, _cam_yaw);
+		// drawCoordinates(_cam, _cam_pitch, _cam_yaw);
 		// Vec3 cubepos = {0.0f, 0.0f, 0.0f};
 		// glColor3f(1.0f, 0.0f, 1.0f); // Set color to purple
 		// drawCube(cubepos, 10.0f, 0.0f);

@@ -14,14 +14,20 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Land::Land() : _type("Land"), _symbol(VOID), _id(0), _size(0), _height(0) {}
+Land::Land() : _type("Land"), _symbol(VOID), _id(0), _size(0), _height(0)
+{
+	for (int i = 0; i < 6; i++)
+		_neighbors[i] = NULL;
+}
 
-Land::Land(std::string type, long id, int size) : _type(type), _symbol(VOID), _id(id), _size(size), _height(0) {}
+Land::Land(std::string type, long id, int size) : _type(type), _symbol(VOID), _id(id), _size(size), _height(0)
+{
+	for (int i = 0; i < 6; i++)
+		_neighbors[i] = NULL;
+}
 
 Land::Land(Land const &land)
 {
-	if (*this != land)
-		delete this;
 	*this = land;
 }
 
@@ -51,6 +57,13 @@ int Land::getHeight() const
 {
 	return _height;
 }
+
+Land* Land::getNeighbor(int index) const
+{
+	if (index < 0 || index >= 6)
+		return NULL;
+	return _neighbors[index];
+}
 /*-------------------------------------SETTERS-------------------------------------*/
 
 void Land::setType(std::string type)
@@ -78,11 +91,69 @@ void Land::setHeight(int height)
 	_height = height;
 }
 
+void Land::setNeighbor(int index, Land *neighbor)
+{
+	if (index < 0 || index >= 6)
+		return;
+	_neighbors[index] = neighbor;
+}
+
+bool Land::isVoid() const
+{
+	if (_type == "Void")
+		return true;
+	return false;
+}
+
 /*-------------------------------------OPERATORS-------------------------------------*/
 
 std::ofstream &operator<<(std::ofstream &os, Land *land)
 {
-	os << land->getHeight() << "," << std::endl;
+	if (!land)
+	{
+		os << "Land(nullptr)";
+		return os;
+	}
+	os << "Land(type=" << land->getType()
+	   << ", id=" << land->getId()
+	   << ", size=" << land->getSize()
+	   << ", symbol=" << land->getSymbol()
+	   << ", height=" << land->getHeight() << ")";
+	return os;
+}
+
+std::ofstream &operator<<(std::ofstream &os, Land &land)
+{
+	os << "Land(type=" << land.getType()
+	   << ", id=" << land.getId()
+	   << ", size=" << land.getSize()
+	   << ", symbol=" << land.getSymbol()
+	   << ", height=" << land.getHeight() << ")";
+	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, Land *land)
+{
+	if (!land)
+	{
+		os << "Land(nullptr)";
+		return os;
+	}
+	os << "Land(type=" << land->getType()
+	   << ", id=" << land->getId()
+	   << ", size=" << land->getSize()
+	   << ", symbol=" << land->getSymbol()
+	   << ", height=" << land->getHeight() << ")";
+	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, Land &land)
+{
+	os << "Land(type=" << land.getType()
+	   << ", id=" << land.getId()
+	   << ", size=" << land.getSize()
+	   << ", symbol=" << land.getSymbol()
+	   << ", height=" << land.getHeight() << ")";
 	return os;
 }
 

@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:37:30 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/16 14:23:13 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 01:03:29 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Plains::Plains(std::string type, long id, int size)
+Plains::Plains() : Land("Plains", 0, 0)
 {
-	_type = type;
-	_id = id;
-	_size = size;
+	_height = 3;
+	_symbol = PLAINS;
+}
+
+Plains::Plains(long id, int size) : Land("Plains", id, size)
+{
 	_height = 3;
 	_symbol = PLAINS;
 }
 
 Plains::Plains(Plains &plains) : Land(plains)
 {
-	if (*this != plains)
-		delete this;
 	*this = plains;
 }
 

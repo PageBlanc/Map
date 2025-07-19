@@ -13,6 +13,7 @@
 #include "../Include.hpp"
 #include "../Land/Land.hpp"
 #include "../SDL.hpp"
+#include "../Noise/PerlinNoise.hpp"
 
 #ifndef MAP_HPP
 # define MAP_HPP
@@ -28,13 +29,12 @@ class Map
 		const int								_seed;
 		const int								_width;
 		const int								_height;
+		const int								_depth;
 
 
 	public:
 		Map();
-		Map(std::string type);
 		Map(std::string type, int x, int y);
-		Map(std::string type, int smoothness, int density, int x, int y);
 		Map(const Map &map);
 
 		virtual std::vector<std::vector<Land *> >		getMap() 				const;
@@ -56,6 +56,8 @@ class Map
 		virtual void    gameMap() = 0;
 
 		Map &operator=(const Map &map);
+		bool operator==(const Map &map) const;
+		bool operator!=(const Map &map) const;
 		virtual ~Map();
 };
 

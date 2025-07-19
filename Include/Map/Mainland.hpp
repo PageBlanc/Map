@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Mainland.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
+/*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:01 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/16 16:50:43 by pageblanche      ###   ########.fr       */
+/*   Updated: 2025/07/18 14:20:15 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ class Mainland : public Map
 {
 	public:
 		Mainland();
-		Mainland(std::string type, int x, int y);
-		Mainland(std::string type, int x, int y, int smoothness, int density);
+		Mainland(int x, int y);
 		Mainland(const Mainland &mainland);
 
 		void	gameMap();

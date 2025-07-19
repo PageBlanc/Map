@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/18 13:35:44 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/18 23:57:33 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,22 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Map::Map() :  _type("Map"), _smoothness(0), _density(0), _seed(0), _width(0), _height(0) {}
-
-Map::Map(std::string type) :  _type(type), _smoothness(0), _density(0), _seed(0), _width(0), _height(0)
+Map::Map() :  _type("Map"), _smoothness(0), _density(0), _seed(0), _width(0), _height(0), _depth(0)
 {
-	// initMap(rand() % 150 + 50, rand() % 150 + 50);
-	// initNearLand();
+	// _map = std::vector<std::vector<Land *> >();
+	_nearLands = std::map<Land *, std::vector<Land *> >();
 }
 
-Map::Map(std::string type, int x, int y) :  _type(type), _smoothness(0), _density(0), _seed(0), _width(x), _height(y)
+Map::Map(std::string type, int x, int y) : _type(type), _smoothness(0), _density(0), _seed(0), _width(x), _height(y), _depth(0)
 {
-	// initMap(x, y);
-	// initNearLand();
+	// _map.resize(_width, std::vector<Land *>(_height, nullptr));
+	_nearLands = std::map<Land *, std::vector<Land *> >();
 }
 
-Map::Map(std::string type, int smoothness, int density, int x, int y) :  _type(type), _smoothness(smoothness), _density(density), _seed(std::rand()), _width(x), _height(y)
+Map::Map(const Map &map) : _type(map._type), _smoothness(map._smoothness), _density(map._density), _seed(map._seed), _width(map._width), _height(map._height), _depth(map._depth)
 {
-	// initMap(x, y);
-	// initNearLand();
-}
-
-Map::Map(Map const &map) : _type(map._type), _smoothness(map._smoothness), _density(map._density), _seed(map._seed), _width(map._width), _height(map._height)
-{
+	if (*this != map)
+		delete this;
 	*this = map;
 }
 	
@@ -86,7 +80,6 @@ void		Map::setLand(int x, int y, Land &land)
 void		Map::setNearLands(Land &land, std::vector<Land *> nearLands)
 {
 	_nearLands[&land] = nearLands;
-	
 }
 
 /*-------------------------------------PRINT-------------------------------------*/
@@ -128,25 +121,7 @@ Vec3 Map::convertIsoTo3D(float x, float y, float z) const
 	return newPoint;
 }
 
-void	choiseColor(Land *land)
-{
-	if (land->getType() == "Water")
-		glColor3f(0.0f, 0.0f, 1.0f);
-	else if (land->getType() == "Plains")
-		glColor3f(0.0f, 1.0f, 0.0f);
-	else if (land->getType() == "Sand")
-		glColor3f(1.0f, 1.0f, 0.0f);
-	else if (land->getType() == "Mountain")
-		glColor3f(0.5f, 0.5f, 0.5f);
-	else if (land->getType() == "Forest")
-		glColor3f(0.0f, 0.5f, 0.0f);
-	else if (land->getType() == "Desert")
-		glColor3f(1.0f, 0.5f, 0.0f);
-	else if (land->getType() == "Snow")
-		glColor3f(1.0f, 1.0f, 1.0f);
-	else
-		glColor3f(1.0f, 1.0f, 1.0f);
-}
+
 
 // Fonction pour dessiner les arêtes d'un cube en isométrie en fonction des voisins
 void hilightEdgeNearLand(Vec3 vertices[8], std::vector<Land *> nearLands) {
@@ -246,7 +221,7 @@ void Map::renderMap() const
 			{
 				Vec3 position = { (float) i, (float) j, (float) k };
 				choiseColor(land);
-				drawCube(position, 1.0f, 0.0f);
+				drawCube(position, 1.0f, 0.0f, NULL, land);
 			}
 		}
 	}
@@ -258,6 +233,16 @@ Map &Map::operator=(const Map &map)
 {
 	_map = map._map;
 	return *this;
+}
+
+bool Map::operator==(const Map &map) const
+{
+	return _type == map._type && _width == map._width && _height == map._height;
+}
+
+bool  Map::operator!=(const Map &map) const
+{
+	return !(*this == map);
 }
 
 /*-------------------------------------DESTRUCTOR-------------------------------------*/

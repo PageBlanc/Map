@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Water.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pageblanche <pageblanche@student.42.fr>    +#+  +:+       +#+        */
+/*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:53:36 by pageblanche       #+#    #+#             */
-/*   Updated: 2024/08/11 09:54:36 by pageblanche      ###   ########.fr       */
+/*   Updated: 2025/07/19 00:38:00 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ class Water : public Land
     private:
     public:
         Water();
-        Water(std::string type, long id, int size);
+        Water(long id, int size);
         Water(Water &water);
 
         Water &operator=(const Water &water);

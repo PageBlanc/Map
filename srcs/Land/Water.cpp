@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:53:49 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/16 14:23:13 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/19 01:03:29 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Water::Water(std::string type, long id, int size)
+Water::Water() : Land("Water", 0, 0)
 {
-	_type = type;
-	_id = id;
-	_size = size;
+	_height = 1;
+	_symbol = WATER;
+}
+
+Water::Water(long id, int size): Land("Water", id, size)
+{
 	_height = 1;
 	_symbol = WATER;
 }
