@@ -49,7 +49,7 @@ class Map
 		virtual void									setLand(int x, int y, Land &land);
 		virtual void									setNearLands(Land &land, std::vector<Land *> nearLands);
 
-		virtual void	renderMap()					const;
+		virtual void	renderMap(Vec3 cameraPos) const;
 		virtual Vec3  	convertIsoTo3D(float x, float y, float z) const;
 	
 		virtual void	printMap() 					const;

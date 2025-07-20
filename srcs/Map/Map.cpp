@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:06:46 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/19 14:11:24 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/20 09:54:36 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Map::Map() :  _type("Map"), _smoothness(0), _density(0), _seed(0), _width(0), _height(0), _depth(0)
+Map::Map() :  _type("Map"), _smoothness(0), _density(0), _seed(rand()), _width(0), _height(0), _depth(0)
 {
 	_light = new Light();
 	_nearLands = std::map<Land *, std::vector<Land *> >();
 }
 
-Map::Map(std::string type, int x, int y) : _type(type), _smoothness(0), _density(0), _seed(0), _width(x), _height(y), _depth(0)
+Map::Map(std::string type, int x, int y) : _type(type), _smoothness(0), _density(0), _seed(rand()), _width(x), _height(y), _depth(0)
 {
 	_light = new Light();
 	_nearLands = std::map<Land *, std::vector<Land *> >();
@@ -208,8 +208,9 @@ void hilightEdgeNearLand(Vec3 vertices[8], std::vector<Land *> nearLands) {
 	glEnd();
 }
 
-void Map::renderMap() const
+void Map::renderMap(Vec3 cameraPos) const
 {
+	(void)cameraPos;
 	for (size_t i = _map.size(); i-- > 0;)
 	{
 		for (size_t j = _map[i].size(); j-- > 0;)

@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:36:02 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/19 11:01:10 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/20 12:07:42 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,12 @@ void SDL::init(int mapwidth, int mapheight)
 	_zoom = 0.2f;
 	_move_speed = 0.2f;
 	_zoom_speed = 0.05f;
-	_cam.x = 2.0f;
-	_cam.y = 2.0f;
+	_cam.x = 0.0f;
+	_cam.y = 0.0f;
 	_cam.z = -5.0f; 
 	_cam_pitch = -60.0f;
 	_cam_yaw = 45.0f;	
 	_event = SDL_Event();
-
 	
 	_running = true;
 	std::cout << "SDL initialized successfully" << std::endl;
@@ -109,13 +108,27 @@ void SDL::handleInput()
 		_cam.z += _move_speed;
 	}
 	if (state[SDLK_LEFT])
+	{
 		_cam_yaw -= 3.0f;
+		if (_cam_yaw < 0.0f) _cam_yaw += 360.0f;
+		if (_cam_yaw >= 360.0f) _cam_yaw -= 360.0f;
+	}
 	if (state[SDLK_RIGHT])
+	{
 		_cam_yaw += 3.0f;
+		if (_cam_yaw < 0.0f) _cam_yaw += 360.0f;
+		if (_cam_yaw >= 360.0f) _cam_yaw -= 360.0f;
+	}
 	if (state[SDLK_UP])
+	{
 		_cam_pitch -= 3.0f;
+		if (_cam_pitch < -180.0f) _cam_pitch = -180.0f;
+	}
 	if (state[SDLK_DOWN])
+	{
 		_cam_pitch += 3.0f;
+		if (_cam_pitch > 0.0f) _cam_pitch = 0.0f;
+	}
 }
 
 void SDL::handleMouse()
@@ -197,10 +210,7 @@ void SDL::render()
 		glEnable(GL_DEPTH_TEST);
 		drawFPS(lastTime, frames, fps);
 		// drawCoordinates(_cam, _cam_pitch, _cam_yaw);
-		// Vec3 cubepos = {0.0f, 0.0f, 0.0f};
-		// glColor3f(1.0f, 0.0f, 1.0f); // Set color to purple
-		// drawCube(cubepos, 10.0f, 0.0f);
-		_map->renderMap();
+		_map->renderMap(_cam);
 		SDL_GL_SwapBuffers();
 	}
 }

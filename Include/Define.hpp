@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/19 14:07:31 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/20 13:38:59 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ struct Vec3 {
 	{
 		return x * v.x + y * v.y + z * v.z;
 	}
+
+	float length() const
+	{
+		return sqrt(x * x + y * y + z * z);
+	}
+	
 	Vec3 normalize() const
 	{
 	    float len = sqrt(x*x + y*y + z*z);
@@ -50,9 +56,13 @@ struct Vec3 {
 # include "Object/Light.hpp"
 
 #define EXPORT 2
-#define WIDTH 800
-#define HEIGHT 600
-#define DRAW_EDGE 0
+#define WIDTH 1000
+#define HEIGHT 800
+#define DRAW_EDGE 1
+#define MAX_RENDER_DISTANCE 50.0f
+#define VOXEL_SIZE 1.0f
+#define SCALE 5
+#define DEBUG 0
 
 #	define VOID    	std::string("⬛")
 #	define WATER   	std::string("🟦")

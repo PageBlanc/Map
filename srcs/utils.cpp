@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:03:06 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/19 18:16:02 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/20 10:54:31 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ float calculateLighting(Vec3 normal, Light *light)
 
 void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, Land *land, Light *light)
 {
-	if (!land)
-		return;
+	if (!land) return;
 	const int faces[6][4] =
 	{
 		{0, 1, 2, 3},
@@ -105,7 +104,7 @@ void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, La
 		Vec3(-1, 0, 0), 
 		Vec3(0, -1, 0),
 		Vec3(0, 1, 0)  
-	};	
+	};
 
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
