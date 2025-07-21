@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:35:20 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/19 01:03:29 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/20 14:51:59 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	Mainland::connectLand()
 				if (countNearSameLand(i, j, _width, "Plains", rand()) > 2)
 				{
 					delete _map[i][j];
-					_map[i][j] = new Plains(i, 10);
+					_map[i][j] = new Plains(i, j, 0, 10);		
 				}
 			}
 			else if (_map[i][j]->getType() == "Plains")
@@ -123,7 +123,7 @@ void	Mainland::connectLand()
 				if (countNearSameLand(i, j, _width, "Water", rand()) > 3)
 				{
 					delete _map[i][j];
-					_map[i][j] = new Water(i, 10);
+					_map[i][j] = new Water(i, j, 0, 10);
 				}
 			}
 		}
@@ -183,10 +183,10 @@ void Mainland::generatePerlinMap() {
 
 			if (heightValue > 0.1f) {
 				delete _map[x][y];
-				_map[x][y] = new Plains(y, 10);
+				_map[x][y] = new Plains(x, y, 0, heightValue * 10);
 			} else {
 				delete _map[x][y];
-				_map[x][y] = new Water(y, 10);
+				_map[x][y] = new Water(x, y, 0, 10);
 			}
 		}
 	}
@@ -203,22 +203,22 @@ void	Mainland::PutSand()
 				if (i > 0 && _map[i - 1][j]->getType() == "Plains")
 				{
 					delete _map[i][j];
-					_map[i][j] = new Sand(i, 10);
+					_map[i][j] = new Sand(i - 1, j, 0, 10);
 				}
 				if (i < _width - 1 && _map[i + 1][j]->getType() == "Plains")
 				{
 					delete _map[i][j];
-					_map[i][j] = new Sand(i, 10);
+					_map[i][j] = new Sand(i + 1, j, 0, 10);
 				}
 				if (j > 0 && _map[i][j - 1]->getType() == "Plains")
 				{
 					delete _map[i][j];
-					_map[i][j] = new Sand(i, 10);
+					_map[i][j] = new Sand(i, j - 1, 0, 10);
 				}
 				if (j < _height - 1 && _map[i][j + 1]->getType() == "Plains")
 				{
 					delete _map[i][j];
-					_map[i][j] = new Sand(i, 10);
+					_map[i][j] = new Sand(i, j + 1, 0, 10);
 				}
 			}
 		}

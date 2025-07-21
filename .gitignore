@@ -3,3 +3,6 @@
 *.vscode
 */*.gch
 callgrind.*
+objs/
+out.txt
+Map

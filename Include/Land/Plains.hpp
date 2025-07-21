@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 12:39:21 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/19 00:39:01 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/20 14:44:10 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
 
 class Plains : public Land
 {
-    private:
     public:
         Plains();
-        Plains(long id, int size);
+        Plains(int x, int y, int z, int height);
         Plains(Plains &plains);
 
         Plains &operator=(const Plains &plains);

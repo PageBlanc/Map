@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Void.hpp                                           :+:      :+:    :+:   */
+/*   Ice.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 19:15:00 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/20 14:44:21 by axdubois         ###   ########.fr       */
+/*   Created: 2025/07/20 14:14:44 by axdubois          #+#    #+#             */
+/*   Updated: 2025/07/20 14:41:51 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VOID_HPP
-#define VOID_HPP
+#ifndef ICE_HPP
+#define ICE_HPP
 
 #include "Land.hpp"
 
-class Void : public Land
+class Ice : public Land
 {
-    public:
-        Void();
-        Void(int x, int y, int z, int height);
-        Void(const Void &voidLand);
-        ~Void();
-        
-        Void &operator=(const Void &voidLand);
-        
+	public:
+		Ice();
+		Ice(int x, int y, int z, int height);
+		~Ice();
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:53:49 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/19 12:42:56 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/20 14:48:35 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,19 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Water::Water() : Land("Water", 0, 0, Vec3(0.0f, 0.0f, 1.0f))
+Water::Water() : Land("Water", 0, 0, Vec3(0.0f, 0.0f, 1.0f), Vec3(0, 0, 0), 0)
+
 {
-	_height = 1;
 	_symbol = WATER;
 }
 
-Water::Water(long id, int size): Land("Water", id, size , Vec3(0.0f, 0.0f, 1.0f))
+Water::Water(int x, int y, int z, int height) : Land("Water", x + y + z, 0, Vec3(0.0f, 0.0f, 1.0f), Vec3(x, y, z), height)
 {
-	_height = 1;
 	_symbol = WATER;
 }
 
-Water::Water(Water &water) : Land(water)
+Water::Water(const Water &water) : Land(water)
 {
-	if (*this != water)
-		delete this;
 	*this = water;
 }
 

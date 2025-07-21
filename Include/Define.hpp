@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/20 13:38:59 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/21 13:50:44 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ struct Vec3 {
 #define WIDTH 1000
 #define HEIGHT 800
 #define DRAW_EDGE 1
-#define MAX_RENDER_DISTANCE 50.0f
-#define VOXEL_SIZE 1.0f
+#define MAX_RENDER_DISTANCE 100.0f
+#define VOXEL_SIZE 0.5f
 #define SCALE 5
 #define DEBUG 0
 

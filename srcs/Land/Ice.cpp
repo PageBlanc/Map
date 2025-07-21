@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Void.hpp                                           :+:      :+:    :+:   */
+/*   Ice.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 19:15:00 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/20 14:44:21 by axdubois         ###   ########.fr       */
+/*   Created: 2025/07/20 14:19:17 by axdubois          #+#    #+#             */
+/*   Updated: 2025/07/20 14:42:47 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VOID_HPP
-#define VOID_HPP
+#include "../../Include/Land/Ice.hpp"
+/*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-#include "Land.hpp"
-
-class Void : public Land
+Ice::Ice() : Land("Ice", 0, 0, Vec3(0.8f, 0.8f, 1.0f), Vec3(0, 0, 0), 0)
 {
-    public:
-        Void();
-        Void(int x, int y, int z, int height);
-        Void(const Void &voidLand);
-        ~Void();
-        
-        Void &operator=(const Void &voidLand);
-        
-};
+	_symbol = ICE;
+}
 
-#endif
+Ice::Ice(int x, int y, int z, int height) : Land("Ice", x + y + z, 0, Vec3(0.8f, 0.8f, 1.0f), Vec3(x, y, z), height)
+{
+	_symbol = ICE;
+}
+
+Ice::~Ice()
+{
+	// Destructor logic if needed
+}

@@ -6,7 +6,7 @@
 #    By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/10 10:51:07 by pageblanche       #+#    #+#              #
-#    Updated: 2025/07/19 18:50:49 by axdubois         ###   ########.fr        #
+#    Updated: 2025/07/21 20:04:18 by axdubois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,8 @@ SRC	= 	srcs/main.cpp					\
 		srcs/Land/Sand.cpp				\
 		srcs/Land/Mountain.cpp			\
 		srcs/Land/Void.cpp				\
+		srcs/Land/Hill.cpp				\
+		srcs/Land/Ice.cpp				\
 		srcs/Noise/PerlinNoise.cpp		\
 		srcs/Object/Light.cpp			\
 

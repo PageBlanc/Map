@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:36:02 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/20 12:07:42 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:24:38 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,7 @@ void SDL::init(int mapwidth, int mapheight)
 	_zoom = 0.2f;
 	_move_speed = 0.2f;
 	_zoom_speed = 0.05f;
-	_cam.x = 0.0f;
-	_cam.y = 0.0f;
-	_cam.z = -5.0f; 
+	_cam = Vec3(0.0f, 0.0f, -5.0f);
 	_cam_pitch = -60.0f;
 	_cam_yaw = 45.0f;	
 	_event = SDL_Event();

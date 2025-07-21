@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:19:21 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/19 23:03:55 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/20 14:45:51 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 /*-------------------------------------CONSTRUCTORS-------------------------------------*/
 
-Sand::Sand() : Land("Sand", 0, 0, Vec3(1.0f, 1.0f, 0.0f))
+Sand::Sand() : Land("Sand", 0, 0, Vec3(1.0f, 1.0f, 0.0f), Vec3(0, 0, 0), 0)
 {
-	_height = 2;
 	_symbol = SAND;
 }
 
-Sand::Sand(long id, int size) : Land("Sand", id, size , Vec3(1.0f, 1.0f, 0.0f))
+Sand::Sand(int x, int y, int z, int height) : Land("Sand", x + y + z, 0, Vec3(1.0f, 1.0f, 0.0f), Vec3(x, y, z), height)
 {
-	_height = 2;
 	_symbol = SAND;
 }
 

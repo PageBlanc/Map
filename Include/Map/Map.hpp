@@ -25,12 +25,12 @@ class Map
 		std::vector<std::vector<Land *> >		_map;
 		std::map<Land *, std::vector<Land *> >	_nearLands;
 		const std::string						_type;
-		const int								_smoothness;
-		const int								_density;
-		const int								_seed;
-		const int								_width;
-		const int								_height;
-		const int								_depth;
+		int										_smoothness;
+		int										_density;
+		int										_seed;
+		int										_width;
+		int										_height;
+		int										_depth;
 		Light									*_light;
 
 	public:
