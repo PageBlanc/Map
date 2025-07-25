@@ -6,7 +6,7 @@
 #    By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/10 10:51:07 by pageblanche       #+#    #+#              #
-#    Updated: 2025/07/21 20:04:18 by axdubois         ###   ########.fr        #
+#    Updated: 2025/07/25 11:53:24 by axdubois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,7 @@ NAME	= Map
 
 LDFLAGS = -lSDL -lGL -lGLU
 
-OBJ		= $(SRC:.cpp=.o)
-
-CFLAGS	= -Wall -Wextra -Werror -std=c++98 -g
+CFLAGS	= -Wall -Wextra -Werror -std=c++98 -g -O2
 
 SRC	= 	srcs/main.cpp					\
 		srcs/SDL.cpp					\
@@ -39,19 +37,20 @@ SRC	= 	srcs/main.cpp					\
 
 OBJ = $(patsubst srcs/%.cpp,objs/%.o,$(SRC))
 
-objs/%.o: srcs/%.cpp
-	$(CXX) $(CFLAGS) -I Include -c $< -o $@
-
 all: $(NAME)
 
-.cpp.o:
-	$(CXX) $(CFLAGS) -I Include -c $< -o objs/$(notdir $(<:.cpp=.o))
+objs/%.o: srcs/%.cpp | objs
+	@mkdir -p $(dir $@)
+	$(CXX) $(CFLAGS) -I Include -c $< -o $@
+
+objs:
+	@mkdir -p objs/Land objs/Map objs/Noise objs/Object
 
 $(NAME): $(OBJ)
 	$(CXX) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
 	
 clean:
-	rm -f objs/*.o
+	rm -rf objs
 
 fclean: clean
 	rm -f $(NAME)

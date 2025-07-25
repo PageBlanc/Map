@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:50:24 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/21 13:51:07 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/25 14:16:03 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ Amplified::Amplified() : Map()
 
 Amplified::Amplified(int width, int height) : Map("Amplified", width, height)
 {
-	_depth = 25;
-	
+	_depth = 64;
     _map.resize(width);
     for (int x = 0; x < width; ++x)
     {
@@ -84,7 +83,7 @@ void Amplified::SetAllLandNeighbors(int x, int y, int z, Land *land) const
 
 double Amplified::createCliffs(double height, int x, int y)
 {
-    PerlinNoise noise(_seed + 1000);
+    static PerlinNoise noise(_seed + 1000);
     
     double cliffNoise = noise.noise((double)x * 0.05, (double)y * 0.05);
     double ridgeNoise = noise.noise((double)x * 0.12, (double)y * 0.12);
@@ -145,10 +144,8 @@ void Amplified::generateColumn(int x, int y)
 
 Land* Amplified::createLandByDepth(int x, int y, int currentZ, double totalHeight, double temperature)
 {
-    // Génération par couches selon la profondeur
     if (currentZ == 0)
     {
-        // Couche de surface selon la hauteur totale
         if (totalHeight <= 2)
             return new Water(x, y, currentZ, totalHeight);
         else if (totalHeight <= 5)
@@ -165,52 +162,31 @@ Land* Amplified::createLandByDepth(int x, int y, int currentZ, double totalHeigh
         else
             return new Mountain(x, y, currentZ, totalHeight);
     }
-    else if (currentZ < totalHeight * 0.1) // 10% supérieur = terre/sable
-    {
+    else if (currentZ < totalHeight * 0.1)
         return new Sand(x, y, currentZ, totalHeight);
-    }
-    else if (currentZ < totalHeight * 0.8) // 80% = roche
-    {
-        return new Hill(x, y, currentZ, totalHeight); // ou Stone si tu en as
-    }
-    else // Fond = montagne/roche dure
-    {
+    else if (currentZ < totalHeight * 0.8)
+        return new Hill(x, y, currentZ, totalHeight);
+    else
         return new Mountain(x, y, currentZ, totalHeight);
-    }
-}
-
-Land* Amplified::getVoxel(int x, int y, int z) const
-{
-    if (x < 0 || x >= (int)_voxelMap.size() || 
-        y < 0 || y >= (int)_voxelMap[0].size() || 
-        z < 0 || z >= _depth)
-	{
-        return NULL;
-    }
-    return _voxelMap[x][y][z];
 }
 
 bool Amplified::hasVisibleFace(bool *drawface, Land* currentVoxel) const
 {
-	if (currentVoxel->isVoid())
-		return false;
+	bool hasAnVisibleFace = false;
 
 	for (int i = 0; i < 6; ++i)
 	{
 		if (currentVoxel->getNeighbor(i) == NULL)
 			drawface[i] = false;
 		else if (currentVoxel->getNeighbor(i)->isVoid())
+		{
 			drawface[i] = true;
+			hasAnVisibleFace = true;
+		}
 		else
 			drawface[i] = false;
 	}
-	
-	for (int i = 0; i < 6; ++i)
-	{
-		if (drawface[i])
-			return true;
-	}
-	return false;
+	return hasAnVisibleFace;
 }
 
 void Amplified::renderMap(Vec3 cameraPos) const
@@ -221,7 +197,7 @@ void Amplified::renderMap(Vec3 cameraPos) const
         abs(cameraPos.z) / VOXEL_SIZE * SCALE / 2
     );
 
-    int renderDistance = MAX_RENDER_DISTANCE * VOXEL_SIZE; // Adjust render distance based on scale
+    int renderDistance = MAX_RENDER_DISTANCE * VOXEL_SIZE;
     if (DEBUG == 1)
     {
         std::cout << "=== RENDERING AMPLIFIED MAP ===" << std::endl;
@@ -240,7 +216,7 @@ void Amplified::renderMap(Vec3 cameraPos) const
             for (int z = 0; z < _depth; ++z)
             {
                 Land* currentVoxel = _voxelMap[x][y][z];
-                if (!currentVoxel) continue;
+                if (!currentVoxel || currentVoxel->isVoid()) continue;
 
                 Vec3 voxpos = Vec3( x, y, z );
                 float dist = (voxpos - adjustedCameraPos).length();

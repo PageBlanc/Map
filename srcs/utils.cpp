@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:03:06 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/20 10:54:31 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:31:03 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ float calculateLighting(Vec3 normal, Light *light)
 void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, Land *land, Light *light)
 {
 	if (!land) return;
-	const int faces[6][4] =
+	static const int faces[6][4] =
 	{
 		{0, 1, 2, 3},
 		{4, 5, 6, 7},
@@ -84,7 +84,7 @@ void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, La
 		{0, 1, 5, 4} 
 	};
 
-	Vec3 vertices[8] =
+	static const Vec3 vertices[8] =
 	{
 		Vec3(-size, -size, -size),
 		Vec3(size, -size, -size),
@@ -97,7 +97,7 @@ void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, La
 	};
 
 
-	const Vec3 faceNormals[6] = {
+	static const Vec3 faceNormals[6] = {
 		Vec3(0, 0, 1),
 		Vec3(0, 0, -1), 
 		Vec3(1, 0, 0),
@@ -108,48 +108,27 @@ void drawCube(Vec3 position, float size, float rotationAngle, bool *drawface, La
 
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
-	glRotatef(rotationAngle, 0.0f, 0.0f, 1.0f);
-	glDisable(GL_LIGHTING);
+	if (rotationAngle != 0.0f)
+		glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f);
 	
+	Vec3 BaseColor = land->getColor();
+	
+	glBegin(GL_QUADS);
 	for (int i = 0; i < 6; i++)
 	{
 	    if (drawface && !drawface[i]) continue;
 
         float lighting = calculateLighting(faceNormals[i], light);
-
-		Vec3 BaseColor = land->getColor();
 		glColor3f(lighting * BaseColor.x, lighting * BaseColor.y, lighting * BaseColor.z);
-		glBegin(GL_QUADS);
+		
 		for (int j = 0; j < 4; j++)
 		{
-			Vec3 vertex = vertices[faces[i][j]];
+			const Vec3 vertex = vertices[faces[i][j]];
 			glVertex3f(vertex.x, vertex.y, vertex.z);
 		}
-		glEnd();
 	}
-
-	glPopMatrix();
-}
-
-void drawplane(Vec3 position, float width, float height)
-{
-	Vec3 vertices[4] = {
-		Vec3(-width / 2, -height / 2, 0), // Bas gauche
-		Vec3(width / 2, -height / 2, 0),  // Bas droit
-		Vec3(width / 2, height / 2, 0),   // Haut droit
-		Vec3(-width / 2, height / 2, 0)   // Haut gauche
-	};
-
-	for (int i = 0; i < 4; i++) {
-		vertices[i] = translate(vertices[i], position);
-	}
-
-	glBegin(GL_QUADS);
-	glVertex3f(vertices[0].x, vertices[0].y, vertices[0].z);
-	glVertex3f(vertices[1].x, vertices[1].y, vertices[1].z);
-	glVertex3f(vertices[2].x, vertices[2].y, vertices[2].z);
-	glVertex3f(vertices[3].x, vertices[3].y, vertices[3].z);
 	glEnd();
+	glPopMatrix();
 }
 
 void drawFPS(Uint32 &lastTime, int &frames, float &fps)

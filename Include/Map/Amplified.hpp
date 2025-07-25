@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:49:21 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/20 16:10:21 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:56:04 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ class Amplified : public Map
 		void 	renderMap(Vec3 cameraPos) const;
 		void 	generateColumn(int x, int y);
 		Land*	createLandByDepth(int x, int y, int currentZ, double totalHeight, double temperature);
-		Land*	getVoxel(int x, int y, int z) const;
 		bool	hasVisibleFace(bool *drawface, Land* currentVoxel) const;
 		void	SetAllLandNeighbors(int x, int y, int z, Land *land) const;
 		double	createCliffs(double height, int x, int y);

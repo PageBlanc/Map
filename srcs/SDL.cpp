@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:36:02 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/20 16:24:38 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:27:18 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void SDL::init(int mapwidth, int mapheight)
 	glLoadIdentity();
 	gluPerspective(70.0, (double)WIDTH / HEIGHT, 1.0, 100.0);
 	glMatrixMode(GL_MODELVIEW);
+	glDisable(GL_LIGHTING);
+	
 	
 	std::cout << "Initializing variables..." << std::endl;
 	_map = new Amplified(mapwidth, mapheight);

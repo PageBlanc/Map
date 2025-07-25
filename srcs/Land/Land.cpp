@@ -33,9 +33,7 @@ Land::Land(Land const &land)
 
 bool Land::isVoid() const
 {
-	if (_type == "Void")
-		return true;
-	return false;
+	return _type == "Void";
 }
 
 /*-------------------------------------GETTERS-------------------------------------*/
