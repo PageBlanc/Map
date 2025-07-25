@@ -6,14 +6,10 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 10:53:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/16 17:48:40 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/25 15:28:43 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Map/Mainland.hpp"
-#include "Land/Plains.hpp"
-#include "Land/Land.hpp"
-#include "Map/Map.hpp"
 #include "../Include/SDL.hpp"
 
 int main(int ac, char **av)

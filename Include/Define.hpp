@@ -6,7 +6,7 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 09:45:10 by pageblanche       #+#    #+#             */
-/*   Updated: 2025/07/21 13:50:44 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/25 15:28:05 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ struct Vec3 {
 # include "Object/Light.hpp"
 
 #define EXPORT 2
-#define WIDTH 1000
-#define HEIGHT 800
+#define WIDTH 1920
+#define HEIGHT 1080
 #define DRAW_EDGE 1
 #define MAX_RENDER_DISTANCE 100.0f
 #define VOXEL_SIZE 0.5f

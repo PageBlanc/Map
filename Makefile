@@ -6,7 +6,7 @@
 #    By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/10 10:51:07 by pageblanche       #+#    #+#              #
-#    Updated: 2025/07/25 11:53:24 by axdubois         ###   ########.fr        #
+#    Updated: 2025/07/25 14:51:54 by axdubois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,6 @@ SRC	= 	srcs/main.cpp					\
 		srcs/SDL.cpp					\
 		srcs/utils.cpp					\
 		srcs/Map/Map.cpp				\
-		srcs/Map/Mainland.cpp			\
-		srcs/Map/Amplified.cpp			\
 		srcs/Land/Land.cpp				\
 		srcs/Land/Plains.cpp			\
 		srcs/Land/Water.cpp				\

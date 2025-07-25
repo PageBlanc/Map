@@ -6,13 +6,12 @@
 /*   By: axdubois <axdubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:36:02 by axdubois          #+#    #+#             */
-/*   Updated: 2025/07/25 12:27:18 by axdubois         ###   ########.fr       */
+/*   Updated: 2025/07/25 15:45:21 by axdubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/SDL.hpp"
-#include "../Include/Map/Mainland.hpp"
-#include "../Include/Map/Amplified.hpp"
+#include "../Include/Map/Map.hpp"
 
 SDL::SDL() {}
 
@@ -51,13 +50,13 @@ void SDL::init(int mapwidth, int mapheight)
 	
 	
 	std::cout << "Initializing variables..." << std::endl;
-	_map = new Amplified(mapwidth, mapheight);
+	_map = new Map("Amplified", mapwidth, mapheight);
 	_zoom = 0.2f;
 	_move_speed = 0.2f;
 	_zoom_speed = 0.05f;
-	_cam = Vec3(0.0f, 0.0f, -5.0f);
-	_cam_pitch = -60.0f;
-	_cam_yaw = 45.0f;	
+	_cam = Vec3(0.0f, 0.0f, -10.0f);
+	_cam_pitch = -55.0f;
+	_cam_yaw = 55.0f;	
 	_event = SDL_Event();
 	
 	_running = true;
